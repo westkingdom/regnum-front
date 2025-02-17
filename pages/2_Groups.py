@@ -1,0 +1,111 @@
+import streamlit as st
+import requests
+from utils.config import api_url
+import pandas as pd
+
+def get_all_groups():
+    """Fetch all groups from the API"""
+    response = requests.get(f"{api_url}/groups/")
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+def get_group_by_id(group_id: str):
+    """Fetch a group by its ID"""
+    response = requests.get(f"{api_url}/groups/{group_id}/")
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+def get_group_members(group_id: str):
+    """Fetch the members of a group"""
+    response = requests.get(f"{api_url}/groups/{group_id}/members/")
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+def get_master_group_list():
+    """Fetch the master group list"""
+    response = requests.get(f"{api_url}/groups/master/")
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+def create_group(group_id: str, group_name: str):
+    """Create a new group"""
+    params = {"group_id": group_id, "group_name": group_name}
+    response = requests.post(f"{api_url}/groups/", params=params)
+    return response.status_code == 200
+
+def add_member_to_group(group_id: str, member_email: str):
+    """Add a member to a group"""
+    params = {"member_email": member_email}
+    response = requests.post(f"{api_url}/groups/{group_id}/add-member/", params=params)
+    return response.status_code == 200
+
+def remove_member_from_group(group_id: str, member_email: str):
+    """Remove a member from a group"""
+    response = requests.delete(f"{api_url}/groups/{group_id}/members/{member_email}")
+    return response.status_code == 200
+
+# Streamlit UI
+st.title("Group Management")
+
+# Create tabs for different group operations
+tab1, tab2, tab3 = st.tabs(["View Groups", "Create Group", "Manage Members"])
+
+with st.sidebar:
+    st.header("Actions")
+    if st.button("Create New Group"):
+        st.experimental_rerun()
+
+# Tab for viewing groups and members
+with tab1:
+    st.header("View Groups")
+
+    # Get all groups
+    groups = get_all_groups()
+
+    if not groups or 'groups' not in groups:
+        st.warning("No groups found. Please create a new group to begin.")
+    else:
+        # Selectbox for selecting a group by name instead of ID
+        selected_group_name = st.selectbox(
+            "Select a Group",
+            options=[group['name'] for group in groups['groups']],
+            key="select_view_group"
+        )
+
+        # Get the selected group's data
+        selected_group = next(group for group in groups['groups'] if group['name'] == selected_group_name)
+        selected_id = selected_group['id']
+        members = get_group_members(selected_id)
+        st.write(f"### Group: {selected_group['name']}")
+        members_df = pd.DataFrame(members('members', []))
+        st.dataframe(members_df)
+
+# Tab 2: Create New Group
+with tab2:
+    st.header("Create New Group")
+
+    # Add input fields for creating a new group
+    with st.form(key="create_group_form"):
+        st.text_input("Group Name", key="new_group_name")
+        if st.form_submit_button("Create Group"):
+            pass  # Replace with your actual implementation
+
+# Tab 3: Manage Members (Coming soon)
+with tab3:
+    st.header("Manage Members")
+
+    groups = get_all_groups()
+    if not groups or 'groups' not in groups:
+        st.warning("No groups found. Please create a new group to begin.")
+    else:
+        selected_group_name = st.selectbox(
+            "Select a Group",
+            options=[group['name'] for group in groups['groups']],
+            key="select_manage_group"
+        )
+
+        # Add functionality here for managing members

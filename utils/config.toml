@@ -1,0 +1,4 @@
+[auth0]
+client_id = "85382560394-i3ltmer506p1isn7r03k5kmla1ehslge.apps.googleusercontent.com"
+client_secret = "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"
+domain = "YOUR_AUTH0_DOMAIN"
