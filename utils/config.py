@@ -1,0 +1,12 @@
+# Input for the API URL
+api_url = "https://regnum-api-85382560394.us-west1.run.app"
+
+client_id = "85382560394-7aqkmopbm521utmmhrtr5rijj1tl306r.apps.googleusercontent.com"
+# Define the scopes required for your application
+SCOPES = [
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "openid",
+    "https://mail.google.com/"
+]  # Add other scopes as needed
+redirect_uri = "http://localhost:8501"

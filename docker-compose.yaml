@@ -1,0 +1,21 @@
+---
+version: "3.7"
+services:
+  task-admin:
+    container_name: regnum
+    image: regnum-image
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    ports:
+      - 8585:8080
+    restart: unless-stopped
+    networks:
+      - fs-net 
+
+networks:
+  fs-net:
+    external: true
+    driver: overlay
+
