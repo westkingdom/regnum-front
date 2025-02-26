@@ -79,3 +79,7 @@ cython_debug/
 
 # Project specific
 utils/google_credentials.json
+.idea/*
+.vscode/*
+.DS_store
+Pipfile.lock
