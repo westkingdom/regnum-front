@@ -25,13 +25,6 @@ def get_group_members(group_id: str):
         return response.json()
     return None
 
-def get_master_group_list():
-    """Fetch the master group list"""
-    response = requests.get(f"{api_url}/groups/master/")
-    if response.status_code == 200:
-        return response.json()
-    return None
-
 def create_group(group_id: str, group_name: str):
     """Create a new group"""
     params = {"group_id": group_id, "group_name": group_name}
