@@ -68,10 +68,17 @@ with tab1:
     if not groups or 'groups' not in groups:
         st.warning("No groups found. Please create a new group to begin.")
     else:
+        group_names = [group['name'] for group in groups['groups']]
+        # Add search functionality using st.text_input
+        search_term = st.text_input("Search Groups", "")
+        
+        # Filter group names based on search term
+        filtered_group_names = [name for name in group_names if search_term.lower() in name.lower()]
+
         # Selectbox for selecting a group by name instead of ID
         selected_group_name = st.selectbox(
             "Select a Group",
-            options=[group['name'] for group in groups['groups']],
+            options=filtered_group_names,
             key="select_view_group"
         )
 
@@ -110,9 +117,16 @@ with tab3:
     if not groups or 'groups' not in groups:
         st.warning("No groups found. Please create a new group to begin.")
     else:
+        group_names = [group['name'] for group in groups['groups']]
+        # Add search functionality using st.text_input
+        search_term = st.text_input("Search Groups", key="manage_search")
+        
+        # Filter group names based on search term
+        filtered_group_names = [name for name in group_names if search_term.lower() in name.lower()]
+
         selected_group_name = st.selectbox(
             "Select a Group",
-            options=[group['name'] for group in groups['groups']],
+            options=filtered_group_names,
             key="select_manage_group"
         )
 
