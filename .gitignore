@@ -83,3 +83,4 @@ utils/google_credentials.json
 .vscode/*
 .DS_store
 Pipfile.lock
+.streamlit/*

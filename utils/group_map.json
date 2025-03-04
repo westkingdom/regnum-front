@@ -1,0 +1,3140 @@
+[
+  {
+    "kind": "admin#directory#group",
+    "id": "03jtnz0s27bz16g",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/JRiqISl3WSWFgOaazsfjtKR5i4s\"",
+    "email": "12night@westkingdom.org",
+    "name": "12th-night",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "12night@westkingdom.org.test-google-a.com"
+    ],
+    "type": "event"
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0279ka652rroksa",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/9uHwoCyy-AWrnkRZr4ofZldCR_w\"",
+    "email": "all-artssciences@westkingdom.org",
+    "name": "All Artssciences",
+    "directMembersCount": "23",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "artssciences@westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "all-artssciences@westkingdom.org.test-google-a.com",
+      "artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02ce457m3g05bas",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/RERvCC2sMsNcD54oScVh2awjXhI\"",
+    "email": "all-barons@westkingdom.org",
+    "name": "All Barons",
+    "directMembersCount": "11",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "barons@westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "all-barons@westkingdom.org.test-google-a.com",
+      "barons@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "014ykbeg2qayf9o",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/vjVTWNK85rXDw1_9BT_xj-gG0GE\"",
+    "email": "all-s@westkingdom.org",
+    "name": "All S",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "s@westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "all-s@westkingdom.org.test-google-a.com",
+      "s@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00lnxbz91013t1c",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/G0onkCc0qOWmaPCVWCrqTJhYzMk\"",
+    "email": "allyshia-announcements@westkingdom.org",
+    "name": "Allyshia-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Palatine Barony of Allyshia",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "allyshia-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04anzqyu1tbc5kg",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/UQ-GssYlXDXuWBzTGGpPaelW0Zk\"",
+    "email": "allyshia-baron@westkingdom.org",
+    "name": "Palatine Barony of Allyshia Landed Baron",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "baron@allyshia.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "allyshia-baron@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00haapch1ukojhh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/oydSryX29yRtLc5cG_Mq3bx-2QI\"",
+    "email": "allyshia-chronicler@westkingdom.org",
+    "name": "Palatine Barony of Allyshia Chronicler",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "chronicler@allyshia.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "allyshia-chronicler@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "025b2l0r2wqy3gk",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/YLkqQhIdt35pz78IfhpxavkgzLw\"",
+    "email": "allyshia-exchequer@westkingdom.org",
+    "name": "Palatine Barony of Allyshia Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "exchequer@allyshia.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "allyshia-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02y3w2473m2edwk",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/YtJhwfxYzGlAdlR3s6Rv0tRdacc\"",
+    "email": "allyshia-marshal@westkingdom.org",
+    "name": "Palatine Barony of Allyshia Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "marshal@allyshia.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "allyshia-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00pkwqa12wbzxtm",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/NQh_0cyZz0baACtZu3V9fr78zeU\"",
+    "email": "allyshia-officers@westkingdom.org",
+    "name": "Allyshia Officers",
+    "directMembersCount": "4",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "officers@allyshia.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "allyshia-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00gjdgxs1vp7q9i",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/R-y2CJqcQnMD752DsVwSW1bumFQ\"",
+    "email": "allyshia-seneschal@westkingdom.org",
+    "name": "Barony of Allyshia Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "Allyshia-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03znysh70v31p9g",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/KJbYI2fiZMFbwh60X-k3BWzSCew\"",
+    "email": "arts-sciences@westkingdom.org",
+    "name": "Arts and Sciences Ministers",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "arts-sciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00gjdgxs0tbxe8j",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/8UI5glbTeAgPJZx0b-s0bn38gkU\"",
+    "email": "authorizations@westkingdom.org",
+    "name": "West Kingdom Fighter Authorizations",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "authorizations@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00z337ya3acxqir",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/2pTz72vs6YFcAGsqtcddC9r3LTU\"",
+    "email": "awardrec@westkingdom.org",
+    "name": "West Kingdom Award Reccomendations",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "awardrec@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ci93xb0lyf6mu",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/u61uRVhlBY02wvoysa2uQFqhrPE\"",
+    "email": "baldric@heralds.westkingdom.org",
+    "name": "Heralds Baldric",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02bn6wsx3zu9vy3",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/OYquzfRc-cYsH9c4HIODEjG0RGE\"",
+    "email": "banner@heralds.westkingdom.org",
+    "name": "Heralds Banner",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "044sinio1cvxiet",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/_K65ziliN7xj07YRApjyeesFtBA\"",
+    "email": "battlerock-announcements@westkingdom.org",
+    "name": "BattleRock-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Stronghold of Battle Rock",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "battlerock-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03dy6vkm13ypcrr",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/ySQ3GIJRoa8f5WNOAzFqqji8i2Y\"",
+    "email": "battlerock-herald@westkingdom.org",
+    "name": "Stronghold of Battle Rock Herald",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "battlerock-herald@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03o7alnk2ghwavn",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/qViy_wZgR0ItcCuhlsMZBHdby8U\"",
+    "email": "battlerock-marshal@westkingdom.org",
+    "name": "Stronghold of Battle Rock Marshal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "battlerock-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04bvk7pj224p3pd",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/htX_9BOFtTDJHu_Fqy3bBIRapII\"",
+    "email": "battlerock-seneschal@westkingdom.org",
+    "name": "Stronghold of Battle Rock Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "battlerock@marches.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "battlerock-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03dy6vkm3td3js9",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/NJE8ewG-JdlcAxZq_jWZDc0AMr0\"",
+    "email": "battlerock-webminister@westkingdom.org",
+    "name": "Stronghold of Battle Rock Web Minister",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "battlerock-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0319y80a3p8dnc1",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/iN-gv-CWYA3Cgj_ztov-a3i6qCA\"",
+    "email": "belogor-announcements@westkingdom.org",
+    "name": "Belogor-Announcements",
+    "directMembersCount": "2",
+    "description": "For events and information relevant to the Shire of Belogor",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "belogor-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02pta16n2n24kf2",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/yB2_12l5TJdo9SLiFMRWLz9cCZA\"",
+    "email": "belogor-exchequer@westkingdom.org",
+    "name": "Shire of Crystalmist Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "belogor-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01tuee743xtfbjv",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/MRTN-ZIugmpXZq0Mh-wVn0td4jo\"",
+    "email": "belogor-marshal@westkingdom.org",
+    "name": "Shire of Crystalmist Heavy Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "belogor-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03as4poj1i25sfn",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/xmYGdwW3bzkcFqezsdOEfrGb2EU\"",
+    "email": "belogor-officers@westkingdom.org",
+    "name": "Belogor Officers",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "belogor-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "023ckvvd3a6z1e8",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/umu22ra9ay7dygixVNWZYCt85s8\"",
+    "email": "beltane@westkingdom.org",
+    "name": "beltane",
+    "directMembersCount": "0",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "beltane@westkingdom.org.test-google-a.com"
+    ],
+    "type": "event"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "041mghml0yrma22",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/JINXRlD4SUrbTwWfsEAGuNzfIwE\"",
+    "email": "bestwode-arts@westkingdom.org",
+    "name": "Shire of Bestwode Arts",
+    "directMembersCount": "0",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bestwode-arts@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01d96cc03twy2wq",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/4TlMLXfABh6e-E5t7OjFZWRsd3s\"",
+    "email": "bestwode-chatelaine@westkingdom.org",
+    "name": "Shire of Bestwode Chatelaine",
+    "directMembersCount": "0",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bestwode-chatelaine@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "032hioqz3k1kyih",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/f48j5fo318kB7pZ-PRKrcCvj3Vo\"",
+    "email": "bestwode-seneschal@westkingdom.org",
+    "name": "Shire of Bestwode Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bestwode-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02fk6b3p2c1ijf4",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/T-cMgF9klf7ZPX3M5UqYEHJHwHQ\"",
+    "email": "bestwodeschire-artssciences@westkingdom.org",
+    "name": "Shire of Bestwode Arts and Sciences",
+    "directMembersCount": "0",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bestwodeschire-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00tyjcwt4bqnizp",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/mlKfhXxkylO3zowF-bnH-xCXfNo\"",
+    "email": "bestwodeschire-chatelaine@westkingdom.org",
+    "name": "Shire of Bestwode Chatelaine",
+    "directMembersCount": "0",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bestwodeschire-chatelaine@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00qsh70q1jfr3fk",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/TQkHAmY6Q2Ww0xBlfyjptl0iSnw\"",
+    "email": "bestwodeschire-constable@westkingdom.org",
+    "name": "Bestwodeschire Constable",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bestwodeschire-constable@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "043ky6rz1k12ufv",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/XEulgWUH0kUHWBuO7aC1_JFj0v8\"",
+    "email": "bestwodeschire-exchequer@westkingdom.org",
+    "name": "Bestwodeschire Exchequer",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bestwodeschire-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03x8tuzt21mfrs0",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/1Q-NEIL74cwr3mOTr_CGxqyHtek\"",
+    "email": "bestwodeschire-officers@westkingdom.org",
+    "name": "Bestwodeschire Officers",
+    "directMembersCount": "5",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bestwodeschire-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01v1yuxt1v2cooe",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/1Ox0_E1ijp4We1GxZ1UGNl3vBxQ\"",
+    "email": "bestwodeschire-seneschal@westkingdom.org",
+    "name": "Shire of Bestwode Seneschal",
+    "directMembersCount": "0",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bestwodeschire-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00meukdy4dgdl7h",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/TSQCZaXZazTnOHuVUL0FeAlyd2g\"",
+    "email": "bestwodeshire-announcements@westkingdom.org",
+    "name": "Bestwodeshire-Announcements",
+    "directMembersCount": "3",
+    "description": "Subscribe to receive local activity invites and information of local interest",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "bestwodeshire-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "049x2ik538xxo9p",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/EPh6MC-JLFIgLSFFp17XPQimZVg\"",
+    "email": "bids@westkingdom.org",
+    "name": "West Kingdom Bidding E-List",
+    "directMembersCount": "5",
+    "description": "A mail alias to receive bids and forward them to the correct people",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bids@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01baon6m3adhjqw",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/fRH_g2USF7d87cI64xHPkATU7sQ\"",
+    "email": "bjarnarstrond-seneschal@westkingdom.org",
+    "name": "Canton of Bjarnarstrond Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "bjarnarstrond-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "037m2jsg3n4saec",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/ap5NP7uGkjEozHLfcxTedCOgr1U\"",
+    "email": "borderwinds-announcements@westkingdom.org",
+    "name": "BorderWinds-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Canton of Border Winds",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "borderwinds-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01664s551vvzigd",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/H7uYjBJITsZqugHYVJUlXJ2dMwk\"",
+    "email": "borderwinds-archer@westkingdom.org",
+    "name": "Canton of Borderwinds Archer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "borderwinds-archer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "030j0zll17f6r3o",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/AafL2ABLqjj65XwmzC5D_wHCvEs\"",
+    "email": "borderwinds-artssciences@westkingdom.org",
+    "name": "Canton of Borderwinds Arts and Sciences",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "borderwinds-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04d34og80inzknt",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/WIjDpKWChDvUX4mz4X1PmufKY9g\"",
+    "email": "borderwinds-exchequer@westkingdom.org",
+    "name": "Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "borderwinds-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02iq8gzs3qevbc8",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/QXex_lycOr5bvfDoMPNgN-NEOBI\"",
+    "email": "borderwinds-herald@westkingdom.org",
+    "name": "Canton of Borderwinds Herald",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "borderwinds-herald@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03oy7u29183ft44",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/RqSFu1k0bof44Sc50ByPJNfmzW8\"",
+    "email": "borderwinds-marshal@westkingdom.org",
+    "name": "Canton of Borderwinds Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "borderwinds-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01jlao4625h42ey",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/fR5Bf52nASukTFRIX4SaryN57xg\"",
+    "email": "borderwinds-officers@westkingdom.org",
+    "name": "Borderwinds Officers",
+    "directMembersCount": "7",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "borderwinds-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03as4poj0wjwget",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/olm65lBR8aAeqGGi3QJj46gFqYY\"",
+    "email": "borderwinds-seneschal@westkingdom.org",
+    "name": "Canton of Borderwinds Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "borderwinds-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "025b2l0r1v2cego",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/TeqWXliKyE7RUykSKHMaUh8it90\"",
+    "email": "borderwinds-webminister@westkingdom.org",
+    "name": "Canton of Borderwinds Web Minister",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "borderwinds-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "048pi1tg3n5bu25",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/m0U4h5lFnyxQ-vEwUxQX1zsHX7k\"",
+    "email": "brachet@heralds.westkingdom.org",
+    "name": "Heralds brachet",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03bj1y3820z75b7",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/uRiOorcfVQs5f2dl9Zs3TSiY9d0\"",
+    "email": "caerdarth-announcements@westkingdom.org",
+    "name": "CaerDarth-Announcements",
+    "directMembersCount": "2",
+    "description": "For info and events relevant to the Shire of Caer Darth",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "caerdarth-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00pkwqa13g4fkge",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/GoBJaZG9evu9BHHTWsN1HI5yJuk\"",
+    "email": "caerdarth-seneschal@westkingdom.org",
+    "name": "Canton of Caer Darth Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "caerdarth-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00sqyw644czmvai",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/mMZatJZRxSLtGzC7BPFIfhoqius\"",
+    "email": "cal@westkingdom.org",
+    "name": "cal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "cal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02w5ecyt29w8xrf",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/ll0iixAgLnTWhx34_TRLDVE1aKw\"",
+    "email": "caldarium-announcements@westkingdom.org",
+    "name": "Caldarium-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Shire of Caldarium",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "caldarium-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00lnxbz94kcumjn",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/fL7dNIrxwdbBTWNKAPf5-s0mtiY\"",
+    "email": "caldarium-seneschal@westkingdom.org",
+    "name": "Shire of Caldarium Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "caldarium@mists.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "caldarium-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0279ka654djld0a",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/c4G_Nr7bsbvb9BUaKCZBtupCX5I\"",
+    "email": "canale-announcements@westkingdom.org",
+    "name": "Canale-Announcements",
+    "directMembersCount": "10",
+    "description": "Subscribe to this group to receive announcements about events and activities in the Shire of Canale.",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "canale-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01v1yuxt10yuarm",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/F3Z_KDbPTRAln-Vz0eOkp77u1Do\"",
+    "email": "canale-officers@westkingdom.org",
+    "name": "Canale Officers",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "canale-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02koq6561m0omwi",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/qxhHIDjMD1DlOTWmet9fMGWE8gE\"",
+    "email": "canale-seneschal@westkingdom.org",
+    "name": "Shire of Canale Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "canale@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "canale-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03fwokq0469dgzs",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Bd1929sbU1QYhcIT4crjqJnDEog\"",
+    "email": "canale-webminister@westkingdom.org",
+    "name": "Shire of Canale Web Minister",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "canale-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01pxezwc3h31z7g",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/P0C9G0Z8YE8ffd2ikKCc5iS8kyY\"",
+    "email": "champclair-announcements@westkingdom.org",
+    "name": "Champclair-Announcements",
+    "directMembersCount": "5",
+    "description": "Announcements for the Shire of Champclair",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "champclair-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0147n2zr2x45g4f",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/ARhdLffpdCkc13_wuYWYh2pGWKI\"",
+    "email": "champclair-exchequer@westkingdom.org",
+    "name": "Shire of Champclair Exchequer",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "exchequer@champclair.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "champclair-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ci93xb2rebub7",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/44VifT6FU5DoSRtl4EN8ua1r4O0\"",
+    "email": "champclair-officers@westkingdom.org",
+    "name": "Champclair Officers",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "officers@champclair.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "champclair-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01jlao463br6jxx",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/fxuqcvw8l0L_pI4D0gbnThFBito\"",
+    "email": "champclair-seneschal@westkingdom.org",
+    "name": "Shire of Champclair Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "champclair@cynagua.westkingdom.org",
+      "seneschal@champclair.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "champclair-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "045jfvxd20oj3la",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/qyj42LBxOdjItEGPtDNuPpVHkd4\"",
+    "email": "classroom_teachers@westkingdom.org",
+    "name": "Classroom Teachers",
+    "directMembersCount": "68",
+    "description": "This group includes all Classroom teachers in your domain. Users who say they are teachers are added as pending members until you approve. Note that members of this group have additional privileges, which you can control in the Admin Console. WARNING: Do not delete this group.",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "classroom_teachers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0319y80a3n5zehu",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/ZG0maM0rpC2cCoexOFiNv6ckw7M\"",
+    "email": "clerk@heralds.westkingdom.org",
+    "name": "Heralds Clerk",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04anzqyu3c8cwqd",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Bt2FvRNqWqrOYAGy36fKBw18noQ\"",
+    "email": "cloondara-announcements@westkingdom.org",
+    "name": "Cloondara-Announcements",
+    "directMembersCount": "2",
+    "description": "For events and information relevant to the Shire of Cloondara",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "cloondara-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00qsh70q1se35vf",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/rcejbl221SV7NqVHAyggd9YVL2s\"",
+    "email": "cloondara-artssciences@westkingdom.org",
+    "name": "Shire of Cloondara Arts and Sciences",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "cloondara-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "041mghml45y3evx",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/NpzLW-8GJNFY1c7TQ5nV8Y76hEU\"",
+    "email": "cloondara-chatelaine@westkingdom.org",
+    "name": "Shire of Cloondara Chatelaine",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "cloondara-chatelaine@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02lwamvv1vhu2n8",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/IvSsKTKb1NLubXgoNYC-MimJHjc\"",
+    "email": "cloondara-exchequer@westkingdom.org",
+    "name": "Shire of Cloondara Exchequer",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "cloondara-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ci93xb1chqhs9",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/F_P0DkgBFNYV6QPxaLt2MosvGPI\"",
+    "email": "cloondara-lists@westkingdom.org",
+    "name": "Shire of Cloondara List Mistress",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "cloondara-lists@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02bn6wsx25iucrh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/AqmVEeCqz78zfDnF0LEzr7tFC48\"",
+    "email": "cloondara-officers@westkingdom.org",
+    "name": "Cloondara Officers",
+    "directMembersCount": "7",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "cloondara-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ci93xb2hw8329",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/IiGmI6eQMvOT5VrQQm5R3UCMT-w\"",
+    "email": "cloondara-rapier@westkingdom.org",
+    "name": "Shire of Cloondara Rapier Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "cloondara-rapier@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02p2csry4dfpyyq",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/fcclhksGwn37PKZOtMItHx6PNuA\"",
+    "email": "cloondara-seneschal@westkingdom.org",
+    "name": "Shire of Cloondara Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "cloondara@mists.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cloondara-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04du1wux1om42u7",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/EOiTcszFvYO0IdBWNJtlCLjjsUQ\"",
+    "email": "cloondara-webminister@westkingdom.org",
+    "name": "Shire of Cloondara Web Minister",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "cloondara-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02y3w24710ipulc",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/z49tmZyVB8P44uDRx3F_1BbNXvw\"",
+    "email": "collegesaintboniface-seneschal@westkingdom.org",
+    "name": "College of Saint Boniface",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "collegesaintboniface-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00nmf14n3oyjo5u",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Pvl5ATFbsKmA86BDWIdUUlQuYxE\"",
+    "email": "crosston-announcements@westkingdom.org",
+    "name": "Crosston-Announcements",
+    "directMembersCount": "3",
+    "description": "For events and information relevant to the Shire of Crosston",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "crosston-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03ygebqi2dys0rl",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/xEc538zq1jrAKbgPB67MqCEVzIg\"",
+    "email": "crosston-artssciences@westkingdom.org",
+    "name": "Shire of Crosston Arts & Sciences",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "artssciences@crosston.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "crosston-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02y3w2470k5y6rh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/CZ4tLwvIQG1wWjZw2nb9awzRv3Q\"",
+    "email": "crosston-officers@westkingdom.org",
+    "name": "Crosston Officers",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "officers@crosston.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "crosston-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00xvir7l3y7zrjh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/I9lM64uXOd04ceFaiN-ynefl8zs\"",
+    "email": "crosston-seneschal@westkingdom.org",
+    "name": "Shire of Crosston Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "seneschal@crosston.westkingdom.org",
+      "crosston@mists.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "crosston-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00lnxbz9374legv",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/9dW8wNEMlYc4KbhI7yWV-zd95so\"",
+    "email": "crosston-webminister@westkingdom.org",
+    "name": "Shire of Crosston Web Minister",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "webminister@crosston.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "crosston-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03znysh70l6jkj0",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Dwi4CEs-UyieKxmCFd9RqPoSZqY\"",
+    "email": "crystalmist-exchequer@westkingdom.org",
+    "name": "Shire of Crystalmist Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "crystalmist-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02s8eyo13i3mv37",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Q2DDGXzvVD8CSJcRjGt6510LYt8\"",
+    "email": "crystalmist-marshal@westkingdom.org",
+    "name": "Shire of Crystalmist Heavy Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "crystalmist-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02lwamvv4hn9x2t",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/SYXAEKQ0fd2lj0YYRN-eRu02clQ\"",
+    "email": "crystalmist-seneschal@westkingdom.org",
+    "name": "Shire of Crystalmist Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "crystalmist@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "crystalmist-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03x8tuzt1yke3ic",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/JMGO-7v_JEWa-Sm8MhDdccYPOR8\"",
+    "email": "cynagua-archer@westkingdom.org",
+    "name": "Principality of Cynagua Archer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "archer@cynagua.westkingdom.org",
+      "bow@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-archer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03as4poj464l36f",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/SU4YUvR7eVJcYwzWYu0SiAYqGV4\"",
+    "email": "cynagua-artssciences@westkingdom.org",
+    "name": "Principality of Cynagua Arts and Sciences",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "artssciences@cynagua.westkingdom.org",
+      "ans@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02grqrue4823mkn",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/rYxfaiRJTymAp9zUm1_K5xbEHts\"",
+    "email": "cynagua-bard@westkingdom.org",
+    "name": "Bard",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "bard@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-bard@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02et92p01390te1",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/hxk_wkFF4753pi2tZWOSq6cZWm8\"",
+    "email": "cynagua-chatelaine@westkingdom.org",
+    "name": "Principality of Cynagua Chatelaine",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "chatelaine@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-chatelaine@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02iq8gzs3fg4b1t",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/kPLlWikHJF3QI8Qv0_nmMO7LRY4\"",
+    "email": "cynagua-chronicler@westkingdom.org",
+    "name": "Principality of Cynagua Chronicler",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "chronicler@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-chronicler@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04k668n30jqeomx",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/VbUkEAHX1SHds7KITOwR_PWv55M\"",
+    "email": "cynagua-constable@westkingdom.org",
+    "name": "Principality of Cynagua Constable",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "constable@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-constable@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "034g0dwd4je6scx",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/C3Q8wi2ybM_wZAbb5yBkziOLq10\"",
+    "email": "cynagua-equestrian@westkingdom.org",
+    "name": "Principality of Cynagua Equestrian Arts",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "equestrian@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-equestrian@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02250f4o412exip",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/fdlFey88GU2BdsODDzTLrSHp4Xc\"",
+    "email": "cynagua-exchequer@westkingdom.org",
+    "name": "Exchequer",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "exchequer@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "040ew0vw45mdjkt",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/KMmqpsujlrp39iHtWWwMilmBG7M\"",
+    "email": "cynagua-goldkey@westkingdom.org",
+    "name": "Goldkey",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "goldkey@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-goldkey@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0147n2zr1e07qyh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/FYlOlj1aKWY2AfacLFY6Ir-atIA\"",
+    "email": "cynagua-heirs@westkingdom.org",
+    "name": "Principality of Cynagua Heirs",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "heirs@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-heirs@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01opuj5n2pu6xgd",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/dOzCMV5QkJ3K5hxil_S6kinZvaM\"",
+    "email": "cynagua-herald@westkingdom.org",
+    "name": "Principality of Cynagua Herald",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "herald@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-herald@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02u6wntf36ihjoj",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/mHrIgmY7xs4mJ91mJEXhR8U7-j8\"",
+    "email": "cynagua-lists@westkingdom.org",
+    "name": "Principality of Cynagua Lists",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "lists@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-lists@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01rvwp1q0s4dcst",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/pmJXCdovf9kgeQgX1WPoksOBD10\"",
+    "email": "cynagua-marshal@westkingdom.org",
+    "name": "Principality of Cynagua Heavy Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "marshal@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0111kx3o3kk0rpi",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/pAbQbkVtb8I7jx3wo8CoLLHrSLs\"",
+    "email": "cynagua-officers@westkingdom.org",
+    "name": "Cynagua Officers",
+    "directMembersCount": "20",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "officers@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "035nkun2194poh9",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/CtufsYXhVVsOD8VzrsJVpu-gnA8\"",
+    "email": "cynagua-rapier@westkingdom.org",
+    "name": "Principality of Cynagua Rapier Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "rapier@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-rapier@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02lwamvv3iue4e0",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/8HE32Ll_u8LG_SN6uabOUjZAn1Y\"",
+    "email": "cynagua-regent@westkingdom.org",
+    "name": "Principality of Cynagua Regent",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "regent@cynagua.westkingdom.org",
+      "royals@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-regent@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00zu0gcz1x82koh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/1IHQTrkANg4-_iWi-aVvY0OKdjo\"",
+    "email": "cynagua-royalregalia@westkingdom.org",
+    "name": "Principality of Cynagua Royal Regalia",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "royalregalia@cynagua.westkingdom.org",
+      "regalia@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-royalregalia@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02s8eyo14abdnbx",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/_U3-hobz5o9IUKYhyNLgCQIRSp0\"",
+    "email": "cynagua-scribes@westkingdom.org",
+    "name": "Principality of Cynagua Scribes",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "scribes@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-scribes@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03q5sasy4ie0sxt",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/z-Q6MIxRP8EsuZi2Abt-9eukUXM\"",
+    "email": "cynagua-seneschal@westkingdom.org",
+    "name": "Principality of Cynagua Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "seneschal@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03o7alnk1zqghb0",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/XljoXNblMlLFM77n3ocFmbkb_Ns\"",
+    "email": "cynagua-webminister@westkingdom.org",
+    "name": "Principality of Cynagua Web Minister",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "webminister@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02pta16n14z84k3",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/fgskVqRCQAbuNX4OcFBWzhwkxAo\"",
+    "email": "cynagua-youthchancellor@westkingdom.org",
+    "name": "Principality of Cynagua Youth Chancellor",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "youthchancellor@cynagua.westkingdom.org",
+      "pageschool@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "cynagua-youthchancellor@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ci93xb2948fdx",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/SXmnPk5qs_tk4YJ5vx0MwYKcb0s\"",
+    "email": "danegeldtor-announcements@westkingdom.org",
+    "name": "DanegeldTor-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relative to the Shire of Danegeld Tor",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "danegeldtor-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0319y80a42exjaj",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/4PZLjIuih5AE5zTUd-OGHWN8SkI\"",
+    "email": "danegeldtor-artssciences@westkingdom.org",
+    "name": "Shire of Danegeld Tor Arts and Sciences",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04du1wux1eepib6",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/-ilJwyA4Bhy7CRoeNMCNm72lEFw\"",
+    "email": "danegeldtor-chatelaine@westkingdom.org",
+    "name": "Shire of Danegeld Tor Chatelaine",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-chatelaine@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "049x2ik51qu0tdg",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/sWIcl5umRZQEiM7QyeKdNNN83XU\"",
+    "email": "danegeldtor-chronicler@westkingdom.org",
+    "name": "Shire of Danegeld Tor Chronicler",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-chronicler@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0206ipza13b69ja",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/n0e4H3cJ58snN98VE-uGgHcbTs8\"",
+    "email": "danegeldtor-constable@westkingdom.org",
+    "name": "Shire of Danegeld Tor Constable",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-constable@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04h042r01q4e3me",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/kfJsDMBkiLaq1yJKB6bJ1bhEMdY\"",
+    "email": "danegeldtor-exchequer@westkingdom.org",
+    "name": "Shire of Danegeld Tor Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "037m2jsg47tt5oy",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/sBpADXtVWXUrP4Y6iTdW9sdCAVU\"",
+    "email": "danegeldtor-goldkey@westkingdom.org",
+    "name": "Gold Key",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-goldkey@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02p2csry32plv6q",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/vCAb5uNf-BX1pphOWlkHBxaCdec\"",
+    "email": "danegeldtor-herald@westkingdom.org",
+    "name": "Shire of Danegeld Tor Herald",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-herald@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00gjdgxs2tp94d6",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/x0GKQc24nhdEABdC8-u5_YkjRuU\"",
+    "email": "danegeldtor-marshal@westkingdom.org",
+    "name": "Shire of Danegeld Tor Heavy Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02pta16n13q8tyh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/srS6Pe88_2ppuZQykNiEXB1aSsE\"",
+    "email": "danegeldtor-officers@westkingdom.org",
+    "name": "Danegeldtor Officers",
+    "directMembersCount": "11",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00gjdgxs43r66ej",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Z7aewKTz7jbhbTOTgvh6uHf_KBo\"",
+    "email": "danegeldtor-rapier@westkingdom.org",
+    "name": "Rapier Marshal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-rapier@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02u6wntf3by4ewl",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/D2K46LwbXYpWHlg_ZXext-fklIE\"",
+    "email": "danegeldtor-seneschal@westkingdom.org",
+    "name": "Shire of Danegeld Tor Seneschal",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "danegeldtor@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "danegeldtor-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02lwamvv2vk9f4w",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/X8TRCmS7Qk_bb3vq3l1hYF5aXBw\"",
+    "email": "danegeldtor-webminister@westkingdom.org",
+    "name": "Shire of Danegeld Tor Web Minister",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "danegeldtor-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "049x2ik54af9dnv",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/oWwDNmDJYOiJvlCcd13joJ5Bppk\"",
+    "email": "darkwood-announcements@westkingdom.org",
+    "name": "Darkwood-Announcements",
+    "directMembersCount": "2",
+    "description": "For events and information relevant to the Barony of Darkwood",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "darkwood-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02p2csry4kjci6f",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/LyOyHDpCUFOBO6MgZtoj27sDKlw\"",
+    "email": "darkwood-artssciences@westkingdom.org",
+    "name": "Barony of Darkwood Arts and Sciences",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "darkwood-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03rdcrjn1w4nmhs",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/LGgsRlQew20SWAsUbx7i86Hq_b0\"",
+    "email": "darkwood-baron@westkingdom.org",
+    "name": "Darkwood Baron",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "darkwood-baron@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "036ei31r1vogkdh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Er7YKCz-bdqP8w7j_LFklwo_DxI\"",
+    "email": "darkwood-chronicler@westkingdom.org",
+    "name": "Barony of Darkwood Chronicler",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "darkwood-chronicler@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01rvwp1q3rlb85n",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/G5RpbsKCeh7fUu09M3jsMaH40QI\"",
+    "email": "darkwood-constable@westkingdom.org",
+    "name": "Barony of Darkwood Constable",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "darkwood-constable@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02lwamvv42u7v0p",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/K5O7DwW6tCeU4eIrbvBbgYhQ7rI\"",
+    "email": "darkwood-exchequer@westkingdom.org",
+    "name": "Barony of Darkwood Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "darkwood-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02dlolyb1pj4x6i",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/KcMQvalUaM_hQrUnpvdyWQcoKW4\"",
+    "email": "darkwood-herald@westkingdom.org",
+    "name": "Barony of Darkwood Herald",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "darkwood-herald@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "019c6y18499pge1",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/e8OUE3R-x2vCKSS1H8b3q7SpzOc\"",
+    "email": "darkwood-marshal@westkingdom.org",
+    "name": "Barony of Darkwood Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "darkwood-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ksv4uv3zziynu",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/pWiSDTvH2wd9T2f-upeNPQDQ3p4\"",
+    "email": "darkwood-officers@westkingdom.org",
+    "name": "Darkwood Officers",
+    "directMembersCount": "9",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "darkwood-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03q5sasy4jvtq9b",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/SeoUkhJdvdSPKdVgzYtUnrQ684g\"",
+    "email": "darkwood-seneschal@westkingdom.org",
+    "name": "Barony of Darkwood Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "darkwood@mists.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "darkwood-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03o7alnk436kqq6",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/-Q6FpyXgAjPfiHs-ZmWtVI5LCN4\"",
+    "email": "darkwood-webminister@westkingdom.org",
+    "name": "Barony of Darkwood Webminister",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "darkwood-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00xvir7l2q2mrdu",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Y1kOoDIcFfsJHG-4ouhCtVMJi30\"",
+    "email": "dei@mists.westkingdom.org",
+    "name": "Principality of the mists dei",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "mistsdei@westkingdom.org",
+      "mistsdei@mists.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "mistsdei@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04f1mdlm2ryueel",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/0KtiW8FtH2_qrX8F2BTb_G5oo0A\"",
+    "email": "dei@westkingdom.org",
+    "name": "West Kingdom DEI",
+    "directMembersCount": "1",
+    "description": "Diversity Equity and Inclusion",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "dei@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02xcytpi47nz8t6",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/y0mxR5rgEVcviL1Z8Ka-6Pnv7pM\"",
+    "email": "dig-media@westkingdom.org",
+    "name": "digital media",
+    "directMembersCount": "3",
+    "description": "A group created to manage the Westkingdom File repository",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "dig-media@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ci93xb2pgn0t2",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/YwtnKmAMeMljFf70actdl1NRTk8\"",
+    "email": "earngyld-announcements@westkingdom.org",
+    "name": "Earngyld-Announcements",
+    "directMembersCount": "2",
+    "description": "For info and events relevant to the Shire of Earngyld",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "earngyld-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04d34og83rmuo8m",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/RhZvp9ViQZmDrodaxPEeGx-QCwk\"",
+    "email": "earngyld-officers@westkingdom.org",
+    "name": "Earngyld Officers",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "earngyld-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03whwml448axkk6",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/eTa_-IYDd3DfmXJE7dnE7naBtx0\"",
+    "email": "earngyld-seneschal@westkingdom.org",
+    "name": "Shire of Earngyld Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "earngyld@oertha.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "earngyld-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02lwamvv2cmvvvy",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/pcqW2hKPVivuQ3Ml9sdmOCsBVUA\"",
+    "email": "earngyld-webminister@westkingdom.org",
+    "name": "Shire of Earngyld Web Minister",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "earngyld-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03oy7u291q1yk3f",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/K2tvemZOs-ggDAcQTq5tP1uDgmY\"",
+    "email": "electronic.pelclerk@westkingdom.org",
+    "name": "Electronic Pelclerk",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "electronic.pelclerk@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0279ka652gjjfga",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Ryrwft909K8k7LSjBVBH_W4PZ4w\"",
+    "email": "eskalya-announcements@westkingdom.org",
+    "name": "Eskalya-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Barony of Eskalya",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "eskalya-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02y3w2471mbkbtq",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/X4trFXSOlJJfbIUJ_aLgt9420o8\"",
+    "email": "eskalya-artssciences@westkingdom.org",
+    "name": "Barony of Eskalya Arts and Sciences",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "eskalya-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02nusc192psr6js",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/zr5nJVpQH6KWvkoSoeKOBZWZiMQ\"",
+    "email": "eskalya-baron@westkingdom.org",
+    "name": "Barony of Eskalya Landed Baron",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "eskalya-baron@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02afmg282qrxidg",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/0QjznxqOswhjV2vF5G-JjJ08Te0\"",
+    "email": "eskalya-chronicler@westkingdom.org",
+    "name": "Barony of Eskalya Chronicler",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "eskalya-chronicler@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "028h4qwu2kpwce7",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/EM_gO7eJE6pOQyWPQhtotXhWO5Q\"",
+    "email": "eskalya-constable@westkingdom.org",
+    "name": "Barony of Eskalya Constable",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "eskalya-constable@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01egqt2p1y2cavh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/JLKZZZy5uYxIP6H6JpfLmxwC6Hs\"",
+    "email": "eskalya-exchequer@westkingdom.org",
+    "name": "Barony of Eskalya Exchequer",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "eskalya-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04i7ojhp3llx61m",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/PiHkh943AVYjOOciUQRJco5p3ZA\"",
+    "email": "eskalya-herald@westkingdom.org",
+    "name": "Barony of Eskalya Herald",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "eskalya-herald@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02u6wntf49vr9fh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/abs060xK129jFVkpKTv6hkw23QM\"",
+    "email": "eskalya-marshal@westkingdom.org",
+    "name": "Barony of Eskalya Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "eskalya-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01t3h5sf3wk79zb",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/E9j7LOiWSyhkhEHsUcrMmjaJYw4\"",
+    "email": "eskalya-officers@westkingdom.org",
+    "name": "Eskalya Officers",
+    "directMembersCount": "9",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "eskalya-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01d96cc02w9ngsa",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/ur8wpctzMYscebT5Mvfq7a9GpUc\"",
+    "email": "eskalya-seneschal@westkingdom.org",
+    "name": "Barony of Eskalya Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "eskalya@oertha.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "eskalya-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01pxezwc2ipm8cb",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/WgS1Y_d7bufyvGBz6wltHFhnVBg\"",
+    "email": "eskalya-webminister@westkingdom.org",
+    "name": "Barony of Eskalya Web Minister",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "eskalya-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00pkwqa133mvz6h",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/53W3UDr8agmfiCwZkVYt0sdNmM0\"",
+    "email": "eternalwinds-announcements@westkingdom.org",
+    "name": "EternalWinds-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Stronghold of Eternal Winds",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "eternalwinds-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02u6wntf47sqmjx",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/OTdcU2LiPgXhNtYGVRm5R-GnYPo\"",
+    "email": "farwest-announcements@westkingdom.org",
+    "name": "FarWest-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Palatine Barony of the Far West",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "farwest-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "043ky6rz3evc97g",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Yu3MgpxQKzhQJScOn-7Qu11x1Bc\"",
+    "email": "farwest-baron@westkingdom.org",
+    "name": "Palatine Barony of the Far West Landed Baron",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "farwest-baron@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01pxezwc487f77r",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/yr_ztW9KrwOUlSVQtx8x1QMcNjw\"",
+    "email": "farwest-chronicler@westkingdom.org",
+    "name": "Palatine Barony of the Far West Chronicler",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "farwest-chronicler@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "044sinio3kxub8z",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/h4yg-U8FtN4n6bp_MGMp-8CjEuY\"",
+    "email": "farwest-exchequer@westkingdom.org",
+    "name": "Palantine Barony of the Far West Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "farwest-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02fk6b3p2hz0gm8",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Ff0jtSnHgU8ZXMl2CxI1KtWWDKs\"",
+    "email": "farwest-herald@westkingdom.org",
+    "name": "Palatine Barony of the Far West Herald",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "farwest-herald@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "044sinio38p8gge",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/7OCwCypFWLuRX0iAxgmnOn2mOBA\"",
+    "email": "farwest-marshal@westkingdom.org",
+    "name": "Palatine Barony of the Far West Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "farwest-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02et92p03o58520",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/q9uTB2RndjCnGA5n0rHrpezuAik\"",
+    "email": "farwest-officers@westkingdom.org",
+    "name": "Farwest Officers",
+    "directMembersCount": "6",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "farwest-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "037m2jsg0owwn3e",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/vfyXZH_UPMdrDU3Q6afe33vQD7Q\"",
+    "email": "farwest-seneschal@westkingdom.org",
+    "name": "Palatine Barony of the Far West Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "farwest@marches.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "farwest-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04d34og8160s3h4",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/lI6MYBQMnK-aYh1MwcX1-RdDvfU\"",
+    "email": "farwest-webminister@westkingdom.org",
+    "name": "Palatine Barony of the Far West Web Minister",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "farwest-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03znysh74c51hfk",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/gItObBwO0dYk9aGO31b3SsjV5ZI\"",
+    "email": "fendrakemarsh-announcements@westkingdom.org",
+    "name": "FendrakeMarsh-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Shire of Fendrake Marsh",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "fendrakemarsh-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04bvk7pj3ltukj6",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/fVYrlsOB-uzwoAMaQ502-0fMnKE\"",
+    "email": "fendrakemarsh-seneschal@westkingdom.org",
+    "name": "Shire of Fendrake Marsh Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "fendrakemarsh@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "fendrakemarsh-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02w5ecyt2ycapse",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/FH_n-awvnpQaaIWiEGo9WdGxAb8\"",
+    "email": "fettburg-announcements@westkingdom.org",
+    "name": "Fettburg-Announcements",
+    "directMembersCount": "4",
+    "description": "Subscribe to this group to receive local event invites and local information.",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "fettburg-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00xvir7l3lwf2zk",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/t-EvojSOduv3ctOwikdNalesl1Q\"",
+    "email": "fettburg-artssciences@westkingdom.org",
+    "name": "Barony of Fettburg Arts and Sciences",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01rvwp1q3k1bguu",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/lTdoWhsEaIjTL0asxfq1gaXye7g\"",
+    "email": "fettburg-baron@westkingdom.org",
+    "name": "Baron of Fettburg",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-baron@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "0319y80a2n259i0",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/QtSG0j94xYV-G236o8A6ZdmTb18\"",
+    "email": "fettburg-chatelaine@westkingdom.org",
+    "name": "Barony of Fettburg Chatelaine",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-chatelaine@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04du1wux1m1v2f0",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/XuTqEw9fzHlEZp2WclBWO5TY0qA\"",
+    "email": "fettburg-chronicler@westkingdom.org",
+    "name": "Barony of Fettburg Chronicler",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-chronicler@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "043ky6rz3rbic4c",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/1BS9L3Sts06o66kFRACsirSG4A8\"",
+    "email": "fettburg-exchequer@westkingdom.org",
+    "name": "Barony of Fettburg Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ksv4uv1wtnf8y",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/_c2k_UOm0HQZ4xzEbikB0fdvw5s\"",
+    "email": "fettburg-herald@westkingdom.org",
+    "name": "Barony of Fettburg Herald",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-herald@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "039kk8xu1y8zxam",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/c2rm6prj8dpKj1dh-58aGAE4GOk\"",
+    "email": "fettburg-historian@westkingdom.org",
+    "name": "Barony of Fettburg Historian",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-historian@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00pkwqa13nt4xg1",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/KZypTRp4dCDKFOB_lRC1aNue-h4\"",
+    "email": "fettburg-marshal@westkingdom.org",
+    "name": "Barony of Fettburg Marshal",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02afmg283y7pd2t",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/gvnrJ9llv5LNAiFgGuJRUfSuxXw\"",
+    "email": "fettburg-mediarelations@westkingdom.org",
+    "name": "Barony of Fettburg Media Relations",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-mediarelations@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "036ei31r2lf6ld8",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/mZVJfnm4EbN05q-MCIaGuwMSDfA\"",
+    "email": "fettburg-officers@westkingdom.org",
+    "name": "Fettburg Officers",
+    "directMembersCount": "12",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01mrcu092936xhm",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/GfLyaSvpT5Ej_EEyxvm2KwJWyd0\"",
+    "email": "fettburg-seneschal@westkingdom.org",
+    "name": "Barony of Fettburg Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "fettburg@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "fettburg-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01baon6m33efr20",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/CrjWldmB7JJEbk_YOxc3AEo7_yk\"",
+    "email": "fettburg-webminister@westkingdom.org",
+    "name": "Barony of Fettburg Web Minister",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "017dp8vu1x5kbvg",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/NYTetL4Td21wq6bI5I6C2YVB8F4\"",
+    "email": "fettburg-youthchancellor@westkingdom.org",
+    "name": "Barony of Fettburg Page School",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "fettburg-youthchancellor@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03rdcrjn0xgayrh",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/UBBEbrjYi1v-x7W0Cu_adYVNifI\"",
+    "email": "gift.memberships@westkingdom.org",
+    "name": "Gift Memberships",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "gift.memberships@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01qoc8b12imik7z",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Cq_pz79ZYpZVD0HMGYJpU_zK31c\"",
+    "email": "goldenplayne-announcements@westkingdom.org",
+    "name": "GoldenPlayne-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Canton of the Golden Playne",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "goldenplayne-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02xcytpi48ywuy1",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/h8XRd_DzuJMclI-DmJ9l1Qmnj9U\"",
+    "email": "goldenplayne-seneschal@westkingdom.org",
+    "name": "Canton of the Golden Playne Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "goldenplayne@marches.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "goldenplayne-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "032hioqz1mwo9cp",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/VHZnDBJwJG0lZEY-q5LZBgkHhes\"",
+    "email": "goldenrivers-announcements@westkingdom.org",
+    "name": "GoldenRivers-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Province of Golden Rivers",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "goldenrivers-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+
+  {
+    "kind": "admin#directory#group",
+    "id": "039kk8xu2dfnfec",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/nbiwjB6Tij9agoUhN0Uci9n63sk\"",
+    "email": "goldenrivers-chronicler@westkingdom.org",
+    "name": "Province of Golden Rivers Chronicler",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "goldenrivers-chronicler@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01x0gk3723zi7qr",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/cIB9DZwdM6RdH5fiQJu2Wkr3Yuw\"",
+    "email": "goldenrivers-exchequer@westkingdom.org",
+    "name": "Province of Golden Rivers Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "goldenrivers-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00upglbi2gx17a9",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/a5EOdxHYmXV7Yu8-VRLWKaWseaE\"",
+    "email": "goldenrivers-officers@westkingdom.org",
+    "name": "Goldenrivers Officers",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "goldenrivers-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02r0uhxc47wtb8y",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/YPazLDhQBkkrqEHzoKXQy-0Td44\"",
+    "email": "goldenrivers-seneschal@westkingdom.org",
+    "name": "Province of Golden Rivers Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "goldenrivers@cynagua.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "goldenrivers-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02dlolyb0mguic3",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Leuxmt5glrp3zZzyAU1qyCmx4Qs\"",
+    "email": "golem@heralds.westkingdom.org",
+    "name": "Heralds Golem",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01t3h5sf2a3llin",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/qNEHQCZZgIW62GTCZEpxHRzxjSY\"",
+    "email": "greenbanner@heralds.westkingdom.org",
+    "name": "Heralds greenbanner",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02250f4o4ccvgzn",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/9n-62wc2rOfYjUIF5Y27e_mn1PU\"",
+    "email": "greencloak@heralds.westkingdom.org",
+    "name": "Heralds greencloak",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03ep43zb0jaalwn",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/L0SNfvXzff5QCbFdvTo35npCevM\"",
+    "email": "greencrown@heralds.westkingdom.org",
+    "name": "Heralds greencrown",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02afmg283ayhiao",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/rW-CQoBQJvLDVRPdGUcdTdcqNgA\"",
+    "email": "greentrumpet@heralds.westkingdom.org",
+    "name": "Heralds greentrumpet",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01d96cc00rw2ahp",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/iM3kXUY6m_G-GSKc0YbnaeJl7_E\"",
+    "email": "hawkshaven-announcements@westkingdom.org",
+    "name": "HawksHaven-Announcements",
+    "directMembersCount": "2",
+    "description": "For info and events relevant to the Canton of Hawk's Haven",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "hawkshaven-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02r0uhxc2en2gc5",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/hztmW4x_Q7MDu0lIPYlY29ZGYPw\"",
+    "email": "hawkshaven-artssciences@westkingdom.org",
+    "name": "Canton of Hawk's Haven Arts & Sciences",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hawkshaven-artssciences@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04du1wux2t1fv5l",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/wZKx-0_GUS1BccMQAaMQJ0CB-bk\"",
+    "email": "hawkshaven-exchequer@westkingdom.org",
+    "name": "Canton of Hawk's Haven Exchequer",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hawkshaven-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03as4poj3rzyu2t",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/g8k_c53P76uvEIRvouOZGL5wHvI\"",
+    "email": "hawkshaven-lists@westkingdom.org",
+    "name": "Canton of Hawk's Haven Lists",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hawkshaven-lists@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "04bvk7pj4c5twva",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/Zmk1GGiV1RI6WhlWXpYro6DXvWk\"",
+    "email": "hawkshaven-marshal@westkingdom.org",
+    "name": "Canton of Hawk's Haven Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hawkshaven-marshal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01baon6m2bw6gsd",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/hJXXP3ba7C-PlvX88mvnQdwv8PY\"",
+    "email": "hawkshaven-officers@westkingdom.org",
+    "name": "Hawkshaven Officers",
+    "directMembersCount": "7",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hawkshaven-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ljsd9k2n8ycrs",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/_ZBCSdN9jivMLVLrkcWZqSWItW8\"",
+    "email": "hawkshaven-rapier@westkingdom.org",
+    "name": "Canton of Hawk's Haven Rapier Marshal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hawkshaven-rapier@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02xcytpi1fb666s",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/CGi92AeEzlf17UPyzDTRzjXpm2g\"",
+    "email": "hawkshaven-seneschal@westkingdom.org",
+    "name": "Canton of Hawk's Haven Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hawkshaven-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02p2csry1nh187n",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/sh2UAed8VqfnLW9ggIaHFZaWG-Y\"",
+    "email": "hawkshaven-webminister@westkingdom.org",
+    "name": "Canton of Hawk's Haven Web Minister",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hawkshaven-webminister@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "01ljsd9k0gwtstr",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/wFE4bcMyKtVyfr2lJR2uOl5gdTs\"",
+    "email": "hoc@westkingdom.org",
+    "name": "Head of Court",
+    "directMembersCount": "3",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hoc@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00haapch2px2efy",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/m2snhfVZOe8v2Cuwl27rJtQ_OaM\"",
+    "email": "hrafnafjord-seneschal@westkingdom.org",
+    "name": "Hrafnafjord Seneschal",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "aliases": [
+      "hrafnafjord@oertha.westkingdom.org"
+    ],
+    "nonEditableAliases": [
+      "hrafnafjord-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03oy7u292bzrnyv",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/lQHsWaO8OIEa9NGEHKoFpbyAsqM\"",
+    "email": "hrafnafjordr-announcements@westkingdom.org",
+    "name": "Hrafnafjordr-Announcements",
+    "directMembersCount": "2",
+    "description": "For information and events relevant to the Shire of Hrafnafjordr",
+    "adminCreated": false,
+    "nonEditableAliases": [
+      "hrafnafjordr-announcements@westkingdom.org.test-google-a.com"
+    ],
+    "type": "info"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "037m2jsg3kv989u",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/AamtTyeEbkscjwEpbOuEYrZV7zs\"",
+    "email": "hrafnafjrr-chatelaine@westkingdom.org",
+    "name": "Shire of Hrafnafj\u00f6r\u00f0r Chatelaine",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hrafnafjrr-chatelaine@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "02w5ecyt4aei8i0",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/tGMIblwRGKLJwI5gr39Ixi1OcdA\"",
+    "email": "hrafnafjrr-exchequer@westkingdom.org",
+    "name": "Shire of Hrafnafj\u00f6r\u00f0r Exchequer",
+    "directMembersCount": "2",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hrafnafjrr-exchequer@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "00rjefff1bso1j0",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/7DNrKl_WSuS-sKBE5-lAnSUwGlA\"",
+    "email": "hrafnafjrr-officers@westkingdom.org",
+    "name": "Hrafnafjrr Officers",
+    "directMembersCount": "4",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hrafnafjrr-officers@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  },
+  {
+    "kind": "admin#directory#group",
+    "id": "03vac5uf4igz02l",
+    "etag": "\"ujgAKP8PpNIK6xX551ohjglegwndHIHKbs3nbDk6bJs/CNMt65pErNAuhvIrlEuWrDnru-U\"",
+    "email": "hrafnafjrr-seneschal@westkingdom.org",
+    "name": "Shire of Hrafnafj\u00f6r\u00f0r Seneschal",
+    "directMembersCount": "1",
+    "description": "",
+    "adminCreated": true,
+    "nonEditableAliases": [
+      "hrafnafjrr-seneschal@westkingdom.org.test-google-a.com"
+    ],
+    "type": "officer"
+
+  }
+]
