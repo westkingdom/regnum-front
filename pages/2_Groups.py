@@ -4,48 +4,6 @@ from utils.config import api_url
 import pandas as pd
 import re
 
-def get_all_groups():
-    """Fetch all groups from the API"""
-    response = requests.get(f"{api_url}/groups/")
-    if response.status_code == 200:
-        return response.json()
-    return None
-
-def get_group_by_id(group_id: str):
-    """Fetch a group by its ID"""
-    response = requests.get(f"{api_url}/groups/{group_id}/")
-    if response.status_code == 200:
-        return response.json()
-    return None
-
-def get_group_members(group_id: str):
-    """Fetch the members of a group"""
-    response = requests.get(f"{api_url}/groups/{group_id}/members/")
-    if response.status_code == 200:
-        return response.json()
-    return None
-
-def create_group(group_id: str, group_name: str):
-    """Create a new group"""
-    params = {"group_id": group_id, "group_name": group_name}
-    response = requests.post(f"{api_url}/groups/", params=params)
-    return response.status_code == 200
-
-def add_member_to_group(group_id: str, member_email: str):
-    """Add a member to a group"""
-    params = {"member_email": member_email}
-    response = requests.post(f"{api_url}/groups/{group_id}/add-member/", params=params)
-    return response.status_code == 200
-
-def remove_member_from_group(group_id: str, member_email: str):
-    """Remove a member from a group"""
-    response = requests.delete(f"{api_url}/groups/{group_id}/members/{member_email}")
-    return response.status_code == 200
-
-def is_valid_email(email: str) -> bool:
-    """Validate email format and domain"""
-    pattern = r'^[a-zA-Z0-9._%+-]+@westkingdom\.org$'
-    return bool(re.match(pattern, email))
 
 # Streamlit UI
 st.title("Group Management")
@@ -83,21 +41,28 @@ with tab1:
         )
 
         # Get the selected group's data
-        selected_group = next(group for group in groups['groups'] if group['name'] == selected_group_name)
-        selected_id = selected_group['id']
-        members = get_group_members(selected_id)
-        
-        st.write(f"### Group: {selected_group['name']}")
-        
-        # Fixed: Correctly access the members dictionary and create DataFrame
-        if members and 'members' in members:
-            members_df = pd.DataFrame(members['members'])  # Remove the parentheses
-            if not members_df.empty:
-                st.dataframe(members_df)
-            else:
-                st.info("No members in this group")
+        # Check if a group is selected before proceeding
+        if selected_group_name:
+            try:
+                selected_group = next(group for group in groups['groups'] if group['name'] == selected_group_name)
+                selected_id = selected_group['id']
+                members = get_group_members(selected_id)
+                
+                st.write(f"### Group: {selected_group['name']}")
+                
+                # Fixed: Correctly access the members dictionary and create DataFrame
+                if members and 'members' in members:
+                    members_df = pd.DataFrame(members['members'])  # Remove the parentheses
+                    if not members_df.empty:
+                        st.dataframe(members_df)
+                    else:
+                        st.info("No members in this group")
+                else:
+                    st.warning("Unable to fetch member data")
+            except StopIteration:
+                st.error("Selected group not found. Please refresh the group list.")
         else:
-            st.warning("Unable to fetch member data")
+            st.info("Please select a group to view its members.")
 
 # Tab 2: Create New Group
 with tab2:
@@ -131,58 +96,65 @@ with tab3:
         )
 
         # Get the selected group's data
-        selected_group = next(group for group in groups['groups'] if group['name'] == selected_group_name)
-        selected_id = selected_group['id']
+        # Check if a group is selected before proceeding
+        if selected_group_name:
+            try:
+                selected_group = next(group for group in groups['groups'] if group['name'] == selected_group_name)
+                selected_id = selected_group['id']
 
-        # Display current members
-        st.subheader("Current Members")
-        members = get_group_members(selected_id)
-        if members and 'members' in members:
-            members_df = pd.DataFrame(members['members'])
-            if not members_df.empty:
-                st.dataframe(members_df)
-            else:
-                st.info("No members in this group")
-        
-        # Add member form
-        st.subheader("Add New Member")
-        with st.form(key="add_member_form"):
-            member_email = st.text_input(
-                "Member Email",
-                placeholder="user@westkingdom.org",
-                help="Email must be from westkingdom.org domain"
-            )
-            
-            submit_button = st.form_submit_button("Add Member")
-            
-            if submit_button:
-                if not member_email:
-                    st.error("Please enter an email address")
-                elif not is_valid_email(member_email):
-                    st.error("Invalid email format. Email must be from westkingdom.org domain")
+                # Display current members
+                st.subheader("Current Members")
+                members = get_group_members(selected_id)
+                if members and 'members' in members:
+                    members_df = pd.DataFrame(members['members'])
+                    if not members_df.empty:
+                        st.dataframe(members_df)
+                    else:
+                        st.info("No members in this group")
+                
+                # Add member form
+                st.subheader("Add New Member")
+                with st.form(key="add_member_form"):
+                    member_email = st.text_input(
+                        "Member Email",
+                        placeholder="user@westkingdom.org",
+                        help="Email must be from westkingdom.org domain"
+                    )
+                    
+                    submit_button = st.form_submit_button("Add Member")
+                    
+                    if submit_button:
+                        if not member_email:
+                            st.error("Please enter an email address")
+                        elif not is_valid_email(member_email):
+                            st.error("Invalid email format. Email must be from westkingdom.org domain")
+                        else:
+                            # Attempt to add member
+                            if add_member_to_group(selected_id, member_email):
+                                st.success(f"Successfully added {member_email} to {selected_group_name}")
+                                st.experimental_rerun()  # Refresh to show updated member list
+                            else:
+                                st.error("Failed to add member. Please try again.")
+
+                # Remove member section
+                st.subheader("Remove Member")
+                if members and 'members' in members and members['members']:
+                    member_to_remove = st.selectbox(
+                        "Select member to remove",
+                        options=[member['email'] for member in members['members']],
+                        key="remove_member_select"
+                    )
+                    
+                    if st.button("Remove Selected Member"):
+                        if st.warning("Are you sure you want to remove this member?"):
+                            if remove_member_from_group(selected_id, member_to_remove):
+                                st.success(f"Successfully removed {member_to_remove}")
+                                st.experimental_rerun()
+                            else:
+                                st.error("Failed to remove member. Please try again.")
                 else:
-                    # Attempt to add member
-                    if add_member_to_group(selected_id, member_email):
-                        st.success(f"Successfully added {member_email} to {selected_group_name}")
-                        st.experimental_rerun()  # Refresh to show updated member list
-                    else:
-                        st.error("Failed to add member. Please try again.")
-
-        # Remove member section
-        st.subheader("Remove Member")
-        if members and 'members' in members and members['members']:
-            member_to_remove = st.selectbox(
-                "Select member to remove",
-                options=[member['email'] for member in members['members']],
-                key="remove_member_select"
-            )
-            
-            if st.button("Remove Selected Member"):
-                if st.warning("Are you sure you want to remove this member?"):
-                    if remove_member_from_group(selected_id, member_to_remove):
-                        st.success(f"Successfully removed {member_to_remove}")
-                        st.experimental_rerun()
-                    else:
-                        st.error("Failed to remove member. Please try again.")
+                    st.info("No members available to remove")
+            except StopIteration:
+                st.error("Selected group not found. Please refresh the group list.")
         else:
-            st.info("No members available to remove")
+            st.info("Please select a group to manage its members.")
