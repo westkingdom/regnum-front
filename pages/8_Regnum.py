@@ -1,38 +1,61 @@
 import streamlit as st
 import pandas as pd
 import json
+import re
 import os
 from utils.pdata import locations_data
 from utils.queries import get_group_members, is_valid_email
 
-group_map_file = 'utils/group_map.json'
+group_map_file = 'utils/group_map_simplified.json'
 
 @st.cache_data
 def load_and_process_data(group_map_file):
-    """Loads the JSON data, processes it, and returns a DataFrame."""
+    """Loads and processes the simplified JSON file containing group data."""
     try:
+        # Load the JSON file
         with open(group_map_file, 'r') as f:
-            group_map_data = json.load(f)
-
-        # Extract relevant data
-        group_map_rows = []
-        for group in group_map_data:
-            group_map_rows.append({
-                "email": group.get("email", ""),
-                "name": group.get("name", ""),
-                "type": group.get("type", "")
-            })
-        group_map_df = pd.DataFrame(group_map_rows)
+            group_data = json.load(f)
+        
+        # Convert to DataFrame
+        group_map_df = pd.DataFrame(group_data)
+        
+        # Ensure required columns exist
+        required_columns = ['email', 'name', 'type']
+        for col in required_columns:
+            if col not in group_map_df.columns:
+                if col == 'type':
+                    # Infer type from email if not present
+                    group_map_df['type'] = group_map_df['email'].apply(
+                        lambda email: 'officer' if any(keyword in email.lower() for keyword in [
+                            "-seneschal", "-marshal", "-archer", "-exchequer", 
+                            "-herald", "-chronicler", "-chatelaine", "-webminister",
+                            "-artssciences", "-baron", "-constable", "-rapier"
+                        ]) else 'group'
+                    )
+                else:
+                    # Add empty column if missing
+                    group_map_df[col] = ""
+        
+        # Normalize text fields (remove extra whitespace, etc.)
+        if 'name' in group_map_df.columns:
+            group_map_df['name'] = group_map_df['name'].str.strip()
+        
         return group_map_df
+    
     except FileNotFoundError:
         st.error(f"File not found: {group_map_file}")
-        return pd.DataFrame(columns=["email", "name", "type"])  # Return empty DataFrame
+        # Return an empty DataFrame with required columns
+        return pd.DataFrame(columns=['email', 'name', 'type'])
+    
     except json.JSONDecodeError:
         st.error(f"Invalid JSON format in: {group_map_file}")
-        return pd.DataFrame(columns=["email", "name", "type"])  # Return empty DataFrame
+        # Return an empty DataFrame with required columns
+        return pd.DataFrame(columns=['email', 'name', 'type'])
+    
     except Exception as e:
-        st.error(f"An error occurred: {e}")
-        return pd.DataFrame(columns=["email", "name", "type"])  # Return empty DataFrame
+        st.error(f"An error occurred: {str(e)}")
+        # Return an empty DataFrame with required columns
+        return pd.DataFrame(columns=['email', 'name', 'type'])
 
 group_map_df = load_and_process_data(group_map_file)
 
@@ -67,8 +90,7 @@ if selected_location:
         # Get the officer's email
         selected_officer_row = officer_groups[officer_groups['name'] == selected_officer]
         selected_officer_email = selected_officer_row['email'].values[0]
-        st.write(f"You selected officer: {selected_officer} ({selected_officer_email})")    
-        st.write(f"You selected officer: {selected_officer}")
+        st.write(f"You selected officer: {selected_officer} ({selected_officer_email})")
 
         # Get the group_id from group_map_df
         group_id = selected_officer_email
@@ -109,6 +131,8 @@ if selected_location:
 
             effective_date = st.date_input("Effective Date", format="MM-DD-YYYY")
             end_date = st.date_input("End Date", format="MM-DD-YYYY")
+
+            warranted_position = st.checkbox("Warranted Position", help="Warrants are required for all Major officers.")
 
             submit_button = st.form_submit_button(label='Add Member')
 
