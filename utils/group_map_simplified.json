@@ -1,0 +1,2737 @@
+[
+  {
+    "email": "12night@westkingdom.org",
+    "name": "12Night",
+    "type": "group"
+  },
+  {
+    "email": "all-artssciences@westkingdom.org",
+    "name": "All Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "all-barons@westkingdom.org",
+    "name": "All Barons",
+    "type": "officer"
+  },
+  {
+    "email": "all-s@westkingdom.org",
+    "name": "All S",
+    "type": "group"
+  },
+  {
+    "email": "allyshia-announcements@westkingdom.org",
+    "name": "Allyshia Announcements",
+    "type": "group"
+  },
+  {
+    "email": "allyshia-baron@westkingdom.org",
+    "name": "Allyshia Baron",
+    "type": "officer"
+  },
+  {
+    "email": "allyshia-chronicler@westkingdom.org",
+    "name": "Allyshia Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "allyshia-exchequer@westkingdom.org",
+    "name": "Allyshia Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "allyshia-marshal@westkingdom.org",
+    "name": "Allyshia Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "allyshia-officers@westkingdom.org",
+    "name": "Allyshia Officers",
+    "type": "group"
+  },
+  {
+    "email": "allyshia-seneschal@westkingdom.org",
+    "name": "Allyshia Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "arts-sciences@westkingdom.org",
+    "name": "Arts Sciences",
+    "type": "group"
+  },
+  {
+    "email": "authorizations@westkingdom.org",
+    "name": "Authorizations",
+    "type": "group"
+  },
+  {
+    "email": "awardrec@westkingdom.org",
+    "name": "Awardrec",
+    "type": "group"
+  },
+  {
+    "email": "baldric@heralds.westkingdom.org",
+    "name": "Baldric",
+    "type": "group"
+  },
+  {
+    "email": "banner@heralds.westkingdom.org",
+    "name": "Banner",
+    "type": "group"
+  },
+  {
+    "email": "baronialpolling@westkingdom.org",
+    "name": "Baronialpolling",
+    "type": "group"
+  },
+  {
+    "email": "battlerock-announcements@westkingdom.org",
+    "name": "Battlerock Announcements",
+    "type": "group"
+  },
+  {
+    "email": "battlerock-herald@westkingdom.org",
+    "name": "Battlerock Herald",
+    "type": "officer"
+  },
+  {
+    "email": "battlerock-marshal@westkingdom.org",
+    "name": "Battlerock Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "battlerock-seneschal@westkingdom.org",
+    "name": "Battlerock Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "battlerock-webminister@westkingdom.org",
+    "name": "Battlerock Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "belogor-announcements@westkingdom.org",
+    "name": "Belogor Announcements",
+    "type": "group"
+  },
+  {
+    "email": "belogor-exchequer@westkingdom.org",
+    "name": "Belogor Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "belogor-marshal@westkingdom.org",
+    "name": "Belogor Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "belogor-officers@westkingdom.org",
+    "name": "Belogor Officers",
+    "type": "group"
+  },
+  {
+    "email": "beltane@westkingdom.org",
+    "name": "Beltane",
+    "type": "group"
+  },
+  {
+    "email": "bestwode-arts@westkingdom.org",
+    "name": "Bestwode Arts",
+    "type": "group"
+  },
+  {
+    "email": "bestwode-chatelaine@westkingdom.org",
+    "name": "Bestwode Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "bestwode-seneschal@westkingdom.org",
+    "name": "Bestwode Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "bestwodeschire-artssciences@westkingdom.org",
+    "name": "Bestwodeschire Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "bestwodeschire-chatelaine@westkingdom.org",
+    "name": "Bestwodeschire Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "bestwodeschire-constable@westkingdom.org",
+    "name": "Bestwodeschire Constable",
+    "type": "officer"
+  },
+  {
+    "email": "bestwodeschire-exchequer@westkingdom.org",
+    "name": "Bestwodeschire Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "bestwodeschire-officers@westkingdom.org",
+    "name": "Bestwodeschire Officers",
+    "type": "group"
+  },
+  {
+    "email": "bestwodeschire-seneschal@westkingdom.org",
+    "name": "Bestwodeschire Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "bestwodeshire-announcements@westkingdom.org",
+    "name": "Bestwodeshire Announcements",
+    "type": "group"
+  },
+  {
+    "email": "bids@westkingdom.org",
+    "name": "Bids",
+    "type": "group"
+  },
+  {
+    "email": "bjarnarstrond-seneschal@westkingdom.org",
+    "name": "Bjarnarstrond Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "borderwinds-announcements@westkingdom.org",
+    "name": "Borderwinds Announcements",
+    "type": "group"
+  },
+  {
+    "email": "borderwinds-archer@westkingdom.org",
+    "name": "Borderwinds Archer",
+    "type": "officer"
+  },
+  {
+    "email": "borderwinds-artssciences@westkingdom.org",
+    "name": "Borderwinds Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "borderwinds-exchequer@westkingdom.org",
+    "name": "Borderwinds Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "borderwinds-herald@westkingdom.org",
+    "name": "Borderwinds Herald",
+    "type": "officer"
+  },
+  {
+    "email": "borderwinds-marshal@westkingdom.org",
+    "name": "Borderwinds Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "borderwinds-officers@westkingdom.org",
+    "name": "Borderwinds Officers",
+    "type": "group"
+  },
+  {
+    "email": "borderwinds-seneschal@westkingdom.org",
+    "name": "Borderwinds Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "borderwinds-webminister@westkingdom.org",
+    "name": "Borderwinds Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "brachet@heralds.westkingdom.org",
+    "name": "Brachet",
+    "type": "group"
+  },
+  {
+    "email": "caerdarth-announcements@westkingdom.org",
+    "name": "Caerdarth Announcements",
+    "type": "group"
+  },
+  {
+    "email": "caerdarth-seneschal@westkingdom.org",
+    "name": "Caerdarth Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "cal@westkingdom.org",
+    "name": "Cal",
+    "type": "group"
+  },
+  {
+    "email": "caldarium-announcements@westkingdom.org",
+    "name": "Caldarium Announcements",
+    "type": "group"
+  },
+  {
+    "email": "caldarium-seneschal@westkingdom.org",
+    "name": "Caldarium Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "canale-announcements@westkingdom.org",
+    "name": "Canale Announcements",
+    "type": "group"
+  },
+  {
+    "email": "canale-officers@westkingdom.org",
+    "name": "Canale Officers",
+    "type": "group"
+  },
+  {
+    "email": "canale-seneschal@westkingdom.org",
+    "name": "Canale Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "canale-webminister@westkingdom.org",
+    "name": "Canale Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "champclair-announcements@westkingdom.org",
+    "name": "Champclair Announcements",
+    "type": "group"
+  },
+  {
+    "email": "champclair-exchequer@westkingdom.org",
+    "name": "Champclair Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "champclair-officers@westkingdom.org",
+    "name": "Champclair Officers",
+    "type": "group"
+  },
+  {
+    "email": "champclair-seneschal@westkingdom.org",
+    "name": "Champclair Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "classroom_teachers@westkingdom.org",
+    "name": "Classroom_Teachers",
+    "type": "group"
+  },
+  {
+    "email": "clerk@heralds.westkingdom.org",
+    "name": "Clerk",
+    "type": "group"
+  },
+  {
+    "email": "cloondara-announcements@westkingdom.org",
+    "name": "Cloondara Announcements",
+    "type": "group"
+  },
+  {
+    "email": "cloondara-artssciences@westkingdom.org",
+    "name": "Cloondara Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "cloondara-chatelaine@westkingdom.org",
+    "name": "Cloondara Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "cloondara-exchequer@westkingdom.org",
+    "name": "Cloondara Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "cloondara-lists@westkingdom.org",
+    "name": "Cloondara Lists",
+    "type": "group"
+  },
+  {
+    "email": "cloondara-officers@westkingdom.org",
+    "name": "Cloondara Officers",
+    "type": "group"
+  },
+  {
+    "email": "cloondara-rapier@westkingdom.org",
+    "name": "Cloondara Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "cloondara-seneschal@westkingdom.org",
+    "name": "Cloondara Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "cloondara-webminister@westkingdom.org",
+    "name": "Cloondara Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "collegesaintboniface-seneschal@westkingdom.org",
+    "name": "Collegesaintboniface Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "crosston-announcements@westkingdom.org",
+    "name": "Crosston Announcements",
+    "type": "group"
+  },
+  {
+    "email": "crosston-artssciences@westkingdom.org",
+    "name": "Crosston Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "crosston-officers@westkingdom.org",
+    "name": "Crosston Officers",
+    "type": "group"
+  },
+  {
+    "email": "crosston-seneschal@westkingdom.org",
+    "name": "Crosston Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "crosston-webminister@westkingdom.org",
+    "name": "Crosston Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "crystalmist-exchequer@westkingdom.org",
+    "name": "Crystalmist Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "crystalmist-marshal@westkingdom.org",
+    "name": "Crystalmist Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "crystalmist-seneschal@westkingdom.org",
+    "name": "Crystalmist Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-archer@westkingdom.org",
+    "name": "Cynagua Archer",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-artssciences@westkingdom.org",
+    "name": "Cynagua Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-bard@westkingdom.org",
+    "name": "Cynagua Bard",
+    "type": "group"
+  },
+  {
+    "email": "cynagua-chatelaine@westkingdom.org",
+    "name": "Cynagua Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-chronicler@westkingdom.org",
+    "name": "Cynagua Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-constable@westkingdom.org",
+    "name": "Cynagua Constable",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-equestrian@westkingdom.org",
+    "name": "Cynagua Equestrian",
+    "type": "group"
+  },
+  {
+    "email": "cynagua-exchequer@westkingdom.org",
+    "name": "Cynagua Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-goldkey@westkingdom.org",
+    "name": "Cynagua Goldkey",
+    "type": "group"
+  },
+  {
+    "email": "cynagua-heirs@westkingdom.org",
+    "name": "Cynagua Heirs",
+    "type": "group"
+  },
+  {
+    "email": "cynagua-herald@westkingdom.org",
+    "name": "Cynagua Herald",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-lists@westkingdom.org",
+    "name": "Cynagua Lists",
+    "type": "group"
+  },
+  {
+    "email": "cynagua-marshal@westkingdom.org",
+    "name": "Cynagua Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-officers@westkingdom.org",
+    "name": "Cynagua Officers",
+    "type": "group"
+  },
+  {
+    "email": "cynagua-rapier@westkingdom.org",
+    "name": "Cynagua Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-regent@westkingdom.org",
+    "name": "Cynagua Regent",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-royalregalia@westkingdom.org",
+    "name": "Cynagua Royalregalia",
+    "type": "group"
+  },
+  {
+    "email": "cynagua-scribes@westkingdom.org",
+    "name": "Cynagua Scribes",
+    "type": "group"
+  },
+  {
+    "email": "cynagua-seneschal@westkingdom.org",
+    "name": "Cynagua Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-webminister@westkingdom.org",
+    "name": "Cynagua Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "cynagua-youthchancellor@westkingdom.org",
+    "name": "Cynagua Youthchancellor",
+    "type": "group"
+  },
+  {
+    "email": "danegeldtor-announcements@westkingdom.org",
+    "name": "Danegeldtor Announcements",
+    "type": "group"
+  },
+  {
+    "email": "danegeldtor-artssciences@westkingdom.org",
+    "name": "Danegeldtor Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "danegeldtor-chatelaine@westkingdom.org",
+    "name": "Danegeldtor Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "danegeldtor-chronicler@westkingdom.org",
+    "name": "Danegeldtor Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "danegeldtor-constable@westkingdom.org",
+    "name": "Danegeldtor Constable",
+    "type": "officer"
+  },
+  {
+    "email": "danegeldtor-exchequer@westkingdom.org",
+    "name": "Danegeldtor Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "danegeldtor-goldkey@westkingdom.org",
+    "name": "Danegeldtor Goldkey",
+    "type": "group"
+  },
+  {
+    "email": "danegeldtor-herald@westkingdom.org",
+    "name": "Danegeldtor Herald",
+    "type": "officer"
+  },
+  {
+    "email": "danegeldtor-marshal@westkingdom.org",
+    "name": "Danegeldtor Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "danegeldtor-officers@westkingdom.org",
+    "name": "Danegeldtor Officers",
+    "type": "group"
+  },
+  {
+    "email": "danegeldtor-rapier@westkingdom.org",
+    "name": "Danegeldtor Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "danegeldtor-seneschal@westkingdom.org",
+    "name": "Danegeldtor Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "danegeldtor-webminister@westkingdom.org",
+    "name": "Danegeldtor Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "darkwood-announcements@westkingdom.org",
+    "name": "Darkwood Announcements",
+    "type": "group"
+  },
+  {
+    "email": "darkwood-artssciences@westkingdom.org",
+    "name": "Darkwood Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "darkwood-baron@westkingdom.org",
+    "name": "Darkwood Baron",
+    "type": "officer"
+  },
+  {
+    "email": "darkwood-chronicler@westkingdom.org",
+    "name": "Darkwood Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "darkwood-constable@westkingdom.org",
+    "name": "Darkwood Constable",
+    "type": "officer"
+  },
+  {
+    "email": "darkwood-exchequer@westkingdom.org",
+    "name": "Darkwood Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "darkwood-herald@westkingdom.org",
+    "name": "Darkwood Herald",
+    "type": "officer"
+  },
+  {
+    "email": "darkwood-marshal@westkingdom.org",
+    "name": "Darkwood Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "darkwood-officers@westkingdom.org",
+    "name": "Darkwood Officers",
+    "type": "group"
+  },
+  {
+    "email": "darkwood-seneschal@westkingdom.org",
+    "name": "Darkwood Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "darkwood-webminister@westkingdom.org",
+    "name": "Darkwood Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "dei@mists.westkingdom.org",
+    "name": "Dei",
+    "type": "group"
+  },
+  {
+    "email": "dei@westkingdom.org",
+    "name": "Dei",
+    "type": "group"
+  },
+  {
+    "email": "dig-media@westkingdom.org",
+    "name": "Dig Media",
+    "type": "group"
+  },
+  {
+    "email": "earngyld-announcements@westkingdom.org",
+    "name": "Earngyld Announcements",
+    "type": "group"
+  },
+  {
+    "email": "earngyld-officers@westkingdom.org",
+    "name": "Earngyld Officers",
+    "type": "group"
+  },
+  {
+    "email": "earngyld-seneschal@westkingdom.org",
+    "name": "Earngyld Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "earngyld-webminister@westkingdom.org",
+    "name": "Earngyld Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "electronic.pelclerk@westkingdom.org",
+    "name": "Electronic Pelclerk",
+    "type": "group"
+  },
+  {
+    "email": "eskalya-announcements@westkingdom.org",
+    "name": "Eskalya Announcements",
+    "type": "group"
+  },
+  {
+    "email": "eskalya-artssciences@westkingdom.org",
+    "name": "Eskalya Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "eskalya-baron@westkingdom.org",
+    "name": "Eskalya Baron",
+    "type": "officer"
+  },
+  {
+    "email": "eskalya-chronicler@westkingdom.org",
+    "name": "Eskalya Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "eskalya-constable@westkingdom.org",
+    "name": "Eskalya Constable",
+    "type": "officer"
+  },
+  {
+    "email": "eskalya-exchequer@westkingdom.org",
+    "name": "Eskalya Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "eskalya-herald@westkingdom.org",
+    "name": "Eskalya Herald",
+    "type": "officer"
+  },
+  {
+    "email": "eskalya-marshal@westkingdom.org",
+    "name": "Eskalya Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "eskalya-officers@westkingdom.org",
+    "name": "Eskalya Officers",
+    "type": "group"
+  },
+  {
+    "email": "eskalya-seneschal@westkingdom.org",
+    "name": "Eskalya Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "eskalya-webminister@westkingdom.org",
+    "name": "Eskalya Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "eternalwinds-announcements@westkingdom.org",
+    "name": "Eternalwinds Announcements",
+    "type": "group"
+  },
+  {
+    "email": "farwest-announcements@westkingdom.org",
+    "name": "Farwest Announcements",
+    "type": "group"
+  },
+  {
+    "email": "farwest-baron@westkingdom.org",
+    "name": "Farwest Baron",
+    "type": "officer"
+  },
+  {
+    "email": "farwest-chronicler@westkingdom.org",
+    "name": "Farwest Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "farwest-exchequer@westkingdom.org",
+    "name": "Farwest Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "farwest-herald@westkingdom.org",
+    "name": "Farwest Herald",
+    "type": "officer"
+  },
+  {
+    "email": "farwest-marshal@westkingdom.org",
+    "name": "Farwest Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "farwest-officers@westkingdom.org",
+    "name": "Farwest Officers",
+    "type": "group"
+  },
+  {
+    "email": "farwest-seneschal@westkingdom.org",
+    "name": "Farwest Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "farwest-webminister@westkingdom.org",
+    "name": "Farwest Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "fendrakemarsh-announcements@westkingdom.org",
+    "name": "Fendrakemarsh Announcements",
+    "type": "group"
+  },
+  {
+    "email": "fendrakemarsh-seneschal@westkingdom.org",
+    "name": "Fendrakemarsh Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-announcements@westkingdom.org",
+    "name": "Fettburg Announcements",
+    "type": "group"
+  },
+  {
+    "email": "fettburg-artssciences@westkingdom.org",
+    "name": "Fettburg Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-baron@westkingdom.org",
+    "name": "Fettburg Baron",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-chatelaine@westkingdom.org",
+    "name": "Fettburg Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-chronicler@westkingdom.org",
+    "name": "Fettburg Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-exchequer@westkingdom.org",
+    "name": "Fettburg Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-herald@westkingdom.org",
+    "name": "Fettburg Herald",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-historian@westkingdom.org",
+    "name": "Fettburg Historian",
+    "type": "group"
+  },
+  {
+    "email": "fettburg-marshal@westkingdom.org",
+    "name": "Fettburg Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-mediarelations@westkingdom.org",
+    "name": "Fettburg Mediarelations",
+    "type": "group"
+  },
+  {
+    "email": "fettburg-officers@westkingdom.org",
+    "name": "Fettburg Officers",
+    "type": "group"
+  },
+  {
+    "email": "fettburg-seneschal@westkingdom.org",
+    "name": "Fettburg Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-webminister@westkingdom.org",
+    "name": "Fettburg Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "fettburg-youthchancellor@westkingdom.org",
+    "name": "Fettburg Youthchancellor",
+    "type": "group"
+  },
+  {
+    "email": "gift.memberships@westkingdom.org",
+    "name": "Gift Memberships",
+    "type": "group"
+  },
+  {
+    "email": "goldenplayne-announcements@westkingdom.org",
+    "name": "Goldenplayne Announcements",
+    "type": "group"
+  },
+  {
+    "email": "goldenplayne-seneschal@westkingdom.org",
+    "name": "Goldenplayne Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "goldenrivers-announcements@westkingdom.org",
+    "name": "Goldenrivers Announcements",
+    "type": "group"
+  },
+  {
+    "email": "goldenrivers-chronicler@westkingdom.org",
+    "name": "Goldenrivers Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "goldenrivers-exchequer@westkingdom.org",
+    "name": "Goldenrivers Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "goldenrivers-officers@westkingdom.org",
+    "name": "Goldenrivers Officers",
+    "type": "group"
+  },
+  {
+    "email": "goldenrivers-seneschal@westkingdom.org",
+    "name": "Goldenrivers Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "golem@heralds.westkingdom.org",
+    "name": "Golem",
+    "type": "group"
+  },
+  {
+    "email": "greenbanner@heralds.westkingdom.org",
+    "name": "Greenbanner",
+    "type": "group"
+  },
+  {
+    "email": "greencloak@heralds.westkingdom.org",
+    "name": "Greencloak",
+    "type": "group"
+  },
+  {
+    "email": "greencrown@heralds.westkingdom.org",
+    "name": "Greencrown",
+    "type": "group"
+  },
+  {
+    "email": "greentrumpet@heralds.westkingdom.org",
+    "name": "Greentrumpet",
+    "type": "group"
+  },
+  {
+    "email": "hawkshaven-announcements@westkingdom.org",
+    "name": "Hawkshaven Announcements",
+    "type": "group"
+  },
+  {
+    "email": "hawkshaven-artssciences@westkingdom.org",
+    "name": "Hawkshaven Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "hawkshaven-exchequer@westkingdom.org",
+    "name": "Hawkshaven Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "hawkshaven-lists@westkingdom.org",
+    "name": "Hawkshaven Lists",
+    "type": "group"
+  },
+  {
+    "email": "hawkshaven-marshal@westkingdom.org",
+    "name": "Hawkshaven Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "hawkshaven-officers@westkingdom.org",
+    "name": "Hawkshaven Officers",
+    "type": "group"
+  },
+  {
+    "email": "hawkshaven-rapier@westkingdom.org",
+    "name": "Hawkshaven Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "hawkshaven-seneschal@westkingdom.org",
+    "name": "Hawkshaven Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "hawkshaven-webminister@westkingdom.org",
+    "name": "Hawkshaven Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "herald@westkingdom.org",
+    "name": "Herald",
+    "type": "group"
+  },
+  {
+    "email": "hoc@westkingdom.org",
+    "name": "Hoc",
+    "type": "group"
+  },
+  {
+    "email": "hrafnafjord-seneschal@westkingdom.org",
+    "name": "Hrafnafjord Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "hrafnafjordr-announcements@westkingdom.org",
+    "name": "Hrafnafjordr Announcements",
+    "type": "group"
+  },
+  {
+    "email": "hrafnafjrr-chatelaine@westkingdom.org",
+    "name": "Hrafnafjrr Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "hrafnafjrr-exchequer@westkingdom.org",
+    "name": "Hrafnafjrr Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "hrafnafjrr-officers@westkingdom.org",
+    "name": "Hrafnafjrr Officers",
+    "type": "group"
+  },
+  {
+    "email": "hrafnafjrr-seneschal@westkingdom.org",
+    "name": "Hrafnafjrr Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "hrafnafjrr-webminister@westkingdom.org",
+    "name": "Hrafnafjrr Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "islasdelasvelas-announcements@westkingdom.org",
+    "name": "Islasdelasvelas Announcements",
+    "type": "group"
+  },
+  {
+    "email": "june-crown@westkingdom.org",
+    "name": "June Crown",
+    "type": "group"
+  },
+  {
+    "email": "latimer@heralds.westkingdom.org",
+    "name": "Latimer",
+    "type": "group"
+  },
+  {
+    "email": "legacy-articledeputy@westkingdom.org",
+    "name": "Legacy Articledeputy",
+    "type": "group"
+  },
+  {
+    "email": "legacy-autocratoctobercrown@westkingdom.org",
+    "name": "Legacy Autocratoctobercrown",
+    "type": "group"
+  },
+  {
+    "email": "legacy-autocrattwelfthnite@westkingdom.org",
+    "name": "Legacy Autocrattwelfthnite",
+    "type": "group"
+  },
+  {
+    "email": "legacy-calendar@westkingdom.org",
+    "name": "Legacy Calendar",
+    "type": "group"
+  },
+  {
+    "email": "legacy-calendarcommittee@westkingdom.org",
+    "name": "Legacy Calendarcommittee",
+    "type": "group"
+  },
+  {
+    "email": "legacy-chivalryclerk@westkingdom.org",
+    "name": "Legacy Chivalryclerk",
+    "type": "group"
+  },
+  {
+    "email": "legacy-collegium@westkingdom.org",
+    "name": "Legacy Collegium",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynagua@westkingdom.org",
+    "name": "Legacy Cynagua",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaalpensee@westkingdom.org",
+    "name": "Legacy Cynaguaalpensee",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaans@westkingdom.org",
+    "name": "Legacy Cynaguaans",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaautocrat@westkingdom.org",
+    "name": "Legacy Cynaguaautocrat",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaautocratfallcoronet@westkingdom.org",
+    "name": "Legacy Cynaguaautocratfallcoronet",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaautocratgrbanquet@westkingdom.org",
+    "name": "Legacy Cynaguaautocratgrbanquet",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaautocratsdyule@westkingdom.org",
+    "name": "Legacy Cynaguaautocratsdyule",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaautocratsummer@westkingdom.org",
+    "name": "Legacy Cynaguaautocratsummer",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaautocratwar@westkingdom.org",
+    "name": "Legacy Cynaguaautocratwar",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguabestwodeshire@westkingdom.org",
+    "name": "Legacy Cynaguabestwodeshire",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguabetonywood@westkingdom.org",
+    "name": "Legacy Cynaguabetonywood",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguabow@westkingdom.org",
+    "name": "Legacy Cynaguabow",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguabryniaid@westkingdom.org",
+    "name": "Legacy Cynaguabryniaid",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguainfo@westkingdom.org",
+    "name": "Legacy Cynaguainfo",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynagualadyswan@westkingdom.org",
+    "name": "Legacy Cynagualadyswan",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynagualordswan@westkingdom.org",
+    "name": "Legacy Cynagualordswan",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguamint@westkingdom.org",
+    "name": "Legacy Cynaguamint",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguamissilemarshal@westkingdom.org",
+    "name": "Legacy Cynaguamissilemarshal",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguamontdor@westkingdom.org",
+    "name": "Legacy Cynaguamontdor",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguapageschool@westkingdom.org",
+    "name": "Legacy Cynaguapageschool",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguapostmaster@westkingdom.org",
+    "name": "Legacy Cynaguapostmaster",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguarapiermarshal@westkingdom.org",
+    "name": "Legacy Cynaguarapiermarshal",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaregalia@westkingdom.org",
+    "name": "Legacy Cynaguaregalia",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguaroyaltyliaison@westkingdom.org",
+    "name": "Legacy Cynaguaroyaltyliaison",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguascribe@westkingdom.org",
+    "name": "Legacy Cynaguascribe",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguastcassianofimola@westkingdom.org",
+    "name": "Legacy Cynaguastcassianofimola",
+    "type": "group"
+  },
+  {
+    "email": "legacy-cynaguathistletor@westkingdom.org",
+    "name": "Legacy Cynaguathistletor",
+    "type": "group"
+  },
+  {
+    "email": "legacy-daterequest@westkingdom.org",
+    "name": "Legacy Daterequest",
+    "type": "group"
+  },
+  {
+    "email": "legacy-dates@westkingdom.org",
+    "name": "Legacy Dates",
+    "type": "group"
+  },
+  {
+    "email": "legacy-eventcopy@westkingdom.org",
+    "name": "Legacy Eventcopy",
+    "type": "group"
+  },
+  {
+    "email": "legacy-farwestliaison@westkingdom.org",
+    "name": "Legacy Farwestliaison",
+    "type": "group"
+  },
+  {
+    "email": "legacy-farwestscribe@westkingdom.org",
+    "name": "Legacy Farwestscribe",
+    "type": "group"
+  },
+  {
+    "email": "legacy-fighterdata@westkingdom.org",
+    "name": "Legacy Fighterdata",
+    "type": "group"
+  },
+  {
+    "email": "legacy-golemscribe@westkingdom.org",
+    "name": "Legacy Golemscribe",
+    "type": "group"
+  },
+  {
+    "email": "legacy-grandcouncil@westkingdom.org",
+    "name": "Legacy Grandcouncil",
+    "type": "group"
+  },
+  {
+    "email": "legacy-kit@westkingdom.org",
+    "name": "Legacy Kit",
+    "type": "group"
+  },
+  {
+    "email": "legacy-laurelclerk@westkingdom.org",
+    "name": "Legacy Laurelclerk",
+    "type": "group"
+  },
+  {
+    "email": "legacy-lostandfound@westkingdom.org",
+    "name": "Legacy Lostandfound",
+    "type": "group"
+  },
+  {
+    "email": "legacy-marchesseneschals@westkingdom.org",
+    "name": "Legacy Marchesseneschals",
+    "type": "group"
+  },
+  {
+    "email": "legacy-merchant@westkingdom.org",
+    "name": "Legacy Merchant",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mists@westkingdom.org",
+    "name": "Legacy Mists",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsbardiccollege@westkingdom.org",
+    "name": "Legacy Mistsbardiccollege",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsbrewers@westkingdom.org",
+    "name": "Legacy Mistsbrewers",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistscaerdarth@westkingdom.org",
+    "name": "Legacy Mistscaerdarth",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsdance@westkingdom.org",
+    "name": "Legacy Mistsdance",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistshawkshaven@westkingdom.org",
+    "name": "Legacy Mistshawkshaven",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsinfo@westkingdom.org",
+    "name": "Legacy Mistsinfo",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsmistsprovince@westkingdom.org",
+    "name": "Legacy Mistsmistsprovince",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsmoneyer@westkingdom.org",
+    "name": "Legacy Mistsmoneyer",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsmontaigneduroi@westkingdom.org",
+    "name": "Legacy Mistsmontaigneduroi",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistspageschool@westkingdom.org",
+    "name": "Legacy Mistspageschool",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsprince@westkingdom.org",
+    "name": "Legacy Mistsprince",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsprincess@westkingdom.org",
+    "name": "Legacy Mistsprincess",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsregalia@westkingdom.org",
+    "name": "Legacy Mistsregalia",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistssilverspoon@westkingdom.org",
+    "name": "Legacy Mistssilverspoon",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsstdavids@westkingdom.org",
+    "name": "Legacy Mistsstdavids",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistsstkatherine@westkingdom.org",
+    "name": "Legacy Mistsstkatherine",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistswaterbearer@westkingdom.org",
+    "name": "Legacy Mistswaterbearer",
+    "type": "group"
+  },
+  {
+    "email": "legacy-mistswestermark@westkingdom.org",
+    "name": "Legacy Mistswestermark",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oertha@westkingdom.org",
+    "name": "Legacy Oertha",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthaaands@westkingdom.org",
+    "name": "Legacy Oerthaaands",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthahrafnsfjordr@westkingdom.org",
+    "name": "Legacy Oerthahrafnsfjordr",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthapavlokgorod@westkingdom.org",
+    "name": "Legacy Oerthapavlokgorod",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthapavloskgavan@westkingdom.org",
+    "name": "Legacy Oerthapavloskgavan",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthaprince@westkingdom.org",
+    "name": "Legacy Oerthaprince",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthaprincess@westkingdom.org",
+    "name": "Legacy Oerthaprincess",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oertharegalia@westkingdom.org",
+    "name": "Legacy Oertharegalia",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthasaintguinefort@westkingdom.org",
+    "name": "Legacy Oerthasaintguinefort",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthascribe@westkingdom.org",
+    "name": "Legacy Oerthascribe",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthawaterbearer@westkingdom.org",
+    "name": "Legacy Oerthawaterbearer",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthawintersgate@westkingdom.org",
+    "name": "Legacy Oerthawintersgate",
+    "type": "group"
+  },
+  {
+    "email": "legacy-oerthaynystaltraeth@westkingdom.org",
+    "name": "Legacy Oerthaynystaltraeth",
+    "type": "group"
+  },
+  {
+    "email": "legacy-paging@westkingdom.org",
+    "name": "Legacy Paging",
+    "type": "group"
+  },
+  {
+    "email": "legacy-pelclerk@westkingdom.org",
+    "name": "Legacy Pelclerk",
+    "type": "group"
+  },
+  {
+    "email": "legacy-regnum@westkingdom.org",
+    "name": "Legacy Regnum",
+    "type": "group"
+  },
+  {
+    "email": "legacy-royalguildoffence@westkingdom.org",
+    "name": "Legacy Royalguildoffence",
+    "type": "group"
+  },
+  {
+    "email": "legacy-seneschals@westkingdom.org",
+    "name": "Legacy Seneschals",
+    "type": "officer"
+  },
+  {
+    "email": "legacy-socialmedia@westkingdom.org",
+    "name": "Legacy Socialmedia",
+    "type": "group"
+  },
+  {
+    "email": "legacy-teamster@westkingdom.org",
+    "name": "Legacy Teamster",
+    "type": "group"
+  },
+  {
+    "email": "legacy-thepage@westkingdom.org",
+    "name": "Legacy Thepage",
+    "type": "group"
+  },
+  {
+    "email": "legacy-tourneymaster@westkingdom.org",
+    "name": "Legacy Tourneymaster",
+    "type": "group"
+  },
+  {
+    "email": "legacy-waivers@westkingdom.org",
+    "name": "Legacy Waivers",
+    "type": "group"
+  },
+  {
+    "email": "legacy-waterbearer@westkingdom.org",
+    "name": "Legacy Waterbearer",
+    "type": "group"
+  },
+  {
+    "email": "legacy-westkingdomcalendarcommittee@westkingdom.org",
+    "name": "Legacy Westkingdomcalendarcommittee",
+    "type": "group"
+  },
+  {
+    "email": "legacy-westscribe@westkingdom.org",
+    "name": "Legacy Westscribe",
+    "type": "group"
+  },
+  {
+    "email": "legacy-wkadmin@westkingdom.org",
+    "name": "Legacy Wkadmin",
+    "type": "group"
+  },
+  {
+    "email": "legacy-wkcalcommittee@westkingdom.org",
+    "name": "Legacy Wkcalcommittee",
+    "type": "group"
+  },
+  {
+    "email": "legacy-woodenspoon@westkingdom.org",
+    "name": "Legacy Woodenspoon",
+    "type": "group"
+  },
+  {
+    "email": "march-crown@westkingdom.org",
+    "name": "March Crown",
+    "type": "group"
+  },
+  {
+    "email": "marches-artssciences@westkingdom.org",
+    "name": "Marches Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "marches-baron@westkingdom.org",
+    "name": "Marches Baron",
+    "type": "officer"
+  },
+  {
+    "email": "marches-herald@westkingdom.org",
+    "name": "Marches Herald",
+    "type": "officer"
+  },
+  {
+    "email": "marches-marshal@westkingdom.org",
+    "name": "Marches Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "marches-officers@westkingdom.org",
+    "name": "Marches Officers",
+    "type": "group"
+  },
+  {
+    "email": "marches-rapier@westkingdom.org",
+    "name": "Marches Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "matins@heralds.westkingdom.org",
+    "name": "Matins",
+    "type": "group"
+  },
+  {
+    "email": "mdr-announcements@westkingdom.org",
+    "name": "Mdr Announcements",
+    "type": "group"
+  },
+  {
+    "email": "mists-@westkingdom.org",
+    "name": "Mists ",
+    "type": "group"
+  },
+  {
+    "email": "mists-archer@westkingdom.org",
+    "name": "Mists Archer",
+    "type": "officer"
+  },
+  {
+    "email": "mists-artssciences@westkingdom.org",
+    "name": "Mists Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "mists-bard@westkingdom.org",
+    "name": "Mists Bard",
+    "type": "group"
+  },
+  {
+    "email": "mists-chatelaine@westkingdom.org",
+    "name": "Mists Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "mists-chronicler@westkingdom.org",
+    "name": "Mists Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "mists-constable@westkingdom.org",
+    "name": "Mists Constable",
+    "type": "officer"
+  },
+  {
+    "email": "mists-equestrian@westkingdom.org",
+    "name": "Mists Equestrian",
+    "type": "group"
+  },
+  {
+    "email": "mists-exchequer@westkingdom.org",
+    "name": "Mists Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "mists-goldkey@westkingdom.org",
+    "name": "Mists Goldkey",
+    "type": "group"
+  },
+  {
+    "email": "mists-heirs@westkingdom.org",
+    "name": "Mists Heirs",
+    "type": "group"
+  },
+  {
+    "email": "mists-herald@westkingdom.org",
+    "name": "Mists Herald",
+    "type": "officer"
+  },
+  {
+    "email": "mists-hoc@westkingdom.org",
+    "name": "Mists Hoc",
+    "type": "group"
+  },
+  {
+    "email": "mists-lists@westkingdom.org",
+    "name": "Mists Lists",
+    "type": "group"
+  },
+  {
+    "email": "mists-marshal@westkingdom.org",
+    "name": "Mists Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "mists-officers@westkingdom.org",
+    "name": "Mists Officers",
+    "type": "group"
+  },
+  {
+    "email": "mists-rapier@westkingdom.org",
+    "name": "Mists Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "mists-regent@westkingdom.org",
+    "name": "Mists Regent",
+    "type": "officer"
+  },
+  {
+    "email": "mists-royalregalia@westkingdom.org",
+    "name": "Mists Royalregalia",
+    "type": "group"
+  },
+  {
+    "email": "mists-scribes@westkingdom.org",
+    "name": "Mists Scribes",
+    "type": "group"
+  },
+  {
+    "email": "mists-seneschal@westkingdom.org",
+    "name": "Mists Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "mists-webminister@westkingdom.org",
+    "name": "Mists Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "mistsprovince-announcements@westkingdom.org",
+    "name": "Mistsprovince Announcements",
+    "type": "group"
+  },
+  {
+    "email": "mistsvolunteer@westkingdom.org",
+    "name": "Mistsvolunteer",
+    "type": "group"
+  },
+  {
+    "email": "mistsyouthcombat@westkingdom.org",
+    "name": "Mistsyouthcombat",
+    "type": "group"
+  },
+  {
+    "email": "montagneduroi-seneschal@westkingdom.org",
+    "name": "Montagneduroi Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "montdor-announcements@westkingdom.org",
+    "name": "Montdor Announcements",
+    "type": "group"
+  },
+  {
+    "email": "montdor-webminister@westkingdom.org",
+    "name": "Montdor Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "mountainsgate-announcements@westkingdom.org",
+    "name": "Mountainsgate Announcements",
+    "type": "group"
+  },
+  {
+    "email": "mountainsgate-chatelaine@westkingdom.org",
+    "name": "Mountainsgate Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "mountainsgate-officers@westkingdom.org",
+    "name": "Mountainsgate Officers",
+    "type": "group"
+  },
+  {
+    "email": "mountainsgate-seneschal@westkingdom.org",
+    "name": "Mountainsgate Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "oct-crown@westkingdom.org",
+    "name": "Oct Crown",
+    "type": "group"
+  },
+  {
+    "email": "oertha-announcements@westkingdom.org",
+    "name": "Oertha Announcements",
+    "type": "group"
+  },
+  {
+    "email": "oertha-archer@westkingdom.org",
+    "name": "Oertha Archer",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-artssciences@westkingdom.org",
+    "name": "Oertha Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-chatelaine@westkingdom.org",
+    "name": "Oertha Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-chronicler@westkingdom.org",
+    "name": "Oertha Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-constable@westkingdom.org",
+    "name": "Oertha Constable",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-equestrian@westkingdom.org",
+    "name": "Oertha Equestrian",
+    "type": "group"
+  },
+  {
+    "email": "oertha-exchequer@westkingdom.org",
+    "name": "Oertha Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-heirs@westkingdom.org",
+    "name": "Oertha Heirs",
+    "type": "group"
+  },
+  {
+    "email": "oertha-herald@westkingdom.org",
+    "name": "Oertha Herald",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-lists@westkingdom.org",
+    "name": "Oertha Lists",
+    "type": "group"
+  },
+  {
+    "email": "oertha-marshal@westkingdom.org",
+    "name": "Oertha Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-officers@westkingdom.org",
+    "name": "Oertha Officers",
+    "type": "group"
+  },
+  {
+    "email": "oertha-rapier@westkingdom.org",
+    "name": "Oertha Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-regent@westkingdom.org",
+    "name": "Oertha Regent",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-scribes@westkingdom.org",
+    "name": "Oertha Scribes",
+    "type": "group"
+  },
+  {
+    "email": "oertha-seneschal@westkingdom.org",
+    "name": "Oertha Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "oertha-socialmedia@westkingdom.org",
+    "name": "Oertha Socialmedia",
+    "type": "group"
+  },
+  {
+    "email": "oertha-webminister@westkingdom.org",
+    "name": "Oertha Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "pavlokgarod-announcements@westkingdom.org",
+    "name": "Pavlokgarod Announcements",
+    "type": "group"
+  },
+  {
+    "email": "pavlokgorod-officers@westkingdom.org",
+    "name": "Pavlokgorod Officers",
+    "type": "group"
+  },
+  {
+    "email": "pavlokgorod-seneschal@westkingdom.org",
+    "name": "Pavlokgorod Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "pavlokgorod-webminister@westkingdom.org",
+    "name": "Pavlokgorod Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "pelicans@westkingdom.org",
+    "name": "Pelicans",
+    "type": "group"
+  },
+  {
+    "email": "principality-chroniclers@westkingdom.org",
+    "name": "Principality Chroniclers",
+    "type": "officer"
+  },
+  {
+    "email": "provinceofthemists-artssciences@westkingdom.org",
+    "name": "Provinceofthemists Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "provinceofthemists-chatelaine@westkingdom.org",
+    "name": "Provinceofthemists Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "provinceofthemists-constable@westkingdom.org",
+    "name": "Provinceofthemists Constable",
+    "type": "officer"
+  },
+  {
+    "email": "provinceofthemists-exchequer@westkingdom.org",
+    "name": "Provinceofthemists Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "provinceofthemists-herald@westkingdom.org",
+    "name": "Provinceofthemists Herald",
+    "type": "officer"
+  },
+  {
+    "email": "provinceofthemists-marshal@westkingdom.org",
+    "name": "Provinceofthemists Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "provinceofthemists-officers@westkingdom.org",
+    "name": "Provinceofthemists Officers",
+    "type": "group"
+  },
+  {
+    "email": "provinceofthemists-seneschal@westkingdom.org",
+    "name": "Provinceofthemists Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "provinceofthemists-webminister@westkingdom.org",
+    "name": "Provinceofthemists Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "purg@westkingdom.org",
+    "name": "Purg",
+    "type": "group"
+  },
+  {
+    "email": "ravenshore-announcements@westkingdom.org",
+    "name": "Ravenshore Announcements",
+    "type": "group"
+  },
+  {
+    "email": "ravenshore-archer@westkingdom.org",
+    "name": "Ravenshore Archer",
+    "type": "officer"
+  },
+  {
+    "email": "ravenshore-artssciences@westkingdom.org",
+    "name": "Ravenshore Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "ravenshore-chatelaine@westkingdom.org",
+    "name": "Ravenshore Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "ravenshore-chronicler@westkingdom.org",
+    "name": "Ravenshore Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "ravenshore-exchequer@westkingdom.org",
+    "name": "Ravenshore Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "ravenshore-marshal@westkingdom.org",
+    "name": "Ravenshore Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "ravenshore-officers@westkingdom.org",
+    "name": "Ravenshore Officers",
+    "type": "group"
+  },
+  {
+    "email": "ravenshore-seneschal@westkingdom.org",
+    "name": "Ravenshore Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "ravenshore-webminister@westkingdom.org",
+    "name": "Ravenshore Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-announcements@westkingdom.org",
+    "name": "Rivenoak Announcements",
+    "type": "group"
+  },
+  {
+    "email": "rivenoak-artssciences@westkingdom.org",
+    "name": "Rivenoak Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-baron@westkingdom.org",
+    "name": "Rivenoak Baron",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-chatelaine@westkingdom.org",
+    "name": "Rivenoak Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-chronicler@westkingdom.org",
+    "name": "Rivenoak Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-constable@westkingdom.org",
+    "name": "Rivenoak Constable",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-exchequer@westkingdom.org",
+    "name": "Rivenoak Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-goldkey@westkingdom.org",
+    "name": "Rivenoak Goldkey",
+    "type": "group"
+  },
+  {
+    "email": "rivenoak-herald@westkingdom.org",
+    "name": "Rivenoak Herald",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-lists@westkingdom.org",
+    "name": "Rivenoak Lists",
+    "type": "group"
+  },
+  {
+    "email": "rivenoak-marshal@westkingdom.org",
+    "name": "Rivenoak Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-officers@westkingdom.org",
+    "name": "Rivenoak Officers",
+    "type": "group"
+  },
+  {
+    "email": "rivenoak-seneschal@westkingdom.org",
+    "name": "Rivenoak Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "rivenoak-webminister@westkingdom.org",
+    "name": "Rivenoak Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "sableswan@heralds.westkingdom.org",
+    "name": "Sableswan",
+    "type": "group"
+  },
+  {
+    "email": "saintdavid-artssciences@westkingdom.org",
+    "name": "Saintdavid Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "saintdavid-officers@westkingdom.org",
+    "name": "Saintdavid Officers",
+    "type": "group"
+  },
+  {
+    "email": "saintdavid-seneschal@westkingdom.org",
+    "name": "Saintdavid Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "saintkatherine-seneschal@westkingdom.org",
+    "name": "Saintkatherine Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "seawolf@heralds.westkingdom.org",
+    "name": "Seawolf",
+    "type": "group"
+  },
+  {
+    "email": "selviergard-announcements@westkingdom.org",
+    "name": "Selviergard Announcements",
+    "type": "group"
+  },
+  {
+    "email": "selviergard-artssciences@westkingdom.org",
+    "name": "Selviergard Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "selviergard-baron@westkingdom.org",
+    "name": "Selviergard Baron",
+    "type": "officer"
+  },
+  {
+    "email": "selviergard-chatelaine@westkingdom.org",
+    "name": "Selviergard Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "selviergard-chronicler@westkingdom.org",
+    "name": "Selviergard Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "selviergard-herald@westkingdom.org",
+    "name": "Selviergard Herald",
+    "type": "officer"
+  },
+  {
+    "email": "selviergard-marshal@westkingdom.org",
+    "name": "Selviergard Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "selviergard-officers@westkingdom.org",
+    "name": "Selviergard Officers",
+    "type": "group"
+  },
+  {
+    "email": "selviergard-seneschal@westkingdom.org",
+    "name": "Selviergard Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "selviergard-webminister@westkingdom.org",
+    "name": "Selviergard Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-announcements@westkingdom.org",
+    "name": "Silverdesert Announcements",
+    "type": "group"
+  },
+  {
+    "email": "silverdesert-artssciences@westkingdom.org",
+    "name": "Silverdesert Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-chatelaine@westkingdom.org",
+    "name": "Silverdesert Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-chronicler@westkingdom.org",
+    "name": "Silverdesert Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-constable@westkingdom.org",
+    "name": "Silverdesert Constable",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-equestrian@westkingdom.org",
+    "name": "Silverdesert Equestrian",
+    "type": "group"
+  },
+  {
+    "email": "silverdesert-exchequer@westkingdom.org",
+    "name": "Silverdesert Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-herald@westkingdom.org",
+    "name": "Silverdesert Herald",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-marshal@westkingdom.org",
+    "name": "Silverdesert Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-officers@westkingdom.org",
+    "name": "Silverdesert Officers",
+    "type": "group"
+  },
+  {
+    "email": "silverdesert-rapier@westkingdom.org",
+    "name": "Silverdesert Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-seneschal@westkingdom.org",
+    "name": "Silverdesert Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "silverdesert-webminister@westkingdom.org",
+    "name": "Silverdesert Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "southernshores-announcements@westkingdom.org",
+    "name": "Southernshores Announcements",
+    "type": "group"
+  },
+  {
+    "email": "southernshores-constable@westkingdom.org",
+    "name": "Southernshores Constable",
+    "type": "officer"
+  },
+  {
+    "email": "southernshores-exchequer@westkingdom.org",
+    "name": "Southernshores Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "southernshores-herald@westkingdom.org",
+    "name": "Southernshores Herald",
+    "type": "officer"
+  },
+  {
+    "email": "southernshores-officers@westkingdom.org",
+    "name": "Southernshores Officers",
+    "type": "group"
+  },
+  {
+    "email": "southernshores-seneschal@westkingdom.org",
+    "name": "Southernshores Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "southernshores-webminister@westkingdom.org",
+    "name": "Southernshores Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "stboniface-announcements@westkingdom.org",
+    "name": "Stboniface Announcements",
+    "type": "group"
+  },
+  {
+    "email": "stbrendan-announcements@westkingdom.org",
+    "name": "Stbrendan Announcements",
+    "type": "group"
+  },
+  {
+    "email": "stdavid-announcements@westkingdom.org",
+    "name": "Stdavid Announcements",
+    "type": "group"
+  },
+  {
+    "email": "stellanordica@heralds.westkingdom.org",
+    "name": "Stellanordica",
+    "type": "group"
+  },
+  {
+    "email": "stguinefort-announcements@westkingdom.org",
+    "name": "Stguinefort Announcements",
+    "type": "group"
+  },
+  {
+    "email": "stkatherine-announcements@westkingdom.org",
+    "name": "Stkatherine Announcements",
+    "type": "group"
+  },
+  {
+    "email": "tarnmist-announcements@westkingdom.org",
+    "name": "Tarnmist Announcements",
+    "type": "group"
+  },
+  {
+    "email": "tarnmist-baron@westkingdom.org",
+    "name": "Tarnmist Baron",
+    "type": "officer"
+  },
+  {
+    "email": "tarnmist-chatelaine@westkingdom.org",
+    "name": "Tarnmist Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "tarnmist-goldkey@westkingdom.org",
+    "name": "Tarnmist Goldkey",
+    "type": "group"
+  },
+  {
+    "email": "tarnmist-marshal@westkingdom.org",
+    "name": "Tarnmist Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "tarnmist-officers@westkingdom.org",
+    "name": "Tarnmist Officers",
+    "type": "group"
+  },
+  {
+    "email": "tarnmist-seneschal@westkingdom.org",
+    "name": "Tarnmist Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "tarnmist-webminister@westkingdom.org",
+    "name": "Tarnmist Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "teufelberg-announcements@westkingdom.org",
+    "name": "Teufelberg Announcements",
+    "type": "group"
+  },
+  {
+    "email": "teufelberg-seneschal@westkingdom.org",
+    "name": "Teufelberg Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "teufelbergweb@westkingdom.org",
+    "name": "Teufelbergweb",
+    "type": "group"
+  },
+  {
+    "email": "thistletorr-announcements@westkingdom.org",
+    "name": "Thistletorr Announcements",
+    "type": "group"
+  },
+  {
+    "email": "thistletorr-seneschal@westkingdom.org",
+    "name": "Thistletorr Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "tiktokdeputy@cynagua.westkingdom.org",
+    "name": "Tiktokdeputy",
+    "type": "group"
+  },
+  {
+    "email": "vacant.westoffice@westkingdom.org",
+    "name": "Vacant Westoffice",
+    "type": "group"
+  },
+  {
+    "email": "vakkerfjell-announcements@westkingdom.org",
+    "name": "Vakkerfjell Announcements",
+    "type": "group"
+  },
+  {
+    "email": "vakkerfjell-chatelaine@westkingdom.org",
+    "name": "Vakkerfjell Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "vakkerfjell-exchequer@westkingdom.org",
+    "name": "Vakkerfjell Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "vakkerfjell-marshal@westkingdom.org",
+    "name": "Vakkerfjell Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "vakkerfjell-officers@westkingdom.org",
+    "name": "Vakkerfjell Officers",
+    "type": "group"
+  },
+  {
+    "email": "vakkerfjell-seneschal@westkingdom.org",
+    "name": "Vakkerfjell Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "valededraco-announcements@westkingdom.org",
+    "name": "Valededraco Announcements",
+    "type": "group"
+  },
+  {
+    "email": "vesper@heralds.westkingdom.org",
+    "name": "Vesper",
+    "type": "group"
+  },
+  {
+    "email": "vinhold-announcements@westkingdom.org",
+    "name": "Vinhold Announcements",
+    "type": "group"
+  },
+  {
+    "email": "vinhold-seneschal@westkingdom.org",
+    "name": "Vinhold Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "virtualactivities-announcements@westkingdom.org",
+    "name": "Virtualactivities Announcements",
+    "type": "group"
+  },
+  {
+    "email": "wargy@westkingdom.org",
+    "name": "Wargy",
+    "type": "group"
+  },
+  {
+    "email": "warriorsgate-announcements@westkingdom.org",
+    "name": "Warriorsgate Announcements",
+    "type": "group"
+  },
+  {
+    "email": "warriorsgate-artssciences@westkingdom.org",
+    "name": "Warriorsgate Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "warriorsgate-marshall@westkingdom.org",
+    "name": "Warriorsgate Marshall",
+    "type": "officer"
+  },
+  {
+    "email": "warriorsgate-officers@westkingdom.org",
+    "name": "Warriorsgate Officers",
+    "type": "group"
+  },
+  {
+    "email": "warriorsgate-rapier@westkingdom.org",
+    "name": "Warriorsgate Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "warriorsgate-seneschal@westkingdom.org",
+    "name": "Warriorsgate Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "west-allchroniclers@westkingdom.org",
+    "name": "West Allchroniclers",
+    "type": "group"
+  },
+  {
+    "email": "west-archer@westkingdom.org",
+    "name": "West Archer",
+    "type": "officer"
+  },
+  {
+    "email": "west-artssciences@westkingdom.org",
+    "name": "West Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "west-bard@westkingdom.org",
+    "name": "West Bard",
+    "type": "group"
+  },
+  {
+    "email": "west-chatelaine@westkingdom.org",
+    "name": "West Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "west-chronicler@westkingdom.org",
+    "name": "West Chronicler",
+    "type": "officer"
+  },
+  {
+    "email": "west-communications@westkingdom.org",
+    "name": "West Communications",
+    "type": "group"
+  },
+  {
+    "email": "west-constable@westkingdom.org",
+    "name": "West Constable",
+    "type": "officer"
+  },
+  {
+    "email": "west-dei@westkingdom.org",
+    "name": "West Dei",
+    "type": "group"
+  },
+  {
+    "email": "west-equestrian@westkingdom.org",
+    "name": "West Equestrian",
+    "type": "group"
+  },
+  {
+    "email": "west-exchequer@westkingdom.org",
+    "name": "West Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "west-goldkey@westkingdom.org",
+    "name": "West Goldkey",
+    "type": "group"
+  },
+  {
+    "email": "west-heirs@westkingdom.org",
+    "name": "West Heirs",
+    "type": "group"
+  },
+  {
+    "email": "west-heirs-hoc@westkingdom.org",
+    "name": "West Heirs Hoc",
+    "type": "group"
+  },
+  {
+    "email": "west-historian@westkingdom.org",
+    "name": "West Historian",
+    "type": "group"
+  },
+  {
+    "email": "west-hoc@westkingdom.org",
+    "name": "West Hoc",
+    "type": "group"
+  },
+  {
+    "email": "west-lists@westkingdom.org",
+    "name": "West Lists",
+    "type": "group"
+  },
+  {
+    "email": "west-marshal@westkingdom.org",
+    "name": "West Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "west-mediarelations@westkingdom.org",
+    "name": "West Mediarelations",
+    "type": "group"
+  },
+  {
+    "email": "west-nmr@westkingdom.org",
+    "name": "West Nmr",
+    "type": "group"
+  },
+  {
+    "email": "west-notary@westkingdom.org",
+    "name": "West Notary",
+    "type": "group"
+  },
+  {
+    "email": "west-officers@westkingdom.org",
+    "name": "West Officers",
+    "type": "group"
+  },
+  {
+    "email": "west-rapier@westkingdom.org",
+    "name": "West Rapier",
+    "type": "officer"
+  },
+  {
+    "email": "west-regent@westkingdom.org",
+    "name": "West Regent",
+    "type": "officer"
+  },
+  {
+    "email": "west-royalregalia@westkingdom.org",
+    "name": "West Royalregalia",
+    "type": "group"
+  },
+  {
+    "email": "west-scribes@westkingdom.org",
+    "name": "West Scribes",
+    "type": "group"
+  },
+  {
+    "email": "west-seneschal@westkingdom.org",
+    "name": "West Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "west-socialmedia@westkingdom.org",
+    "name": "West Socialmedia",
+    "type": "group"
+  },
+  {
+    "email": "west-webminister@westkingdom.org",
+    "name": "West Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "west-youth-combat@westkingdom.org",
+    "name": "West Youth Combat",
+    "type": "group"
+  },
+  {
+    "email": "west-youthchancellor@westkingdom.org",
+    "name": "West Youthchancellor",
+    "type": "group"
+  },
+  {
+    "email": "west_sig@westkingdom.org",
+    "name": "West_Sig",
+    "type": "group"
+  },
+  {
+    "email": "westermak-exchequer@westkingdom.org",
+    "name": "Westermak Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "westermark-announcements@westkingdom.org",
+    "name": "Westermark Announcements",
+    "type": "group"
+  },
+  {
+    "email": "westermark-archer@westkingdom.org",
+    "name": "Westermark Archer",
+    "type": "officer"
+  },
+  {
+    "email": "westermark-arts@westkingdom.org",
+    "name": "Westermark Arts",
+    "type": "group"
+  },
+  {
+    "email": "westermark-artssciences@westkingdom.org",
+    "name": "Westermark Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "westermark-baron@westkingdom.org",
+    "name": "Westermark Baron",
+    "type": "officer"
+  },
+  {
+    "email": "westermark-chatelaine@westkingdom.org",
+    "name": "Westermark Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "westermark-constable@westkingdom.org",
+    "name": "Westermark Constable",
+    "type": "officer"
+  },
+  {
+    "email": "westermark-herald@westkingdom.org",
+    "name": "Westermark Herald",
+    "type": "officer"
+  },
+  {
+    "email": "westermark-historian@westkingdom.org",
+    "name": "Westermark Historian",
+    "type": "group"
+  },
+  {
+    "email": "westermark-officers@westkingdom.org",
+    "name": "Westermark Officers",
+    "type": "group"
+  },
+  {
+    "email": "westermark-seneschal@westkingdom.org",
+    "name": "Westermark Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "westermark-webminister@westkingdom.org",
+    "name": "Westermark Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "westvolunteer@westkingdom.org",
+    "name": "Westvolunteer",
+    "type": "group"
+  },
+  {
+    "email": "windymeads-announcements@westkingdom.org",
+    "name": "Windymeads Announcements",
+    "type": "group"
+  },
+  {
+    "email": "windymeads-chatelaine@westkingdom.org",
+    "name": "Windymeads Chatelaine",
+    "type": "officer"
+  },
+  {
+    "email": "windymeads-exchequer@westkingdom.org",
+    "name": "Windymeads Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "windymeads-officers@westkingdom.org",
+    "name": "Windymeads Officers",
+    "type": "group"
+  },
+  {
+    "email": "windymeads-seneschal@westkingdom.org",
+    "name": "Windymeads Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "windymeads-webminister@westkingdom.org",
+    "name": "Windymeads Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "wintersgate-announcements@westkingdom.org",
+    "name": "Wintersgate Announcements",
+    "type": "group"
+  },
+  {
+    "email": "wintersgate-artssciences@westkingdom.org",
+    "name": "Wintersgate Artssciences",
+    "type": "officer"
+  },
+  {
+    "email": "wintersgate-baron@westkingdom.org",
+    "name": "Wintersgate Baron",
+    "type": "officer"
+  },
+  {
+    "email": "wintersgate-exchequer@westkingdom.org",
+    "name": "Wintersgate Exchequer",
+    "type": "officer"
+  },
+  {
+    "email": "wintersgate-herald@westkingdom.org",
+    "name": "Wintersgate Herald",
+    "type": "officer"
+  },
+  {
+    "email": "wintersgate-marshal@westkingdom.org",
+    "name": "Wintersgate Marshal",
+    "type": "officer"
+  },
+  {
+    "email": "wintersgate-officers@westkingdom.org",
+    "name": "Wintersgate Officers",
+    "type": "group"
+  },
+  {
+    "email": "wintersgate-seneschal@westkingdom.org",
+    "name": "Wintersgate Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "wintersgate-webminister@westkingdom.org",
+    "name": "Wintersgate Webminister",
+    "type": "officer"
+  },
+  {
+    "email": "wkcal-announcements@westkingdom.org",
+    "name": "Wkcal Announcements",
+    "type": "group"
+  },
+  {
+    "email": "wkcollegium@westkingdom.org",
+    "name": "Wkcollegium",
+    "type": "group"
+  },
+  {
+    "email": "wkmerchliason@westkingdom.org",
+    "name": "Wkmerchliason",
+    "type": "group"
+  },
+  {
+    "email": "wolfscairn-announcements@westkingdom.org",
+    "name": "Wolfscairn Announcements",
+    "type": "group"
+  },
+  {
+    "email": "wolfscairn-constable@westkingdom.org",
+    "name": "Wolfscairn Constable",
+    "type": "officer"
+  },
+  {
+    "email": "wolfscairn-seneschal@westkingdom.org",
+    "name": "Wolfscairn Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "wuduholtbesecg-announcements@westkingdom.org",
+    "name": "Wuduholtbesecg Announcements",
+    "type": "group"
+  },
+  {
+    "email": "wuduholtbesecg-seneschal@westkingdom.org",
+    "name": "Wuduholtbesecg Seneschal",
+    "type": "officer"
+  },
+  {
+    "email": "zoomrequests@westkingdom.org",
+    "name": "Zoomrequests",
+    "type": "group"
+  }
+]
