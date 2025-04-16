@@ -4,11 +4,36 @@ import pandas as pd
 import re
 
 def get_all_groups():
-    """Fetch all groups from the API"""
-    response = requests.get(f"{api_url}/groups/")
-    if response.status_code == 200:
-        return response.json()
-    return None
+    try:
+        # Use the simplified JSON file
+        df_groups = pd.read_json("utils/group_map_simplified.json")
+        # Create a dictionary mapping group names to their IDs for easy lookup
+        group_name_to_id = pd.Series(df_groups.id.values, index=df_groups.name).to_dict()
+        group_options = df_groups['name'].tolist()
+        return group_options, group_name_to_id
+    except pd.errors.EmptyDataError:
+        st.error("Error: utils/group_map_simplified.json is empty or not formatted correctly.")
+        group_options = []
+        group_name_to_id = {}
+        # Handle the case where the file is empty or not formatted correctly
+    except FileNotFoundError:
+        st.error("Error: utils/group_map_simplified.json not found. Please ensure the simplified file exists.")
+        group_options = []
+        group_name_to_id = {}
+    except ValueError as e: # Catch potential JSON decoding errors or structure issues
+        st.error(f"Error reading or parsing JSON file: {e}")
+        group_options = []
+        group_name_to_id = {}
+    except KeyError:
+        st.error("Error: Column 'name' or 'id' not found in the data loaded from utils/group_map_simplified.json. Please check the JSON structure.")
+        group_options = []
+        group_name_to_id = {}
+    except Exception as e:
+        st.error(f"An unexpected error occurred while loading the data: {e}")
+        group_options = []
+        group_name_to_id = {}
+
+
 
 def get_group_by_id(group_id: str):
     """Fetch a group by its ID"""
