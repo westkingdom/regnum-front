@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from utils.config import api_url
+# Updated import: get_all_groups now returns (options, name_to_id_map)
 from utils.queries import get_all_groups, get_group_members, add_member_to_group, remove_member_from_group, is_valid_email
 import pandas as pd
 import re
@@ -15,53 +16,73 @@ tab1, tab2, tab3 = st.tabs(["View Groups", "Create Group", "Manage Members"])
 with st.sidebar:
     st.header("Actions")
     if st.button("Create New Group"):
+        # Navigate to Create Group tab or handle differently if needed
+        # For now, just rerun might not be the best UX, consider setting active tab
         st.experimental_rerun()
 
 # Tab for viewing groups and members
 with tab1:
     st.header("View Groups")
 
-    # Get all groups
-    groups = get_all_groups()
+    # Get all groups using the updated function
+    # It now returns (list_of_names, name_to_id_dict)
+    group_options, group_name_to_id = get_all_groups()
 
-    if not groups or 'groups' not in groups:
-        st.warning("No groups found. Please create a new group to begin.")
+    if not group_options: # Check if the list of names is empty
+        st.warning("No groups found or failed to load groups. Please check the data source or create a new group.")
     else:
-        group_names = [group['name'] for group in groups['groups']]
         # Add search functionality using st.text_input
-        search_term = st.text_input("Search Groups", "")
-        
-        # Filter group names based on search term
-        filtered_group_names = [name for name in group_names if search_term.lower() in name.lower()]
+        search_term = st.text_input("Search Groups", "", key="view_search") # Added key for uniqueness
 
-        # Selectbox for selecting a group by name instead of ID
+        # Filter group names based on search term
+        filtered_group_names = [name for name in group_options if search_term.lower() in name.lower()]
+
+        # Selectbox for selecting a group by name
         selected_group_name = st.selectbox(
             "Select a Group",
             options=filtered_group_names,
+            index=None, # Default to no selection
+            placeholder="Select a group...",
             key="select_view_group"
         )
 
         # Get the selected group's data
-        # Check if a group is selected before proceeding
         if selected_group_name:
-            try:
-                selected_group = next(group for group in groups['groups'] if group['name'] == selected_group_name)
-                selected_id = selected_group['id']
-                members = get_group_members(selected_id)
-                
-                st.write(f"### Group: {selected_group['name']}")
-                
-                # Fixed: Correctly access the members dictionary and create DataFrame
-                if members and 'members' in members:
-                    members_df = pd.DataFrame(members['members'])  # Remove the parentheses
-                    if not members_df.empty:
-                        st.dataframe(members_df)
+            # Get the ID from the dictionary
+            selected_id = group_name_to_id.get(selected_group_name)
+
+            if selected_id:
+                try:
+                    members = get_group_members(selected_id)
+
+                    st.write(f"### Group: {selected_group_name}") # Display the selected name
+
+                    # Display members
+                    if members is not None:
+                         if members: # Check if the list is not empty
+                            member_df = pd.DataFrame(members)
+                            # Select and display only relevant columns ('name', 'email')
+                            columns_to_display = []
+                            if 'name' in member_df.columns:
+                                columns_to_display.append('name')
+                            if 'email' in member_df.columns:
+                                columns_to_display.append('email')
+
+                            if columns_to_display:
+                                st.dataframe(member_df[columns_to_display])
+                            else:
+                                # Fallback if expected columns are missing
+                                st.dataframe(member_df)
+                         else:
+                            st.info("This group has no members.")
                     else:
-                        st.info("No members in this group")
-                else:
-                    st.warning("Unable to fetch member data")
-            except StopIteration:
-                st.error("Selected group not found. Please refresh the group list.")
+                        st.warning(f"Could not fetch members for {selected_group_name}. The API might be down or the group ID is invalid.")
+
+                except Exception as e:
+                    st.error(f"An error occurred while fetching members for {selected_group_name}: {e}")
+            else:
+                # This should not happen if the selectbox is populated correctly
+                st.error(f"Could not find ID for selected group '{selected_group_name}'. Data inconsistency?")
         else:
             st.info("Please select a group to view its members.")
 
