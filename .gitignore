@@ -84,3 +84,8 @@ utils/google_credentials.json
 .DS_store
 Pipfile.lock
 .streamlit/*
+
+# Gcloud Specific
+credentials.json
+google_credentials.json
+token.json

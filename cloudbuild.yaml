@@ -1,0 +1,53 @@
+steps:
+  # 1. Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
+        '.',
+      ]
+
+  # 2. Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
+      ]
+
+  # 3. Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        '${_SERVICE_NAME}',
+        '--image',
+        '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
+        '--region',
+        '${_REGION}',
+        # Allows access without authentication. Remove or configure Identity Platform/IAM for restricted access.
+        '--allow-unauthenticated',
+        # Optional: Set environment variables (e.g., for API keys or config)
+        # '--set-env-vars=API_KEY=YOUR_API_KEY',
+        # Optional: Mount secrets from Secret Manager
+        # '--set-secrets=/path/to/secret/in/container=SECRET_NAME:latest',
+        '--platform',
+        'managed', # Use 'managed' for serverless Cloud Run
+      ]
+
+# Store the image name in Artifact Registry
+images:
+  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
+
+# Define substitutions (variables)
+substitutions:
+  _REGION: 'us-west1' # e.g., us-west1
+  _ARTIFACT_REPO_NAME: 'regnum-repo' # e.g., regnum-repo
+  _SERVICE_NAME: 'regnum-front' # e.g., regnum-front
+
+# Optional: Set timeout for the build
+timeout: '1200s' # 20 minutes
