@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.git/
+.gitignore
+.idea/
+*.iml
+.vscode/
+*.log
+token.json # Avoid committing user tokens
+*.DS_Store
+docker-compose.yaml # Usually not needed inside the app container
