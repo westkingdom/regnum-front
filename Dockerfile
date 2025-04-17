@@ -1,23 +1,32 @@
-
-# Use the official lightweight Python image.
-# https://hub.docker.com/_/python
+# Use an official Python runtime as a parent image
 FROM python:3.11-slim
 
-# Allow statements and log messages to immediately appear in the Knative logs
-ENV PYTHONUNBUFFERED True
+# Set the working directory in the container
+WORKDIR /app
 
-# Copy local code to the container image.
-ENV APP_HOME /app
-WORKDIR $APP_HOME
-COPY . ./
+# Copy the requirements file into the container at /app
+COPY requirements.txt .
 
-# Install production dependencies.
-RUN pip install --no-cache-dir -r requirements.txt
+# Install any needed packages specified in requirements.txt
+# Use --no-cache-dir to reduce image size
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Run the web service on container startup. Here we use the gunicorn
-# webserver, with one worker process and 8 threads.
-# For environments with multiple CPU cores, increase the number of workers
-# to be equal to the cores available.
-# Timeout is set to 0 to disable the timeouts of the workers to allow Cloud Run to handle instance scaling.
-CMD python3 -m streamlit run Login.py --server.port=8080
-EXPOSE 8080:8501
+# Copy the rest of the application code into the container at /app
+# This includes your main.py, pages/, utils/, credentials.json, etc.
+COPY . .
+
+# Make port 8080 available to the world outside this container
+# Cloud Run expects containers to listen on port 8080 by default
+EXPOSE 8080
+
+# Define environment variable for the port Streamlit should listen on
+ENV PORT=8080
+
+# Run main.py when the container launches using Streamlit
+# Use 0.0.0.0 to bind to all network interfaces
+# Use --server.port $PORT to respect the Cloud Run environment variable
+# Use --server.enableCORS=false and --server.enableXsrfProtection=false if needed,
+# but be aware of security implications. Start without them.
+# Ensure main.py is your intended entry point for the app.
+CMD ["streamlit", "run", "main.py", "--server.port", "8080", "--server.address", "0.0.0.0"]

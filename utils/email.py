@@ -12,7 +12,7 @@ from googleapiclient.errors import HttpError
 # If modifying these SCOPES, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 # Replace with the email address that should receive the primary notification
-ADMIN_EMAIL = "your_admin_email@example.com"  # <<< --- IMPORTANT: Configure this email address
+ADMIN_EMAIL = "webminister@westkingdom.org"  # <<< --- IMPORTANT: Configure this email address
 # Email address for the copy
 COMMUNICATIONS_EMAIL = "communications@westkingdom.org"
 
