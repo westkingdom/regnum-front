@@ -6,46 +6,106 @@ import google.auth.transport.requests
 import os
 import json
 
-# Load client secrets
-with open('utils/google_credentials.json') as f:
-    client_secrets = json.load(f)
+# Define the path where the secret is mounted
+SECRET_CREDENTIALS_PATH = '/secrets/google_credentials.json'
+# Fallback for local development (optional)
+LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json'
 
-# Configure the OAuth 2.0 flow
-flow = Flow.from_client_secrets_file(
-    'utils/google_credentials.json',
-    scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
-    redirect_uri='http://localhost:8501'
-)
+# Determine the correct path
+credentials_path = SECRET_CREDENTIALS_PATH if os.path.exists(SECRET_CREDENTIALS_PATH) else LOCAL_CREDENTIALS_PATH
+
+# Load client secrets
+try:
+    # Configure the OAuth 2.0 flow using the determined path
+    flow = Flow.from_client_secrets_file(
+        credentials_path,
+        scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+        # IMPORTANT: Update redirect_uri for Cloud Run deployment
+        # You'll need to get the Cloud Run service URL after the first deployment
+        # and add it as an authorized redirect URI in your Google Cloud OAuth Client ID settings.
+        redirect_uri=os.environ.get('REDIRECT_URI', 'http://localhost:8501') # Use env var or default
+    )
+except FileNotFoundError:
+    st.error(f"Credentials file not found at {credentials_path}. Ensure the secret is mounted correctly in Cloud Run or the local file exists.")
+    st.stop()
+except Exception as e:
+    st.error(f"Error loading credentials: {e}")
+    st.stop()
+
 
 # Function to verify the user's organization
 def verify_organization(idinfo):
-    email = idinfo.get('email')
-    hd = idinfo.get('hd')
-    if hd == 'westkingdom.com':
-        return True
-    return False
+    # Check if the user's email domain is allowed (e.g., 'yourdomain.com')
+    # Replace 'yourdomain.com' with the actual Google Workspace domain if needed
+    # Or implement other verification logic
+    # return idinfo.get('hd') == 'yourdomain.com'
+    return True # Placeholder: Implement actual verification if needed
 
 # Streamlit app
 st.title("Google Workspace Authentication")
 
+# Handle OAuth callback
+query_params = st.query_params
+if 'code' in query_params and 'credentials' not in st.session_state:
+    try:
+        flow.fetch_token(code=query_params['code'])
+        st.session_state['credentials'] = flow.credentials
+        # Clear query params after fetching token
+        st.query_params.clear()
+        st.rerun() # Rerun to update the state
+    except Exception as e:
+        st.error(f"Error fetching OAuth token: {e}")
+
+
 # Check if the user is authenticated
 if 'credentials' not in st.session_state:
-    auth_url, _ = flow.authorization_url(prompt='consent')
-    st.write(f"[Login with Google]({auth_url})")
+    try:
+        auth_url, _ = flow.authorization_url(prompt='consent')
+        st.markdown(f'<a href="{auth_url}" target="_self">Login with Google</a>', unsafe_allow_html=True)
+    except Exception as e:
+        st.error(f"Error generating authorization URL: {e}")
+
 else:
     credentials = st.session_state['credentials']
     request = google.auth.transport.requests.Request()
-    idinfo = id_token.verify_oauth2_token(credentials.id_token, request, client_secrets['web']['client_id'])
 
-    if verify_organization(idinfo):
-        st.write(f"Welcome, {idinfo['name']} from {idinfo['hd']}")
-    else:
-        st.write("You are not authorized to access this application.")
+    try:
+        id_info = id_token.verify_oauth2_token(
+            credentials.id_token, request, credentials.client_id
+        )
 
-# Handle the OAuth 2.0 callback
-query_params = st.experimental_get_query_params()
-if 'code' in query_params:
-    flow.fetch_token(authorization_response=query_params['code'][0])
-    credentials = flow.credentials
-    st.session_state['credentials'] = credentials
-    st.experimental_rerun()
+        # Optional: Verify organization
+        if verify_organization(id_info):
+            st.success(f"Welcome {id_info.get('name')} ({id_info.get('email')})")
+            st.write("You are authenticated.")
+            # Proceed with your application logic here
+            # e.g., show the main app content or redirect to pages
+
+            if st.button("Logout"):
+                del st.session_state['credentials']
+                st.rerun()
+        else:
+            st.error("Access denied. User does not belong to the required organization.")
+            if st.button("Logout"):
+                del st.session_state['credentials']
+                st.rerun()
+
+    except ValueError as e:
+        # Token expired or invalid
+        st.warning(f"Session expired or invalid: {e}. Please login again.")
+        del st.session_state['credentials']
+        # Regenerate auth URL for re-login
+        try:
+            auth_url, _ = flow.authorization_url(prompt='consent')
+            st.markdown(f'<a href="{auth_url}" target="_self">Login with Google</a>', unsafe_allow_html=True)
+        except Exception as url_e:
+            st.error(f"Error generating re-login URL: {url_e}")
+    except Exception as e:
+        st.error(f"An error occurred during authentication verification: {e}")
+        if st.button("Logout"):
+            del st.session_state['credentials']
+            st.rerun()
+
+# Placeholder for the rest of your app or page navigation
+# if 'credentials' in st.session_state:
+#    st.write("Main Application Content Goes Here")
