@@ -57,7 +57,6 @@ substitutions:
   _AR_PROJECT_ID: 'regnum-front' # e
   _AR_REPOSITORY: 'cloud-run-source-deploy'
   _AR_SERVICE: 'regnum-front'
-  _DEPLOY_REGION: 'us-west1' # e.g., us-west1
   _PLATFORM: 'managed' # Use 'managed' for serverless Cloud Run
   _IMAGE_NAME: '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
   _TRIGGER_ID: 'd4a0f027-7719-4b48-8861-a20ef2b4c200' # e.g., d4a0f027-7719-4b48-8861-a20ef2b4c200
