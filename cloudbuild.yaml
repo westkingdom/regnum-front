@@ -31,12 +31,13 @@ steps:
         '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
         '--region',
         '${_REGION}',
-        # Allows access without authentication. Remove or configure Identity Platform/IAM for restricted access.
         '--allow-unauthenticated',
-        # Optional: Set environment variables (e.g., for API keys or config)
-        # '--set-env-vars=API_KEY=YOUR_API_KEY',
-        # Optional: Mount secrets from Secret Manager
-        # '--set-secrets=/path/to/secret/in/container=SECRET_NAME:latest',
+        # Mount secrets as files
+        # Format: --set-secrets=[VOLUME_MOUNT_PATH]=[SECRET_NAME]:[VERSION],...
+        # Mount google_credentials.json for main.py
+        '--set-secrets=/secrets/google_credentials.json=regnum-google-credentials:latest',
+        # Mount credentials.json for email.py
+        '--update-secrets=/secrets/credentials.json=regnum-email-credentials:latest', # Use --update-secrets if adding to existing secrets
         '--platform',
         'managed', # Use 'managed' for serverless Cloud Run
       ]
