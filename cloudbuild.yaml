@@ -1,6 +1,9 @@
 steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['version']
+
+
+
   # 1. Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args:
@@ -62,3 +65,6 @@ substitutions:
 
 # Optional: Set timeout for the build
 timeout: '1200s' # 20 minutes
+serviceAccount: 'projects/westkingdom-primary/serviceAccounts/85382560394-compute@developer.gserviceaccount.com'
+options: 
+  defaultLogsBucketBehavior: 'REGIONAL_USER_OWNED_BUCKET' 
