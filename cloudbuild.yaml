@@ -51,7 +51,6 @@ images:
 
 # Define substitutions (variables)
 substitutions:
-  _REGION: 'us-west1' # e.g., us-west1
   _ARTIFACT_REPO_NAME: 'regnum-repo' # e.g., regnum-repo
   _SERVICE_NAME: 'regnum-front' # e.g., regnum-front
   _AR_HOSTNAME: 'us-west1-docker.pkg.dev'
