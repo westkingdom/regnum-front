@@ -50,7 +50,7 @@ images:
 
 # Define substitutions (variables)
 substitutions:
-  _ARTIFACT_REPO_NAME: 'regnum-repo' # e.g., regnum-repo
+  _ARTIFACT_REPO_NAME: 'regnum-front' # e.g., regnum-repo
   _SERVICE_NAME: 'regnum-front' # e.g., regnum-front
   _AR_HOSTNAME: 'us-west1-docker.pkg.dev'
   _AR_PROJECT_ID: 'regnum-front' # e
