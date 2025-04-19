@@ -18,8 +18,9 @@ ADMIN_EMAIL = "webminister@westkingdom.org"
 COMMUNICATIONS_EMAIL = "communications@westkingdom.org"
 
 # Define paths for credentials and token
-SECRET_CREDS_PATH = '/secrets/credentials.json'
-LOCAL_CREDS_PATH = 'credentials.json' # Local fallback
+# Define the path where the secret is mounted
+SECRET_CREDENTIALS_PATH = '/secrets/google_credentials.json'
+LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json'
 TOKEN_PATH = 'token.json' # Path for the generated token
 
 def get_gmail_service():
