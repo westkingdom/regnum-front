@@ -3,118 +3,67 @@ import os.path
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
+# Use service account credentials
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-import streamlit as st # Import streamlit for error display if needed
+import streamlit as st  # Import streamlit for error display if needed
 
-# If modifying these SCOPES, delete the file token.json.
+# Scope remains the same
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
-# Replace with the email address that should receive the primary notification
+
+# --- Configuration ---
+# Primary recipient
 ADMIN_EMAIL = "webminister@westkingdom.org"
-# Email address for the copy
+# CC recipient
 COMMUNICATIONS_EMAIL = "communications@westkingdom.org"
 
-# Define paths for credentials and token
-# Define the path where the secret is mounted
-SECRET_CREDENTIALS_PATH = '/secrets/google_credentials.json'
-LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json'
-TOKEN_PATH = 'token.json' # Path for the generated token
+# !!! IMPORTANT: Set the email address of the Google Workspace user the Service Account will impersonate !!!
+# This user must exist in your Workspace. Emails will be sent *from* this address.
+# Consider making this an environment variable set during deployment for flexibility.
+IMPERSONATED_USER_EMAIL = "webminister@westkingdom.org"  # <<< --- CONFIGURE THIS
+
+# Define paths for the service account key
+SECRET_SA_KEY_PATH = '/secrets/service_account.json'
+LOCAL_SA_KEY_PATH = 'regnum-service-account-key.json'  # Local fallback (ensure this file exists locally for testing)
+
 
 def get_gmail_service():
-    """Initializes the Gmail service using credentials, prioritizing mounted secrets."""
     creds = None
-    # Determine the correct credentials path
-    creds_path = SECRET_CREDS_PATH if os.path.exists(SECRET_CREDS_PATH) else LOCAL_CREDS_PATH
+    sa_key_path = SECRET_SA_KEY_PATH if os.path.exists(SECRET_SA_KEY_PATH) else LOCAL_SA_KEY_PATH
 
-    # --- IMPORTANT: token.json Handling ---
-    # The current flow using token.json and run_local_server WILL NOT WORK in Cloud Run.
-    # This section needs to be replaced with a Service Account approach or a proper web OAuth flow
-    # where the refresh token is stored securely after initial authorization.
-    # For now, this code will likely fail in Cloud Run when trying to get/refresh the token.
-    # Consider this placeholder logic that needs refactoring for production.
-
-    if os.path.exists(TOKEN_PATH):
+    if not os.path.exists(sa_key_path):
+        error_msg = f"Service Account key file not found at {sa_key_path}. Cannot authenticate for email."
+        print(error_msg)
         try:
-            # Attempt to load token, still requires SCOPES and client_secret from creds_path later if refresh needed
-            creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
-        except Exception as e:
-            print(f"Error loading {TOKEN_PATH}: {e}. Re-authenticating.")
-            creds = None
-            if os.path.exists(TOKEN_PATH):
-                try:
-                    os.remove(TOKEN_PATH)
-                except OSError as rm_e:
-                    print(f"Error removing corrupted token file: {rm_e}")
+            st.error(error_msg)
+        except Exception:
+            pass  # Ignore if not in Streamlit context
+        return None
 
+    try:
+        # Create credentials using the service account key file and impersonate the user
+        creds = service_account.Credentials.from_service_account_file(
+            sa_key_path,
+            scopes=SCOPES,
+            subject=IMPERSONATED_USER_EMAIL  # The user to impersonate
+        )
+        print(f"Successfully loaded Service Account credentials, impersonating {IMPERSONATED_USER_EMAIL}")
 
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            try:
-                 # Refresh requires client_id, client_secret from creds_path and scopes
-                 # This might still fail if the original creds_path isn't accessible or valid
-                 # Or if the refresh token itself is invalid/revoked.
-                creds.refresh(Request()) # This implicitly needs client secrets associated with the token
-            except Exception as e:
-                print(f"Error refreshing token: {e}. Re-authenticating.")
-                # If refresh fails, force re-authentication (problematic in Cloud Run)
-                creds = None # Reset creds
-                if os.path.exists(TOKEN_PATH): # Clean up potentially invalid token
-                     try:
-                         os.remove(TOKEN_PATH)
-                     except OSError as rm_e:
-                         print(f"Error removing token file after refresh failure: {rm_e}")
-
-        # This 'else' block containing run_local_server is the main issue for Cloud Run
-        else:
-            print("Attempting interactive authentication flow (will fail in Cloud Run)...")
-            try:
-                if not os.path.exists(creds_path):
-                    # Use st.error if running within Streamlit context, otherwise print
-                    error_msg = f"Error: Credentials file not found at {creds_path}. Cannot initiate authentication."
-                    try:
-                        st.error(error_msg)
-                    except Exception:
-                        print(error_msg)
-                    return None # Cannot proceed
-
-                # THIS IS THE PART THAT WON'T WORK ON CLOUD RUN
-                flow = InstalledAppFlow.from_client_secrets_file(creds_path, SCOPES)
-                creds = flow.run_local_server(port=0) # Requires user interaction
-
-            except FileNotFoundError:
-                 error_msg = f"Error: Credentials file not found at {creds_path} during flow setup."
-                 try:
-                     st.error(error_msg)
-                 except Exception:
-                     print(error_msg)
-                 return None
-            except Exception as e:
-                 error_msg = f"Error during authentication flow: {e}"
-                 try:
-                     st.error(error_msg)
-                 except Exception:
-                     print(error_msg)
-                 return None
-
-
-        # Save the credentials (token) for the next run (problematic in Cloud Run's stateless env)
-        if creds:
-            try:
-                # Writing token.json might not persist reliably across Cloud Run instances
-                with open(TOKEN_PATH, 'w') as token:
-                    token.write(creds.to_json())
-                print(f"Token saved to {TOKEN_PATH}")
-            except Exception as e:
-                print(f"Error saving {TOKEN_PATH}: {e}")
+    except Exception as e:
+        error_msg = f"Error loading Service Account credentials from {sa_key_path}: {e}"
+        print(error_msg)
+        try:
+            st.error(error_msg)
+        except Exception:
+            pass
+        return None
 
     # Build the service if credentials exist
     if creds:
         try:
             service = build('gmail', 'v1', credentials=creds)
-            print("Gmail service built successfully.")
+            print("Gmail service built successfully using Service Account.")
             return service
         except HttpError as error:
             print(f'An error occurred building the Gmail service: {error}')
@@ -123,17 +72,17 @@ def get_gmail_service():
             print(f'An unexpected error occurred building service: {e}')
             return None
     else:
+        # This case should ideally not be reached if the error handling above works
         print("Failed to obtain valid credentials.")
         return None
 
-
-# ... rest of create_message, send_message, send_registration_email functions remain the same ...
 
 def create_message(sender, to, cc, subject, message_text):
     """Create a message for an email, including CC."""
     message = MIMEMultipart()
     message['to'] = to
     message['cc'] = cc
+    # Set the 'From' header to the impersonated user
     message['from'] = sender
     message['subject'] = subject
     msg = MIMEText(message_text)
@@ -141,33 +90,49 @@ def create_message(sender, to, cc, subject, message_text):
     raw_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
     return {'raw': raw_message}
 
+
 def send_message(service, user_id, message):
-    """Send an email message."""
+    """Send an email message using the impersonated user ID.
+
+    Args:
+      service: Authorized Gmail API service instance.
+      user_id: User's email address to send as (should be the impersonated user).
+               The special value "me" can also work if the service account itself
+               has a G Suite license, but using the impersonated email is safer.
+      message: Message to be sent.
+
+    Returns:
+      Sent Message object dictionary if successful, None otherwise.
+    """
     try:
+        # Use the impersonated user's email as the userId
         message = (service.users().messages().send(userId=user_id, body=message)
                    .execute())
-        print(f'Message Id: {message["id"]}')
+        print(f'Message Id: {message["id"]} sent as {user_id}')
         return message
     except HttpError as error:
-        print(f'An error occurred sending the email: {error}')
+        print(f'An error occurred sending the email as {user_id}: {error}')
         if error.resp.status == 400:
             print("Error details:", error.content)
+        # Check for common delegation errors
+        if "Delegation denied" in str(error.content):
+            print("Ensure Domain-Wide Delegation is correctly configured in Google Workspace Admin Console for the service account and scope.")
         return None
     except Exception as e:
-        print(f'An unexpected error occurred during sending: {e}')
+        print(f'An unexpected error occurred during sending as {user_id}: {e}')
         return None
 
+
 def send_registration_email(form_data: dict, group_name: str):
-    """Constructs and sends the registration email using form data to Admin and CCs Communications."""
-    print("Attempting to send registration email...")
-    service = get_gmail_service() # Call the updated function
+    """Constructs and sends the registration email using form data via Service Account."""
+    print("Attempting to send registration email via Service Account...")
+    service = get_gmail_service()  # Call the updated function
     if not service:
         print("Failed to get Gmail service. Email not sent.")
-        # Optionally display error in Streamlit if possible
         try:
             st.error("Failed to initialize email service. Notification not sent.")
         except Exception:
-            pass # Ignore if not in Streamlit context
+            pass
         return False
 
     subject = f"[Regnum Submission] New Member Registration for {group_name}: {form_data.get('sca_name', 'N/A')}"
@@ -191,17 +156,18 @@ def send_registration_email(form_data: dict, group_name: str):
     ]
     body = "\n".join(body_lines)
 
-    message = create_message('me', ADMIN_EMAIL, COMMUNICATIONS_EMAIL, subject, body)
+    # Create the message, setting the 'From' header to the impersonated user
+    message = create_message(IMPERSONATED_USER_EMAIL, ADMIN_EMAIL, COMMUNICATIONS_EMAIL, subject, body)
 
     if message:
-        print(f"Sending email to {ADMIN_EMAIL}, CC {COMMUNICATIONS_EMAIL}...")
-        sent_message = send_message(service, 'me', message)
+        print(f"Sending email as {IMPERSONATED_USER_EMAIL} to {ADMIN_EMAIL}, CC {COMMUNICATIONS_EMAIL}...")
+        # Send the message using the impersonated user's email as the userId
+        sent_message = send_message(service, IMPERSONATED_USER_EMAIL, message)
         if sent_message:
             print("Email sent successfully.")
             return True
         else:
-            print("Failed to send email via Gmail API.")
-            # Optionally display error in Streamlit
+            print("Failed to send email via Gmail API using Service Account.")
             try:
                 st.error("Failed to send notification email via Gmail API.")
             except Exception:
