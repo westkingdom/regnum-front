@@ -34,13 +34,11 @@ steps:
         '--region',
         '${_REGION}',
         '--allow-unauthenticated',
-        # Mount secrets as files
-        # Use --update-secrets if adding to existing secrets, or list all with --set-secrets=...,...
-        '--update-secrets=/secrets/service_account.json=regnum-service-account-key:latest',
-        # Keep existing secrets mounted
-        '--update-secrets=/secrets/google_credentials.json=regnum-google-credentials:latest',
+        # Mount secrets as files using a single --set-secrets flag
+        # Format: --set-secrets=[MOUNT_PATH]=[SECRET_NAME]:[VERSION],[MOUNT_PATH2]=[SECRET_NAME2]:[VERSION2]...
+        '--set-secrets=/secrets/service_account.json=regnum-service-account-key:latest,/secrets/google_credentials.json=regnum-google-credentials:latest',
         # Optional: Set impersonated user via env var
-        # '--set-env-vars=IMPERSONATED_USER_EMAIL=user_to_impersonate@yourdomain.com',
+        '--set-env-vars=IMPERSONATED_USER_EMAIL=webminister@westkingdom.org',
         '--platform',
         'managed',
       ]
