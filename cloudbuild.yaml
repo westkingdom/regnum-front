@@ -39,7 +39,6 @@ steps:
         '--update-secrets=/secrets/service_account.json=regnum-service-account-key:latest',
         # Keep existing secrets mounted
         '--update-secrets=/secrets/google_credentials.json=regnum-google-credentials:latest',
-        '--update-secrets=/secrets/credentials.json=regnum-email-credentials:latest',
         # Optional: Set impersonated user via env var
         # '--set-env-vars=IMPERSONATED_USER_EMAIL=user_to_impersonate@yourdomain.com',
         '--platform',
