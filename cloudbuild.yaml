@@ -34,12 +34,8 @@ steps:
         '--region',
         '${_REGION}',
         '--allow-unauthenticated',
-        # Mount secrets as files
-        # Format: --set-secrets=[VOLUME_MOUNT_PATH]=[SECRET_NAME]:[VERSION],...
-        # Mount google_credentials.json for main.py
         '--set-secrets=/secrets/google_credentials.json=regnum-google-credentials:latest',
-        # Mount credentials.json for email.py
-        '--update-secrets=/secrets/credentials.json=regnum-email-credentials:latest', # Use --update-secrets if adding to existing secrets
+        #'--update-secrets=/secrets/credentials.json=regnum-email-credentials:latest', # Use --update-secrets if adding to existing secrets
         '--platform',
         'managed', # Use 'managed' for serverless Cloud Run
       ]
