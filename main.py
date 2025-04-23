@@ -7,9 +7,9 @@ import os
 import json
 
 # Define the path where the secret is mounted
-SECRET_CREDENTIALS_PATH = '/secrets/google_credentials.json'
+SECRET_CREDENTIALS_PATH = '/secrets/oauth/google_credentials.json' # Updated path
 # Fallback for local development (optional)
-LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json'
+LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json' # Local fallback remains the same
 
 # Determine the correct path
 credentials_path = SECRET_CREDENTIALS_PATH if os.path.exists(SECRET_CREDENTIALS_PATH) else LOCAL_CREDENTIALS_PATH
