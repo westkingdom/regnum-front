@@ -34,9 +34,9 @@ steps:
         '--region',
         '${_REGION}',
         '--allow-unauthenticated',
-        # Mount secrets as files using a single --set-secrets flag
-        # Format: --set-secrets=[MOUNT_PATH]=[SECRET_NAME]:[VERSION],[MOUNT_PATH2]=[SECRET_NAME2]:[VERSION2]...
-        '--set-secrets=/secrets/service_account.json=regnum-service-account-key:latest,/secrets/google_credentials.json=regnum-google-credentials:latest',
+        # Mount secrets into separate subdirectories within /secrets
+        # Note the changed paths: /secrets/sa/service_account.json and /secrets/oauth/google_credentials.json
+        '--set-secrets=/secrets/sa/service_account.json=regnum-service-account-key:latest,/oauth/google_credentials.json=regnum-google-credentials:latest',
         # Optional: Set impersonated user via env var
         '--set-env-vars=IMPERSONATED_USER_EMAIL=webminister@westkingdom.org',
         '--platform',
