@@ -24,8 +24,8 @@ COMMUNICATIONS_EMAIL = "communications@westkingdom.org"
 IMPERSONATED_USER_EMAIL = "webminister@westkingdom.org"  # <<< --- CONFIGURE THIS
 
 # Define paths for the service account key
-SECRET_SA_KEY_PATH = '/secrets/service_account.json'
-LOCAL_SA_KEY_PATH = 'regnum-service-account-key.json'  # Local fallback (ensure this file exists locally for testing)
+SECRET_SA_KEY_PATH = '/secrets/sa/service_account.json'  # Updated path
+LOCAL_SA_KEY_PATH = 'regnum-service-account-key.json'  # Local fallback remains the same
 
 
 def get_gmail_service():
