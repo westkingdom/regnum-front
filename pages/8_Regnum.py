@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import json
 from datetime import date
-from utils.queries import get_group_members, is_valid_email
+# Make sure add_member_to_group is imported
+from utils.queries import get_group_members, is_valid_email, add_member_to_group
 from utils.email import send_registration_email
 
 # --- Data Loading Function ---
@@ -111,16 +112,29 @@ def display_add_member_form(selected_group_name: str) -> tuple[bool, dict | None
         return False, None # Return not submitted
 
 # --- Form Submission Handling Function ---
-def handle_form_submission(form_data: dict, selected_group_name: str):
-    """Handles the submission logic after form data is validated and collected."""
+# Updated to accept selected_group_id
+def handle_form_submission(form_data: dict, selected_group_name: str, selected_group_id: str):
+    """Handles the submission logic: sends email and adds member to the group."""
     st.info("Submitting registration...")
     email_sent = send_registration_email(form_data, selected_group_name)
 
     if email_sent:
-        st.success(f"Registration submitted for {form_data['sca_name']}. Notification sent.")
-        # Optionally: st.rerun() to refresh member list immediately
+        st.success(f"Registration notification sent for {form_data['sca_name']}.")
+
+        # --- Add member to group ---
+        st.info(f"Adding {form_data['westkingdom_email']} to group '{selected_group_name}'...")
+        member_added = add_member_to_group(selected_group_id, form_data['westkingdom_email'])
+
+        if member_added:
+            st.success(f"Successfully added {form_data['westkingdom_email']} to the group.")
+            # Rerun to refresh the member list displayed above the form
+            st.rerun()
+        else:
+            st.error(f"Failed to add {form_data['westkingdom_email']} to the group '{selected_group_name}'. Please add them manually via the Group Management page or contact support.")
+            # Don't rerun here, as the user might want to see the error.
+
     else:
-        st.error("Failed to send registration notification email. Please contact the administrator.")
+        st.error("Failed to send registration notification email. Member was NOT added to the group. Please contact the administrator.")
 
 # --- Main Streamlit App Logic ---
 st.set_page_config(page_title="Regnum")
@@ -153,7 +167,8 @@ if group_options:
 
                 # Handle submission if the form was submitted and data is valid
                 if submitted and form_data:
-                    handle_form_submission(form_data, selected_group_name)
+                    # Pass selected_group_id to the handler
+                    handle_form_submission(form_data, selected_group_name, selected_group_id)
                 # Note: Validation errors are displayed within display_add_member_form
 
         else:
