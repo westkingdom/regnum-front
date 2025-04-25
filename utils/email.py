@@ -22,7 +22,7 @@ COMMUNICATIONS_EMAIL = "communications@westkingdom.org"
 # !!! IMPORTANT: Set the email address of the Google Workspace user the Service Account will impersonate !!!
 # This user must exist in your Workspace. Emails will be sent *from* this address.
 # Consider making this an environment variable set during deployment for flexibility.
-IMPERSONATED_USER_EMAIL = "webminister@westkingdom.org"  # <<< --- CONFIGURE THIS
+IMPERSONATED_USER_EMAIL = "westkingdom@westkingdom.org"  # <<< --- CONFIGURE THIS
 
 # Define paths for the service account key
 SECRET_SA_KEY_PATH = '/secrets/sa/service_account.json'  # Updated path
