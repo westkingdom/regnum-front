@@ -53,30 +53,47 @@ with tab1:
 
             if selected_id:
                 try:
-                    members = get_group_members(selected_id)
+                    # API response is expected to be like: {"members": [ {member_data}, ... ]}
+                    api_response = get_group_members(selected_id)
 
                     st.write(f"### Group: {selected_group_name}") # Display the selected name
 
-                    # Display members
-                    if members is not None:
-                         if members: # Check if the list is not empty
-                            member_df = pd.DataFrame(members)
-                            # Select and display only relevant columns ('name', 'email')
-                            columns_to_display = []
-                            if 'name' in member_df.columns:
-                                columns_to_display.append('name')
-                            if 'email' in member_df.columns:
-                                columns_to_display.append('email')
+                    # Display members - Applying Regnum formatting
+                    if api_response is not None:
+                        # Extract the actual list of members from the response dictionary
+                        members_list = api_response.get('members', [])
 
-                            if columns_to_display:
-                                st.dataframe(member_df[columns_to_display])
-                            else:
-                                # Fallback if expected columns are missing
-                                st.dataframe(member_df)
-                         else:
-                            st.info("This group has no members.")
+                        if members_list: # Check if the extracted list is not empty
+                            try:
+                                # Attempt to create DataFrame from the extracted list
+                                member_df = pd.DataFrame(members_list)
+
+                                # Define desired columns based on the keys found in the nested objects
+                                all_possible_columns = ['email', 'role', 'status', 'type']
+                                columns_to_display = [col for col in all_possible_columns if col in member_df.columns]
+
+                                if columns_to_display:
+                                    # Display using st.dataframe for better interactivity and formatting
+                                    # Hide the index column for cleaner presentation
+                                    st.dataframe(member_df[columns_to_display], hide_index=True)
+                                elif not member_df.empty:
+                                    # Fallback if NO desired columns are present but DF is not empty
+                                    st.warning("Member data found, but expected columns ('email', 'role', etc.) are missing. Displaying all available data:")
+                                    st.dataframe(member_df, hide_index=True)
+                                else:
+                                    # Should not be hit if members_list was checked, but as a safeguard
+                                    st.info("No member data to display (DataFrame empty).")
+
+                            except Exception as df_error:
+                                st.error(f"Error processing member data into a table: {df_error}")
+                                st.warning("Displaying raw member data instead (from exception handler):")
+                                # Display the original API response if DataFrame fails
+                                st.json(api_response)
+
+                        else:
+                            st.info("This group has no members (API returned an empty 'members' list or missing key).")
                     else:
-                        st.warning(f"Could not fetch members for {selected_group_name}. The API might be down or the group ID is invalid.")
+                        st.warning(f"Could not fetch members for {selected_group_name}. The API might be down or the group ID is invalid (API returned None).")
 
                 except Exception as e:
                     st.error(f"An error occurred while fetching members for {selected_group_name}: {e}")

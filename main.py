@@ -23,7 +23,7 @@ try:
         # IMPORTANT: Update redirect_uri for Cloud Run deployment
         # You'll need to get the Cloud Run service URL after the first deployment
         # and add it as an authorized redirect URI in your Google Cloud OAuth Client ID settings.
-        redirect_uri=os.environ.get('REDIRECT_URI', 'http://localhost:8501') # Use env var or default
+        redirect_uri=os.environ.get('REDIRECT_URI', 'http://localhost:8501 flowName=GeneralOAuthFlow ') # Use env var or default
     )
 except FileNotFoundError:
     st.error(f"Credentials file not found at {credentials_path}. Ensure the secret is mounted correctly in Cloud Run or the local file exists.")
