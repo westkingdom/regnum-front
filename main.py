@@ -23,7 +23,7 @@ try:
         # IMPORTANT: Update redirect_uri for Cloud Run deployment
         # You'll need to get the Cloud Run service URL after the first deployment
         # and add it as an authorized redirect URI in your Google Cloud OAuth Client ID settings.
-        redirect_uri=os.environ.get('REDIRECT_URI', 'https://regnum-front-85382560394.us-west1.run.app%20flowName=GeneralOAuthFlow') # Use env var or default
+        redirect_uri=os.environ.get('REDIRECT_URI', 'https://regnum-front-85382560394.us-west1.run.app') # Use env var or default
     )
 except FileNotFoundError:
     st.error(f"Credentials file not found at {credentials_path}. Ensure the secret is mounted correctly in Cloud Run or the local file exists.")
@@ -38,8 +38,8 @@ def verify_organization(idinfo):
     # Check if the user's email domain is allowed (e.g., 'yourdomain.com')
     # Replace 'yourdomain.com' with the actual Google Workspace domain if needed
     # Or implement other verification logic
-    # return idinfo.get('hd') == 'yourdomain.com'
-    return True # Placeholder: Implement actual verification if needed
+    return idinfo.get('hd') == 'westkingdom.org'
+    #return True # Placeholder: Implement actual verification if needed
 
 # Streamlit app
 st.title("Google Workspace Authentication")
