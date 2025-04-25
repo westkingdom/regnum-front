@@ -26,26 +26,52 @@ def load_group_data(file_path: str = "utils/group_map_simplified.json") -> tuple
 
 # --- Member Display Function ---
 def display_group_members(selected_group_id: str, selected_group_name: str) -> bool:
-    """Fetches and displays members for the selected group. Returns True if successful, False on API error."""
+    """Fetches and displays members for the selected group in a readable format. Returns True if successful, False on API error."""
     try:
-        members = get_group_members(selected_group_id)
-        if members is not None:
-            if members:
+        # API response is expected to be like: {"members": [ {member_data}, ... ]}
+        api_response = get_group_members(selected_group_id)
+
+        if api_response is not None:
+            # Extract the actual list of members from the response dictionary
+            # Use .get() for safety, defaulting to an empty list if 'members' key is missing
+            members_list = api_response.get('members', [])
+
+            if members_list: # Check if the extracted list is not empty
                 st.subheader("Group Members:")
-                member_df = pd.DataFrame(members)
-                columns_to_display = [col for col in ['name', 'email'] if col in member_df.columns]
-                if columns_to_display:
-                    st.table(member_df[columns_to_display])
-                else:
-                    st.dataframe(member_df) # Fallback if columns missing
+                try:
+                    # Attempt to create DataFrame from the extracted list
+                    member_df = pd.DataFrame(members_list)
+
+                    # Define desired columns based on the keys found in the nested objects
+                    all_possible_columns = ['email', 'role', 'status', 'type']
+                    columns_to_display = [col for col in all_possible_columns if col in member_df.columns]
+
+                    if columns_to_display:
+                        # Display using st.dataframe for better interactivity and formatting
+                        # Hide the index column for cleaner presentation
+                        st.dataframe(member_df[columns_to_display], hide_index=True)
+                    elif not member_df.empty:
+                        # Fallback if NO desired columns are present but DF is not empty
+                        st.warning("Member data found, but expected columns ('email', 'role', etc.) are missing. Displaying all available data:")
+                        st.dataframe(member_df, hide_index=True)
+                    else:
+                        # Should not be hit if members_list was checked, but as a safeguard
+                        st.info("No member data to display (DataFrame empty).")
+
+                except Exception as df_error:
+                    st.error(f"Error processing member data into a table: {df_error}")
+                    st.warning("Displaying raw member data instead (from exception handler):")
+                    # Display the original API response if DataFrame fails
+                    st.json(api_response)
+
             else:
-                st.info("This group has no members.")
-            return True # Success (members fetched or group is empty)
+                st.info("This group has no members (API returned an empty 'members' list or missing key).")
+            return True # Success (members fetched/processed or group is empty)
         else:
-            st.error(f"Failed to fetch members for group '{selected_group_name}'. The API might be down or the group ID is invalid.")
+            st.error(f"Failed to fetch members for group '{selected_group_name}'. The API might be down or the group ID is invalid (API returned None).")
             return False # API error
     except Exception as e:
-        st.error(f"An error occurred while fetching members: {e}")
+        st.error(f"An error occurred while fetching or displaying members: {e}")
         return False # Other error
 
 # --- Form Display and Data Collection Function ---
