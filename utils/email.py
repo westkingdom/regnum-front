@@ -3,6 +3,7 @@ import os.path
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import json  # Import json for pretty printing
+import smtplib
 
 # Use service account credentials
 from google.oauth2 import service_account
@@ -28,6 +29,15 @@ IMPERSONATED_USER_EMAIL = "westkingdom@westkingdom.org"  # <<< --- CONFIGURE THI
 SECRET_SA_KEY_PATH = '/secrets/sa/service_account.json'  # Updated path
 LOCAL_SA_KEY_PATH = 'regnum-service-account-key.json'  # Local fallback remains the same
 
+# Assuming you have email credentials stored securely (e.g., environment variables)
+SMTP_SERVER = os.environ.get("SMTP_SERVER")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", 587)) # Default to 587 for TLS
+SMTP_USERNAME = os.environ.get("SMTP_SENDER_EMAIL")
+SMTP_PASSWORD = os.environ.get("SMTP_SENDER_PASSWORD")
+SENDER_EMAIL = os.environ.get("SMTP_SENDER_EMAIL") # Or a specific 'From' address
+
+RECIPIENT_COMMUNICATIONS = "communications@westkingdom.org"
+RECIPIENT_SITE = "regnum-site@westkingdom.org"
 
 def get_gmail_service():
     creds = None
@@ -198,4 +208,46 @@ def send_registration_email(form_data: dict, group_name: str):
             return False
     else:
         print("DEBUG: Failed to create email message in send_registration_email.")
+        return False
+
+
+def send_duty_request_email(form_data: dict, user_email: str) -> bool:
+    """
+    Sends the duty request email to the specified recipients.
+    Replace this with your actual email sending implementation (e.g., Gmail API).
+    """
+    if not all([SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SENDER_EMAIL]):
+         print("ERROR: SMTP environment variables not configured.")
+         # In Streamlit, use st.error or log appropriately
+         return False
+
+    subject = "New Duty/Job Request Submitted"
+    recipients = [user_email, RECIPIENT_COMMUNICATIONS, RECIPIENT_SITE]
+
+    # Format the body
+    body_lines = [f"A new duty request has been submitted via the Regnum site:\n"]
+    for key, value in form_data.items():
+        body_lines.append(f"- {key.replace('_', ' ').title()}: {value}")
+    body = "\n".join(body_lines)
+
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = ", ".join(recipients) # Comma-separated string for header
+
+    try:
+        # Example using smtplib with TLS (common setup)
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.ehlo() # Say hello
+            server.starttls() # Enable security
+            server.ehlo() # Say hello again after TLS
+            server.login(SMTP_USERNAME, SMTP_PASSWORD)
+            server.sendmail(SENDER_EMAIL, recipients, msg.as_string())
+            print(f"Duty request email sent successfully to {', '.join(recipients)}") # Log success
+            return True
+    except smtplib.SMTPAuthenticationError:
+        print("ERROR: SMTP Authentication failed. Check username/password.")
+        return False
+    except Exception as e:
+        print(f"ERROR: Failed to send duty request email: {e}") # Log detailed error
         return False
