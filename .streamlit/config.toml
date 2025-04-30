@@ -1,0 +1,8 @@
+[server]
+
+[theme]
+primaryColor="#EAB64F" # Gold/Yellow accent
+backgroundColor="#FAF8F0" # Off-white background
+secondaryBackgroundColor="#AEBDAA" # Muted Sage Green secondary background
+textColor="#333333" # Dark Charcoal text
+font="sans serif" # Or "serif" if you prefer

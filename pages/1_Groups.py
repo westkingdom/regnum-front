@@ -10,6 +10,14 @@ import re
 # Streamlit UI
 st.title("Group Management")
 
+# --- Fetch group data ONCE ---
+group_options, group_name_to_id = get_all_groups()
+
+# Check for errors during initial group load
+if not group_options:
+    st.warning("No groups found or failed to load groups. Cannot proceed with group management.")
+    st.stop() # Stop execution if no groups are loaded
+
 # Create tabs for different group operations
 tab1, tab2, tab3 = st.tabs(["View Groups", "Create Group", "Manage Members"])
 
@@ -24,84 +32,82 @@ with st.sidebar:
 with tab1:
     st.header("View Groups")
 
-    # Get all groups using the updated function
-    # It now returns (list_of_names, name_to_id_dict)
-    group_options, group_name_to_id = get_all_groups()
+    # --- Use the already fetched data ---
+    # if not group_options: # Check already done before tabs
+    #     st.warning("No groups found or failed to load groups. Please check the data source or create a new group.")
+    # else: # No need for else if st.stop() is used above
 
-    if not group_options: # Check if the list of names is empty
-        st.warning("No groups found or failed to load groups. Please check the data source or create a new group.")
-    else:
-        # Add search functionality using st.text_input
-        search_term = st.text_input("Search Groups", "", key="view_search") # Added key for uniqueness
+    # Add search functionality using st.text_input
+    search_term_view = st.text_input("Search Groups", "", key="view_search") # Renamed key slightly
 
-        # Filter group names based on search term
-        filtered_group_names = [name for name in group_options if search_term.lower() in name.lower()]
+    # Filter group names based on search term
+    filtered_group_names_view = [name for name in group_options if search_term_view.lower() in name.lower()]
 
-        # Selectbox for selecting a group by name
-        selected_group_name = st.selectbox(
-            "Select a Group",
-            options=filtered_group_names,
-            index=None, # Default to no selection
-            placeholder="Select a group...",
-            key="select_view_group"
-        )
+    # Selectbox for selecting a group by name
+    selected_group_name_view = st.selectbox(
+        "Select a Group",
+        options=filtered_group_names_view,
+        index=None, # Default to no selection
+        placeholder="Select a group...",
+        key="select_view_group"
+    )
 
-        # Get the selected group's data
-        if selected_group_name:
-            # Get the ID from the dictionary
-            selected_id = group_name_to_id.get(selected_group_name)
+    # Get the selected group's data
+    if selected_group_name_view:
+        # --- Use the already fetched map ---
+        selected_id = group_name_to_id.get(selected_group_name_view)
 
-            if selected_id:
-                try:
-                    # API response is expected to be like: {"members": [ {member_data}, ... ]}
-                    api_response = get_group_members(selected_id)
+        if selected_id:
+            try:
+                # API response is expected to be like: {"members": [ {member_data}, ... ]}
+                api_response = get_group_members(selected_id)
 
-                    st.write(f"### Group: {selected_group_name}") # Display the selected name
+                st.write(f"### Group: {selected_group_name_view}") # Display the selected name
 
-                    # Display members - Applying Regnum formatting
-                    if api_response is not None:
-                        # Extract the actual list of members from the response dictionary
-                        members_list = api_response.get('members', [])
+                # Display members - Applying Regnum formatting
+                if api_response is not None:
+                    # Extract the actual list of members from the response dictionary
+                    members_list = api_response.get('members', [])
 
-                        if members_list: # Check if the extracted list is not empty
-                            try:
-                                # Attempt to create DataFrame from the extracted list
-                                member_df = pd.DataFrame(members_list)
+                    if members_list: # Check if the extracted list is not empty
+                        try:
+                            # Attempt to create DataFrame from the extracted list
+                            member_df = pd.DataFrame(members_list)
 
-                                # Define desired columns based on the keys found in the nested objects
-                                all_possible_columns = ['email', 'role', 'status', 'type']
-                                columns_to_display = [col for col in all_possible_columns if col in member_df.columns]
+                            # Define desired columns based on the keys found in the nested objects
+                            all_possible_columns = ['email', 'role', 'status', 'type']
+                            columns_to_display = [col for col in all_possible_columns if col in member_df.columns]
 
-                                if columns_to_display:
-                                    # Display using st.dataframe for better interactivity and formatting
-                                    # Hide the index column for cleaner presentation
-                                    st.dataframe(member_df[columns_to_display], hide_index=True)
-                                elif not member_df.empty:
-                                    # Fallback if NO desired columns are present but DF is not empty
-                                    st.warning("Member data found, but expected columns ('email', 'role', etc.) are missing. Displaying all available data:")
-                                    st.dataframe(member_df, hide_index=True)
-                                else:
-                                    # Should not be hit if members_list was checked, but as a safeguard
-                                    st.info("No member data to display (DataFrame empty).")
+                            if columns_to_display:
+                                # Display using st.dataframe for better interactivity and formatting
+                                # Hide the index column for cleaner presentation
+                                st.dataframe(member_df[columns_to_display], hide_index=True)
+                            elif not member_df.empty:
+                                # Fallback if NO desired columns are present but DF is not empty
+                                st.warning("Member data found, but expected columns ('email', 'role', etc.) are missing. Displaying all available data:")
+                                st.dataframe(member_df, hide_index=True)
+                            else:
+                                # Should not be hit if members_list was checked, but as a safeguard
+                                st.info("No member data to display (DataFrame empty).")
 
-                            except Exception as df_error:
-                                st.error(f"Error processing member data into a table: {df_error}")
-                                st.warning("Displaying raw member data instead (from exception handler):")
-                                # Display the original API response if DataFrame fails
-                                st.json(api_response)
+                        except Exception as df_error:
+                            st.error(f"Error processing member data into a table: {df_error}")
+                            st.warning("Displaying raw member data instead (from exception handler):")
+                            # Display the original API response if DataFrame fails
+                            st.json(api_response)
 
-                        else:
-                            st.info("This group has no members (API returned an empty 'members' list or missing key).")
                     else:
-                        st.warning(f"Could not fetch members for {selected_group_name}. The API might be down or the group ID is invalid (API returned None).")
+                        st.info("This group has no members (API returned an empty 'members' list or missing key).")
+                else:
+                    st.warning(f"Could not fetch members for {selected_group_name_view}. The API might be down or the group ID is invalid (API returned None).")
 
-                except Exception as e:
-                    st.error(f"An error occurred while fetching members for {selected_group_name}: {e}")
-            else:
-                # This should not happen if the selectbox is populated correctly
-                st.error(f"Could not find ID for selected group '{selected_group_name}'. Data inconsistency?")
+            except Exception as e:
+                st.error(f"An error occurred while fetching members for {selected_group_name_view}: {e}")
         else:
-            st.info("Please select a group to view its members.")
+            # This should not happen if the selectbox is populated correctly
+            st.error(f"Could not find ID for selected group '{selected_group_name_view}'. Data inconsistency?")
+    else:
+        st.info("Please select a group to view its members.")
 
 # Tab 2: Create New Group
 with tab2:
@@ -111,89 +117,138 @@ with tab2:
     with st.form(key="create_group_form"):
         st.text_input("Group Name", key="new_group_name")
         if st.form_submit_button("Create Group"):
-            pass  # Replace with your actual implementation
+            # --- Placeholder for Create Group Logic ---
+            st.info("Create group functionality not yet implemented.")
+            # Replace with your actual implementation:
+            # group_name = st.session_state.new_group_name
+            # if group_name:
+            #    success = create_group_api_call(group_name) # Need a create_group function
+            #    if success:
+            #        st.success(f"Group '{group_name}' created.")
+            #        # Clear input, maybe rerun or update state
+            #    else:
+            #        st.error("Failed to create group.")
+            # else:
+            #    st.warning("Please enter a group name.")
+            pass
 
 # Tab 3: Manage Members
 with tab3:
     st.header("Manage Members")
 
-    groups = get_all_groups()
-    if not groups or 'groups' not in groups:
-        st.warning("No groups found. Please create a new group to begin.")
-    else:
-        group_names = [group['name'] for group in groups['groups']]
-        # Add search functionality using st.text_input
-        search_term = st.text_input("Search Groups", key="manage_search")
-        
-        # Filter group names based on search term
-        filtered_group_names = [name for name in group_names if search_term.lower() in name.lower()]
+    # --- Use the already fetched group_options list ---
+    # groups = get_all_groups() # REMOVE THIS LINE
+    # if not groups or 'groups' not in groups: # REMOVE THIS CHECK
+    #     st.warning("No groups found. Please create a new group to begin.")
+    # else: # No longer needed
 
-        selected_group_name = st.selectbox(
-            "Select a Group",
-            options=filtered_group_names,
-            key="select_manage_group"
-        )
+    # --- Use group_options for the selectbox ---
+    # group_names = [group['name'] for group in groups['groups']] # REMOVE THIS LINE
+    search_term_manage = st.text_input("Search Groups", key="manage_search") # Use unique key
 
-        # Get the selected group's data
-        # Check if a group is selected before proceeding
-        if selected_group_name:
-            try:
-                selected_group = next(group for group in groups['groups'] if group['name'] == selected_group_name)
-                selected_id = selected_group['id']
+    # Filter group names based on search term
+    filtered_group_names_manage = [name for name in group_options if search_term_manage.lower() in name.lower()]
 
-                # Display current members
-                st.subheader("Current Members")
-                members = get_group_members(selected_id)
-                if members and 'members' in members:
-                    members_df = pd.DataFrame(members['members'])
-                    if not members_df.empty:
-                        st.dataframe(members_df)
-                    else:
-                        st.info("No members in this group")
-                
-                # Add member form
-                st.subheader("Add New Member")
-                with st.form(key="add_member_form"):
-                    member_email = st.text_input(
-                        "Member Email",
-                        placeholder="user@westkingdom.org",
-                        help="Email must be from westkingdom.org domain"
-                    )
-                    
-                    submit_button = st.form_submit_button("Add Member")
-                    
-                    if submit_button:
-                        if not member_email:
-                            st.error("Please enter an email address")
-                        elif not is_valid_email(member_email):
-                            st.error("Invalid email format. Email must be from westkingdom.org domain")
-                        else:
-                            # Attempt to add member
-                            if add_member_to_group(selected_id, member_email):
-                                st.success(f"Successfully added {member_email} to {selected_group_name}")
-                                st.experimental_rerun()  # Refresh to show updated member list
-                            else:
-                                st.error("Failed to add member. Please try again.")
+    selected_group_name_manage = st.selectbox(
+        "Select a Group to Manage", # Slightly clearer label
+        options=filtered_group_names_manage,
+        index=None, # Add index=None for placeholder
+        placeholder="Select a group...", # Add placeholder
+        key="select_manage_group"
+    )
 
-                # Remove member section
-                st.subheader("Remove Member")
-                if members and 'members' in members and members['members']:
-                    member_to_remove = st.selectbox(
-                        "Select member to remove",
-                        options=[member['email'] for member in members['members']],
-                        key="remove_member_select"
-                    )
-                    
-                    if st.button("Remove Selected Member"):
-                        if st.warning("Are you sure you want to remove this member?"):
-                            if remove_member_from_group(selected_id, member_to_remove):
-                                st.success(f"Successfully removed {member_to_remove}")
-                                st.experimental_rerun()
-                            else:
-                                st.error("Failed to remove member. Please try again.")
-                else:
-                    st.info("No members available to remove")
-            except StopIteration:
-                st.error("Selected group not found. Please refresh the group list.")
+    # Get the selected group's data
+    if selected_group_name_manage:
+        # --- Use the already fetched group_name_to_id map ---
+        selected_id = group_name_to_id.get(selected_group_name_manage)
+
+        # Check if ID was found (it should be if name is from options)
+        if not selected_id:
+             st.error(f"Could not find ID for selected group '{selected_group_name_manage}'. Data inconsistency?")
+             st.stop() # Stop if ID is missing
+
+        # Display current members
+        st.subheader(f"Current Members of {selected_group_name_manage}")
+        members_response = get_group_members(selected_id) # Fetch members for the selected group
+        current_members = [] # Initialize as empty list
+
+        if members_response and 'members' in members_response:
+            # Store the list of member dicts
+            current_members = members_response['members']
+            members_df = pd.DataFrame(current_members)
+            if not members_df.empty:
+                # Define desired columns based on the keys found in the nested objects
+                all_possible_columns = ['email', 'role', 'status', 'type']
+                columns_to_display = [col for col in all_possible_columns if col in members_df.columns]
+                if columns_to_display:
+                     st.dataframe(members_df[columns_to_display], hide_index=True)
+                else: # Fallback if expected columns are missing
+                     st.warning("Member data found, but expected columns ('email', 'role', etc.) are missing. Displaying all available data:")
+                     st.dataframe(members_df, hide_index=True)
+            else:
+                st.info("No members currently in this group.")
         else:
-            st.info("Please select a group to manage its members.")
+            st.info("No members currently in this group or failed to fetch.")
+
+
+        # Add member form
+        st.subheader("Add New Member")
+        with st.form(key="add_member_form"):
+            member_email = st.text_input(
+                "Member Email",
+                placeholder="user@westkingdom.org",
+                help="Email must end with @westkingdom.org" # Updated help text
+            )
+
+            submit_button = st.form_submit_button("Add Member")
+
+            if submit_button:
+                if not member_email:
+                    st.error("Please enter an email address.")
+                # Use the imported validation function
+                elif not is_valid_email(member_email): # Assuming is_valid_email checks the domain
+                    st.error("Invalid email address. Must end with @westkingdom.org.")
+                else:
+                    # Attempt to add member
+                    st.info(f"Attempting to add {member_email}...") # Give feedback
+                    if add_member_to_group(selected_id, member_email):
+                        st.success(f"Successfully added {member_email} to {selected_group_name_manage}")
+                        st.experimental_rerun()  # Refresh to show updated member list
+                    else:
+                        st.error(f"Failed to add member {member_email}. The user may already be in the group, or an API error occurred.")
+
+        # Remove member section
+        st.subheader("Remove Member")
+        # Use the fetched current_members list
+        if current_members:
+            member_emails = [member.get('email', 'N/A') for member in current_members if member.get('email')] # Extract emails safely
+            if member_emails:
+                member_to_remove = st.selectbox(
+                    "Select member to remove",
+                    options=member_emails,
+                    index=None, # Add index=None
+                    placeholder="Select email...", # Add placeholder
+                    key="remove_member_select"
+                )
+
+                # Use a separate button to avoid form conflicts if needed, or ensure key is unique
+                if st.button("Remove Selected Member", key="remove_button"):
+                    if member_to_remove: # Check if a member was actually selected
+                        # Confirmation dialog (optional but recommended)
+                        # st.warning(f"Are you sure you want to remove {member_to_remove}?")
+                        # if st.button("Confirm Removal", key="confirm_remove"):
+                        st.info(f"Attempting to remove {member_to_remove}...") # Feedback
+                        if remove_member_from_group(selected_id, member_to_remove):
+                            st.success(f"Successfully removed {member_to_remove}")
+                            st.experimental_rerun()
+                        else:
+                            st.error(f"Failed to remove member {member_to_remove}. Please try again or check API logs.")
+                    else:
+                        st.warning("Please select a member email to remove.")
+            else:
+                st.info("No members with emails found in this group to remove.")
+        else:
+            st.info("No members available in this group to remove.")
+
+    else: # No group selected in Manage tab
+        st.info("Please select a group above to manage its members.")
