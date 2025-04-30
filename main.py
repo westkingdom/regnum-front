@@ -42,7 +42,7 @@ def verify_organization(idinfo):
     #return True # Placeholder: Implement actual verification if needed
 
 # Streamlit app
-st.title("Google Workspace Authentication")
+st.title("West Kingdom Google Authentication")
 
 # Handle OAuth callback
 query_params = st.query_params
@@ -106,6 +106,3 @@ else:
             del st.session_state['credentials']
             st.rerun()
 
-# Placeholder for the rest of your app or page navigation
-# if 'credentials' in st.session_state:
-#    st.write("Main Application Content Goes Here")
