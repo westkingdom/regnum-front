@@ -2,33 +2,75 @@ import streamlit as st
 import pandas as pd
 import json
 from datetime import date
+from typing import Union, Optional, Tuple, List, Dict, Any # Import necessary types
 # Make sure add_member_to_group is imported
 from utils.queries import get_group_members, is_valid_email, add_member_to_group
 from utils.email import send_registration_email
 
 # --- Data Loading Function ---
-def load_group_data(file_path: str = "utils/group_map_simplified.json") -> tuple[list, dict]:
-    """Loads group data from a JSON file and returns options and name-to-ID map."""
+# Note: Type hint was tuple[list, dict], updated to standard Tuple[List, Dict]
+def load_group_data(file_path: str = "utils/group_map_simplified.json") -> Tuple[List[str], Dict[str, str]]:
+    """
+    Loads group data (names and IDs) from a specified JSON file.
+
+    Reads the JSON file, processes it using pandas, and extracts group names
+    into a list and a name-to-ID mapping into a dictionary. Handles file errors
+    and data structure issues, displaying errors using st.error.
+
+    Args:
+        file_path: The relative path to the JSON file containing group data.
+                   Defaults to "utils/group_map_simplified.json".
+
+    Returns:
+        A tuple containing:
+        - A list of group name strings.
+        - A dictionary mapping group names (str) to group IDs (str).
+        Returns ([], {}) if any error occurs during loading or processing.
+    """
+    group_options = []
+    group_name_to_id = {}
     try:
         df_groups = pd.read_json(file_path)
+        # Basic validation for expected columns
+        if 'id' not in df_groups.columns or 'name' not in df_groups.columns:
+             raise KeyError("Required columns 'id' or 'name' not found in JSON data.")
         group_name_to_id = pd.Series(df_groups.id.values, index=df_groups.name).to_dict()
         group_options = df_groups['name'].tolist()
-        return group_options, group_name_to_id
     except FileNotFoundError:
-        st.error(f"Error: {file_path} not found. Please ensure the file exists.")
-    except ValueError as e:
+        st.error(f"Error: Group data file ({file_path}) not found. Please ensure the file exists.")
+    except pd.errors.EmptyDataError:
+        st.error(f"Error: Group data file ({file_path}) is empty or not valid JSON.")
+    except ValueError as e: # Catch JSON decoding errors
         st.error(f"Error reading or parsing JSON file ({file_path}): {e}")
-    except KeyError:
-        st.error(f"Error: Column 'name' or 'id' not found in {file_path}. Check JSON structure.")
-    except Exception as e:
+    except KeyError as e: # Catch missing 'name' or 'id' columns after loading
+        st.error(f"Error processing group data from {file_path}: {e}")
+    except Exception as e: # Catch other unexpected errors
         st.error(f"An unexpected error occurred while loading data from {file_path}: {e}")
-    return [], {} # Return empty structures on error
+
+    return group_options, group_name_to_id
+
 
 # --- Member Display Function ---
 def display_group_members(selected_group_id: str, selected_group_name: str) -> bool:
-    """Fetches and displays members for the selected group in a readable format. Returns True if successful, False on API error."""
+    """
+    Fetches and displays members for a selected group using a Streamlit DataFrame.
+
+    Calls the `get_group_members` API utility function. If successful, formats
+    the member list into a pandas DataFrame and displays relevant columns
+    (email, role, status, type). Handles API errors, empty member lists,
+    and DataFrame processing errors gracefully, displaying informative messages or warnings.
+
+    Args:
+        selected_group_id: The ID of the group whose members are to be displayed.
+        selected_group_name: The name of the group (used for error messages).
+
+    Returns:
+        True if members were successfully fetched and processed (even if the list is empty),
+        False if there was an API error preventing fetching members or an unexpected exception.
+    """
     try:
         # API response is expected to be like: {"members": [ {member_data}, ... ]}
+        st.subheader(f"Members in {selected_group_name}") # Add subheader before fetch
         api_response = get_group_members(selected_group_id)
 
         if api_response is not None:
@@ -37,50 +79,71 @@ def display_group_members(selected_group_id: str, selected_group_name: str) -> b
             members_list = api_response.get('members', [])
 
             if members_list: # Check if the extracted list is not empty
-                st.subheader("Group Members:")
+                # st.subheader("Group Members:") # Moved above
                 try:
                     # Attempt to create DataFrame from the extracted list
                     member_df = pd.DataFrame(members_list)
 
                     # Define desired columns based on the keys found in the nested objects
                     all_possible_columns = ['email', 'role', 'status', 'type']
+                    # Filter to only include columns actually present in the DataFrame
                     columns_to_display = [col for col in all_possible_columns if col in member_df.columns]
 
                     if columns_to_display:
                         # Display using st.dataframe for better interactivity and formatting
                         # Hide the index column for cleaner presentation
-                        st.dataframe(member_df[columns_to_display], hide_index=True)
+                        st.dataframe(member_df[columns_to_display], hide_index=True, use_container_width=True) # Add container width
                     elif not member_df.empty:
                         # Fallback if NO desired columns are present but DF is not empty
                         st.warning("Member data found, but expected columns ('email', 'role', etc.) are missing. Displaying all available data:")
-                        st.dataframe(member_df, hide_index=True)
+                        st.dataframe(member_df, hide_index=True, use_container_width=True)
                     else:
                         # Should not be hit if members_list was checked, but as a safeguard
-                        st.info("No member data to display (DataFrame empty).")
+                        st.info("No member data to display (DataFrame empty).") # Should be caught by outer 'if members_list'
 
                 except Exception as df_error:
                     st.error(f"Error processing member data into a table: {df_error}")
                     st.warning("Displaying raw member data instead (from exception handler):")
                     # Display the original API response if DataFrame fails
-                    st.json(api_response)
+                    st.json(api_response) # Display raw data on error
 
-            else:
-                st.info("This group has no members (API returned an empty 'members' list or missing key).")
+            else: # members_list is empty
+                st.info(f"The group '{selected_group_name}' currently has no members.")
             return True # Success (members fetched/processed or group is empty)
-        else:
-            st.error(f"Failed to fetch members for group '{selected_group_name}'. The API might be down or the group ID is invalid (API returned None).")
+        else: # api_response is None
+            st.error(f"Failed to fetch members for group '{selected_group_name}'. The API might be down or the group ID is invalid.")
             return False # API error
-    except Exception as e:
-        st.error(f"An error occurred while fetching or displaying members: {e}")
+
+    except Exception as e: # Catch any other unexpected errors
+        st.error(f"An unexpected error occurred while fetching or displaying members for '{selected_group_name}': {e}")
         return False # Other error
 
+
 # --- Form Display and Data Collection Function ---
-def display_add_member_form(selected_group_name: str) -> tuple[bool, dict | None]:
-    """Displays the 'Add New Member' form and returns submit status and data."""
+def display_add_member_form(selected_group_name: str) -> Tuple[bool, Optional[Dict[str, Any]]]:
+    """
+    Displays the 'Add New Member' Streamlit form and handles its submission.
+
+    Uses `st.form` to collect member details (SCA name, email, address, etc.).
+    Upon submission, it validates required fields (SCA name, West Kingdom email).
+    If validation passes, it collects form data into a dictionary.
+
+    Args:
+        selected_group_name: The name of the group to which the member will be added
+                             (used in the form's subheader).
+
+    Returns:
+        A tuple containing:
+        - bool: True if the form was submitted in this run, False otherwise.
+        - Optional[dict]: A dictionary containing the validated form data if submission
+                          was successful and valid. None if the form was not submitted or
+                          if validation failed.
+    """
     with st.form(key='new_member_form'):
         st.subheader(f"Add New Member to {selected_group_name}")
 
-        sca_name = st.text_input("SCA Name", placeholder="Stephan of Pembroke")
+        # Input fields for member details
+        sca_name = st.text_input("SCA Name*", placeholder="Stephan of Pembroke", help="Required")
         mundane_name = st.text_input("Mundane Name", placeholder="Jim Bob MacGillicuty")
         sca_membership_number = st.number_input("SCA Membership Number", value=None, min_value=0, step=1, placeholder="1123581")
 
@@ -91,115 +154,155 @@ def display_add_member_form(selected_group_name: str) -> tuple[bool, dict | None
         zip_code = st.text_input("Zip Code", placeholder="95014")
         country = st.text_input("Country", placeholder="USA")
 
-        westkingdom_email = st.text_input("Westkingdom Email Address", placeholder="man.bear.pig@westkingdom.org")
+        westkingdom_email = st.text_input("Westkingdom Email Address*", placeholder="user@westkingdom.org", help="Required, must end in @westkingdom.org")
         contact_phone_number = st.text_input("Contact Phone Number (e.g., 123-456-7890)", placeholder="510-867-5309")
 
-        effective_date = st.date_input("Effective Date", value=None, format="YYYY-MM-DD")
-        end_date = st.date_input("End Date", value=None, format="YYYY-MM-DD")
+        effective_date = st.date_input("Effective Date", value=None, format="YYYY-MM-DD") # Consider default to today? value=date.today()
+        end_date = st.date_input("End Date (Optional)", value=None, format="YYYY-MM-DD") # Optional end date
 
+        # Submit button for the form
         submit_button = st.form_submit_button(label='Add Member')
 
         form_data = None
-        is_valid = True # Flag for validation status
+        was_submitted = False # Flag if form was submitted in this run
 
         if submit_button:
+            was_submitted = True # Mark as submitted regardless of validation
+            is_valid = True # Assume valid initially
             # Perform validation within the form context
-            if not westkingdom_email:
-                 st.error("Westkingdom email address is required.")
-                 is_valid = False
-            elif not is_valid_email(westkingdom_email):
-                 st.error("Please provide a valid Westkingdom email address ending with @westkingdom.org.")
-                 is_valid = False
-
             if not sca_name:
                  st.error("SCA Name is required.")
                  is_valid = False
+            if not westkingdom_email:
+                 st.error("Westkingdom email address is required.")
+                 is_valid = False
+            elif not is_valid_email(westkingdom_email): # Use utility function
+                 st.error("Please provide a valid email address ending with @westkingdom.org.")
+                 is_valid = False
+
+            # Add more validation as needed (e.g., zip code format)
 
             if is_valid:
                 # Collect data only if validation passes
                 form_data = {
                     'sca_name': sca_name,
-                    'mundane_name': mundane_name,
+                    'mundane_name': mundane_name if mundane_name else 'N/A',
                     'sca_membership_number': sca_membership_number if sca_membership_number is not None else 'N/A',
-                    'street_address': street_address,
-                    'city': city,
-                    'state': state,
-                    'zip_code': zip_code,
-                    'country': country,
-                    'westkingdom_email': westkingdom_email,
-                    'contact_phone_number': contact_phone_number,
+                    'street_address': street_address if street_address else 'N/A',
+                    'city': city if city else 'N/A',
+                    'state': state if state else 'N/A',
+                    'zip_code': zip_code if zip_code else 'N/A',
+                    'country': country if country else 'N/A',
+                    'westkingdom_email': westkingdom_email, # Required, so always present
+                    'contact_phone_number': contact_phone_number if contact_phone_number else 'N/A',
                     'effective_date': str(effective_date) if effective_date else 'N/A',
                     'end_date': str(end_date) if end_date else 'N/A'
                 }
-                return True, form_data # Return submitted status and data
-            else:
-                return True, None # Return submitted status but no data due to validation failure
+                # Don't return here yet, let the main logic handle it based on 'was_submitted' and 'form_data'
+            # else: Validation errors are displayed above
 
-        return False, None # Return not submitted
+        # Return submission status and the data (None if invalid or not submitted)
+        return was_submitted, form_data
+
 
 # --- Form Submission Handling Function ---
-# Updated to accept selected_group_id
-def handle_form_submission(form_data: dict, selected_group_name: str, selected_group_id: str):
-    """Handles the submission logic: sends email and adds member to the group."""
-    st.info("Submitting registration...")
+def handle_form_submission(form_data: Dict[str, Any], selected_group_name: str, selected_group_id: str) -> None:
+    """
+    Handles the logic after the 'Add Member' form is successfully submitted and validated.
+
+    This function takes the validated form data, sends a registration notification email
+    using `send_registration_email`, and then attempts to add the member to the
+    specified group using the `add_member_to_group` API utility function.
+    It displays success or error messages using Streamlit and triggers `st.rerun()`
+    on successful addition to refresh the member list.
+
+    Args:
+        form_data: The dictionary containing validated data from the submitted form.
+        selected_group_name: The name of the group the member is being added to.
+        selected_group_id: The ID of the group the member is being added to.
+
+    Returns:
+        None. Displays results and potentially reruns the Streamlit app.
+    """
+    st.info("Processing registration...") # Use info for processing steps
+
+    # 1. Send notification email
     email_sent = send_registration_email(form_data, selected_group_name)
 
     if email_sent:
-        st.success(f"Registration notification sent for {form_data['sca_name']}.")
+        st.success(f"Registration notification sent for {form_data.get('sca_name', 'N/A')}.") # Use .get for safety
 
-        # --- Add member to group ---
-        st.info(f"Adding {form_data['westkingdom_email']} to group '{selected_group_name}'...")
+        # 2. Add member to the actual group via API
+        st.info(f"Adding {form_data['westkingdom_email']} to group '{selected_group_name}'...") # Use quotes for clarity
         member_added = add_member_to_group(selected_group_id, form_data['westkingdom_email'])
 
         if member_added:
-            st.success(f"Successfully added {form_data['westkingdom_email']} to the group.")
+            st.success(f"Successfully added {form_data['westkingdom_email']} to the group '{selected_group_name}'.")
             # Rerun to refresh the member list displayed above the form
             st.rerun()
         else:
-            st.error(f"Failed to add {form_data['westkingdom_email']} to the group '{selected_group_name}'. Please add them manually via the Group Management page or contact support.")
-            # Don't rerun here, as the user might want to see the error.
+            # Error message already shown by add_member_to_group if API fails
+            st.error(f"Failed to add {form_data['westkingdom_email']} to the group '{selected_group_name}'. The user might already be in the group, or an API error occurred. Please check logs or add manually if needed.")
+            # Don't rerun here, let the user see the error.
 
     else:
+        # Error message should be shown by send_registration_email
         st.error("Failed to send registration notification email. Member was NOT added to the group. Please contact the administrator.")
 
-# --- Main Streamlit App Logic ---
-st.set_page_config(page_title="Regnum")
-st.title("Regnum")
 
-# Load data
+# --- Main Streamlit App Logic ---
+st.set_page_config(page_title="Regnum Data Entry") # More specific title
+st.title("Regnum Data Entry") # Match page title
+
+# --- Load group data ---
 group_options, group_name_to_id = load_group_data()
 
-# Display selection only if data loaded successfully
-if group_options:
+# --- Proceed only if groups loaded successfully ---
+if not group_options:
+    st.warning("Could not load group information. Cannot display member management or entry form.")
+    # Error message already displayed by load_group_data
+    st.stop() # Stop execution if groups aren't loaded
+else:
+    # --- Group Selection ---
     selected_group_name = st.selectbox(
-        "Group Selection",
+        "Select Group to View/Manage Members", # More descriptive label
         options=group_options,
         index=None,
         placeholder="Select a group..."
     )
 
+    # --- Actions for Selected Group ---
     if selected_group_name:
-        st.write(f"You selected: {selected_group_name}")
+        # st.write(f"Selected Group: {selected_group_name}") # Display name clearly
         selected_group_id = group_name_to_id.get(selected_group_name)
 
         if selected_group_id:
-            # Display members and check if successful before showing form
+            # --- Display Members ---
+            # Display members and check if successful before showing the form
+            # The function itself handles success/error messages
             members_displayed_successfully = display_group_members(selected_group_id, selected_group_name)
 
+            # --- Display Add Member Form ---
             if members_displayed_successfully:
-                st.divider()
+                st.divider() # Separate member list from the form
                 # Display the form and get submission status/data
+                # The function displays validation errors internally
                 submitted, form_data = display_add_member_form(selected_group_name)
 
-                # Handle submission if the form was submitted and data is valid
+                # --- Handle Form Submission ---
+                # Handle submission *only* if the form was submitted in this run *and* data is valid (not None)
                 if submitted and form_data:
-                    # Pass selected_group_id to the handler
                     handle_form_submission(form_data, selected_group_name, selected_group_id)
-                # Note: Validation errors are displayed within display_add_member_form
+                elif submitted and not form_data:
+                    # Form was submitted but validation failed (errors shown in display_add_member_form)
+                    st.warning("Submission failed validation checks. Please correct the errors above.")
 
         else:
             # This case should ideally not happen if the selectbox options are derived correctly
-            st.error("Could not find the ID for the selected group.")
-# else:
-    # Error messages handled within load_group_data()
+            st.error(f"Could not find the ID for the selected group '{selected_group_name}'. Data inconsistency?")
+    else:
+        st.info("Select a group from the dropdown above to view its members or add a new member.")
+
+# --- Footer or other info ---
+# st.info("End of Regnum page.")
 

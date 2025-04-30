@@ -28,5 +28,5 @@ ENV PORT=8080
 # Use --server.port $PORT to respect the Cloud Run environment variable
 # Use --server.enableCORS=false and --server.enableXsrfProtection=false if needed,
 # but be aware of security implications. Start without them.
-# Ensure main.py is your intended entry point for the app.
-CMD ["streamlit", "run", "main.py", "--server.port", "8080", "--server.address", "0.0.0.0"]
+# Ensure Home.py is your intended entry point for the app.
+CMD ["streamlit", "run", "Home.py", "--server.port", "8080", "--server.address", "0.0.0.0"]

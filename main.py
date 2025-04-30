@@ -35,11 +35,9 @@ except Exception as e:
 
 # Function to verify the user's organization
 def verify_organization(idinfo):
-    # Check if the user's email domain is allowed (e.g., 'yourdomain.com')
-    # Replace 'yourdomain.com' with the actual Google Workspace domain if needed
-    # Or implement other verification logic
+
     return idinfo.get('hd') == 'westkingdom.org'
-    #return True # Placeholder: Implement actual verification if needed
+
 
 # Streamlit app
 st.title("West Kingdom Google Authentication")

@@ -1,72 +1,164 @@
 import requests
-from utils.config import api_url
+from .config import api_url # Use relative import within the package
 import pandas as pd
 import re
+import streamlit as st # Import for error display
+from typing import Tuple, List, Dict, Optional, Any # Added type hints
 
-def get_all_groups():
+# Note: get_all_groups reads from a local file, not the API directly.
+def get_all_groups() -> Tuple[List[str], Dict[str, str]]:
+    """
+    Loads group names and their corresponding IDs from a local JSON file.
+
+    Reads 'utils/group_map_simplified.json', processes it into a list of group names
+    and a dictionary mapping names to IDs. Handles file not found and parsing errors.
+
+    Returns:
+        A tuple containing:
+        - A list of group names (strings).
+        - A dictionary mapping group names (str) to group IDs (str).
+        Returns ([], {}) if an error occurs during loading or processing.
+    """
+    group_options = []
+    group_name_to_id = {}
+    file_path = "utils/group_map_simplified.json"
     try:
-        # Use the simplified JSON file
-        df_groups = pd.read_json("utils/group_map_simplified.json")
-        # Create a dictionary mapping group names to their IDs for easy lookup
+        df_groups = pd.read_json(file_path)
+        # Ensure required columns exist before processing
+        if 'id' not in df_groups.columns or 'name' not in df_groups.columns:
+            raise KeyError("Required columns 'id' or 'name' not found in JSON.")
         group_name_to_id = pd.Series(df_groups.id.values, index=df_groups.name).to_dict()
         group_options = df_groups['name'].tolist()
-        return group_options, group_name_to_id
-    except pd.errors.EmptyDataError:
-        st.error("Error: utils/group_map_simplified.json is empty or not formatted correctly.")
-        group_options = []
-        group_name_to_id = {}
-        # Handle the case where the file is empty or not formatted correctly
     except FileNotFoundError:
-        st.error("Error: utils/group_map_simplified.json not found. Please ensure the simplified file exists.")
-        group_options = []
-        group_name_to_id = {}
+        st.error(f"Error: Group data file ({file_path}) not found.")
+    except pd.errors.EmptyDataError:
+        st.error(f"Error: Group data file ({file_path}) is empty or not valid JSON.")
     except ValueError as e: # Catch potential JSON decoding errors or structure issues
-        st.error(f"Error reading or parsing JSON file: {e}")
-        group_options = []
-        group_name_to_id = {}
-    except KeyError:
-        st.error("Error: Column 'name' or 'id' not found in the data loaded from utils/group_map_simplified.json. Please check the JSON structure.")
-        group_options = []
-        group_name_to_id = {}
+        st.error(f"Error reading or parsing JSON file ({file_path}): {e}")
+    except KeyError as e:
+        st.error(f"Error processing group data ({file_path}): {e}")
     except Exception as e:
-        st.error(f"An unexpected error occurred while loading the data: {e}")
-        group_options = []
-        group_name_to_id = {}
+        st.error(f"An unexpected error occurred loading group data from {file_path}: {e}")
+
+    return group_options, group_name_to_id
 
 
+def get_group_by_id(group_id: str) -> Optional[Dict[str, Any]]:
+    """
+    Fetches details of a specific group by its ID from the API.
 
-def get_group_by_id(group_id: str):
-    """Fetch a group by its ID"""
-    response = requests.get(f"{api_url}/groups/{group_id}/")
-    if response.status_code == 200:
+    Args:
+        group_id: The unique identifier of the group.
+
+    Returns:
+        A dictionary containing the group details if found (status code 200),
+        otherwise None.
+    """
+    try:
+        response = requests.get(f"{api_url}/groups/{group_id}/")
+        response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
         return response.json()
-    return None
+    except requests.exceptions.RequestException as e:
+        st.error(f"API Error fetching group {group_id}: {e}")
+        return None
 
-def get_group_members(group_id: str):
-    """Fetch the members of a group"""
-    response = requests.get(f"{api_url}/groups/{group_id}/members/")
-    if response.status_code == 200:
+def get_group_members(group_id: str) -> Optional[Dict[str, Any]]:
+    """
+    Fetches the members list for a specific group from the API.
+
+    Args:
+        group_id: The unique identifier of the group.
+
+    Returns:
+        A dictionary containing the list of members (usually under a 'members' key)
+        if successful (status code 200), otherwise None.
+    """
+    try:
+        response = requests.get(f"{api_url}/groups/{group_id}/members/")
+        response.raise_for_status()
         return response.json()
-    return None
+    except requests.exceptions.RequestException as e:
+        st.error(f"API Error fetching members for group {group_id}: {e}")
+        return None
 
-def create_group(group_id: str, group_name: str):
-    """Create a new group"""
+def create_group(group_id: str, group_name: str) -> bool:
+    """
+    Attempts to create a new group via the API.
+
+    Args:
+        group_id: The desired ID for the new group (often an email address).
+        group_name: The display name for the new group.
+
+    Returns:
+        True if the group creation was successful (API returned status code 200),
+        False otherwise.
+    """
     params = {"group_id": group_id, "group_name": group_name}
-    response = requests.post(f"{api_url}/groups/", params=params)
-    return response.status_code == 200
+    try:
+        response = requests.post(f"{api_url}/groups/", params=params)
+        response.raise_for_status() # Check for 4xx/5xx errors
+        # Consider checking response content if API provides creation status in body
+        return True # Assume 2xx status means success
+    except requests.exceptions.RequestException as e:
+        st.error(f"API Error creating group '{group_name}' ({group_id}): {e}")
+        return False
 
-def add_member_to_group(group_id: str, member_email: str):
-    """Add a member to a group"""
+def add_member_to_group(group_id: str, member_email: str) -> bool:
+    """
+    Attempts to add a member to a specific group via the API.
+
+    Args:
+        group_id: The ID of the group to add the member to.
+        member_email: The email address of the member to add.
+
+    Returns:
+        True if adding the member was successful (API returned status code 200),
+        False otherwise. Handles potential API errors.
+    """
     params = {"member_email": member_email}
-    response = requests.post(f"{api_url}/groups/{group_id}/add-member/", params=params)
-    return response.status_code == 200
+    try:
+        response = requests.post(f"{api_url}/groups/{group_id}/add-member/", params=params)
+        response.raise_for_status() # Raises HTTPError for bad responses (4xx or 5xx)
+        # Optionally check response.json() if the API confirms success in the body
+        return True # Assume 2xx status code indicates success
+    except requests.exceptions.RequestException as e:
+        # Provide more context in the error message
+        st.error(f"API Error adding member {member_email} to group {group_id}: {e}")
+        # Log the full error for debugging if needed: print(e)
+        return False
 
-def remove_member_from_group(group_id: str, member_email: str):
-    """Remove a member from a group"""
-    response = requests.delete(f"{api_url}/groups/{group_id}/members/{member_email}")
-    return response.status_code == 200
+def remove_member_from_group(group_id: str, member_email: str) -> bool:
+    """
+    Attempts to remove a member from a specific group via the API.
+
+    Args:
+        group_id: The ID of the group to remove the member from.
+        member_email: The email address of the member to remove.
+
+    Returns:
+        True if removing the member was successful (API returned status code 200),
+        False otherwise. Handles potential API errors.
+    """
+    try:
+        response = requests.delete(f"{api_url}/groups/{group_id}/members/{member_email}")
+        response.raise_for_status() # Raises HTTPError for bad responses (4xx or 5xx)
+        return True # Assume 2xx status code indicates success
+    except requests.exceptions.RequestException as e:
+        st.error(f"API Error removing member {member_email} from group {group_id}: {e}")
+        return False
 
 def is_valid_email(email: str) -> bool:
-    """Validate email format and domain"""
+    """
+    Validates if a string is a syntactically valid email address ending with '@westkingdom.org'.
+
+    Args:
+        email: The email string to validate.
+
+    Returns:
+        True if the email is valid and ends with '@westkingdom.org', False otherwise.
+    """
+    if not isinstance(email, str):
+        return False
+    # Regex for basic email structure + specific domain, case-insensitive domain check
     pattern = r'^[a-zA-Z0-9._%+-]+@westkingdom\.org$'
-    return bool(re.match(pattern, email))
+    return bool(re.match(pattern, email, re.IGNORECASE))
