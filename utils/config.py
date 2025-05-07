@@ -1,5 +1,5 @@
 # Input for the API URL
-api_url = "https://regnum-api-85382560394.us-west1.run.app"
+api_url = "https://34.95.77.147"
 
 client_id = "85382560394-7aqkmopbm521utmmhrtr5rijj1tl306r.apps.googleusercontent.com"
 # Define the scopes required for your application
