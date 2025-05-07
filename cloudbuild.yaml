@@ -51,7 +51,20 @@ steps:
       '--timeout=60s'
     ]
 
-  # Create SSL certificate
+  # Delete existing SSL certificate
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'compute',
+      'ssl-certificates',
+      'delete',
+      'regnum-cert',
+      '--global',
+      '--quiet'  # Skip confirmation prompt
+    ]
+    allowFailure: true  # Continue even if certificate doesn't exist
+
+  # Create new SSL certificate
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args: [
@@ -59,7 +72,8 @@ steps:
       'ssl-certificates',
       'create',
       'regnum-cert',
-      '--domains=regnum.westkingdom.org'
+      '--domains=regnum.westkingdom.org',
+      '--global'
     ]
 
   # Import the URL map configuration
