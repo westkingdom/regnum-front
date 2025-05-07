@@ -1,29 +1,13 @@
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: regnum-cert
-spec:
-  domains:
-    - regnum.westkingdom.org
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: regnum-ingress
-  annotations:
-    kubernetes.io/ingress.class: "gce"
-    kubernetes.io/ingress.global-static-ip-name: "regnum-ip"  # Will create this IP
-    networking.gke.io/managed-certificates: "regnum-cert"
-    kubernetes.io/ingress.allow-http: "false"  # Force HTTPS
-spec:
-  rules:
-  - host: regnum.westkingdom.org
-    http:
-      paths:
-      - path: /*
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: regnum-front
-            port:
-              number: 8080 
+name: regnum-lb
+defaultService: regions/us-west1/backendServices/regnum-front
+hostRules:
+- hosts:
+  - regnum.westkingdom.org
+  pathMatcher: main
+pathMatchers:
+- name: main
+  defaultService: regions/us-west1/backendServices/regnum-front
+  pathRules:
+  - paths:
+    - /*
+    service: regions/us-west1/backendServices/regnum-front 
