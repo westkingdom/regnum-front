@@ -5,49 +5,61 @@ steps:
 
   # 1. Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
-        'build',
-        '-t',
-        '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
-        '.',
-      ]
+    args: [
+      'build',
+      '-t',
+      '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
+      '.'
+    ]
 
   # 2. Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
-        'push',
-        '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
-      ]
+    args: [
+      'push',
+      '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
+    ]
 
   # 3. Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
-    args:
-      [
-        'run',
-        'deploy',
-        '${_SERVICE_NAME}',
-        '--image',
-        '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
-        '--region',
-        '${_REGION}',
-        '--allow-unauthenticated',
-        # Mount secrets into separate subdirectories within /secrets
-        # Note the changed paths: /secrets/sa/service_account.json and /secrets/oauth/google_credentials.json
-        '--set-secrets=/secrets/sa/service_account.json=regnum-service-account-key:latest,/oauth/google_credentials.json=regnum-google-credentials:latest',
-        # Optional: Set impersonated user via env var
-        '--set-env-vars=IMPERSONATED_USER_EMAIL=webminister@westkingdom.org',
-        '--set-env-vars=REDIRECT_URI=https://regnum.westkingdom.org,BASE_URL=https://regnum.westkingdom.org',
-        '--set-env-vars=REGNUM_API_URL=https://api.westkingdom.org',
-        '--platform',
-        'managed',
-        '--ingress',
-        'internal-and-cloud-load-balancing',
-        '--port',
-        '8080',
-      ]
+    args: [
+      'run',
+      'deploy',
+      '${_SERVICE_NAME}',
+      '--image', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
+      '--region', '${_REGION}',
+      '--allow-unauthenticated',
+      '--set-secrets=/secrets/sa/service_account.json=regnum-service-account-key:latest,/oauth/google_credentials.json=regnum-google-credentials:latest',
+      '--set-env-vars',
+      'IMPERSONATED_USER_EMAIL=webminister@westkingdom.org,REDIRECT_URI=https://regnum.westkingdom.org,BASE_URL=https://regnum.westkingdom.org,REGNUM_API_URL=https://api.westkingdom.org',
+      '--platform', 'managed',
+      '--ingress', 'internal-and-cloud-load-balancing',
+      '--port', '8080'
+    ]
+
+  # 4. Update load balancer configuration
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'compute',
+      'url-maps',
+      'import',
+      'regnum-lb-config',
+      '--source=load-balancer.yaml',
+      '--global'
+    ]
+
+  # 5. Manage SSL certificate
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'compute',
+      'ssl-certificates',
+      'create',
+      'regnum-cert',
+      '--domains=regnum.westkingdom.org',
+      '--global'
+    ]
 
 # Store the image name in Artifact Registry
 images:
@@ -68,7 +80,7 @@ substitutions:
   _TRIGGER_ID: 'd4a0f027-7719-4b48-8861-a20ef2b4c200' # e.g., d4a0f027-7719-4b48-8861-a20ef2b4c200
 
 # Optional: Set timeout for the build
-timeout: '1200s' # 20 minutes
+timeout: '1800s' # Set appropriate timeout for infrastructure changes
 serviceAccount: 'projects/westkingdom-primary/serviceAccounts/85382560394-compute@developer.gserviceaccount.com'
 options: 
   logging: 'CLOUD_LOGGING_ONLY'
