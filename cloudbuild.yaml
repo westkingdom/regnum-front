@@ -37,19 +37,21 @@ steps:
       '--port', '8080'
     ]
 
-  # 4. Update load balancer configuration
+  # Create the backend service first
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args: [
       'compute',
-      'url-maps',
-      'import',
-      'regnum-lb-config',
-      '--source=load-balancer.yaml',
-      '--global'
+      'backend-services',
+      'create',
+      'regnum-front',
+      '--region=us-west1',
+      '--protocol=HTTPS',
+      '--port-name=http',
+      '--timeout=60s'
     ]
 
-  # 5. Manage SSL certificate
+  # Create SSL certificate
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args: [
@@ -57,8 +59,44 @@ steps:
       'ssl-certificates',
       'create',
       'regnum-cert',
-      '--domains=regnum.westkingdom.org',
+      '--domains=regnum.westkingdom.org'
+    ]
+
+  # Import the URL map configuration
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'compute',
+      'url-maps',
+      'import',
+      'regnum-lb',
+      '--source=load-balancer.yaml',
       '--global'
+    ]
+
+  # Create target HTTPS proxy
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'compute',
+      'target-https-proxies',
+      'create',
+      'regnum-https-proxy',
+      '--url-map=regnum-lb',
+      '--ssl-certificates=regnum-cert'
+    ]
+
+  # Create forwarding rule
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'compute',
+      'forwarding-rules',
+      'create',
+      'regnum-https-forwarding-rule',
+      '--target-https-proxy=regnum-https-proxy',
+      '--global',
+      '--ports=443'
     ]
 
 # Store the image name in Artifact Registry
