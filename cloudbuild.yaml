@@ -37,7 +37,20 @@ steps:
       '--port', '8080'
     ]
 
-  # Create the backend service first
+  # Delete existing backend service
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'compute',
+      'backend-services',
+      'delete',
+      'regnum-front',
+      '--region=us-west1',
+      '--quiet'  # Skip confirmation prompt
+    ]
+    allowFailure: true  # Continue even if service doesn't exist
+
+  # Create new backend service
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args: [
