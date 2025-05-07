@@ -64,7 +64,20 @@ steps:
       '--timeout=60s'
     ]
 
-  # Delete existing SSL certificate
+  # First, delete the existing HTTPS proxy that's using the certificate
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'compute',
+      'target-https-proxies',
+      'delete',
+      'regnum-proxy',
+      '--global',
+      '--quiet'
+    ]
+    allowFailure: true  # Continue if it doesn't exist
+
+  # Now we can delete the SSL certificate
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args: [
@@ -73,9 +86,9 @@ steps:
       'delete',
       'regnum-cert',
       '--global',
-      '--quiet'  # Skip confirmation prompt
+      '--quiet'
     ]
-    allowFailure: true  # Continue even if certificate doesn't exist
+    allowFailure: true
 
   # Create new SSL certificate
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -89,31 +102,34 @@ steps:
       '--global'
     ]
 
-  # Import the URL map configuration
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args: [
-      'compute',
-      'url-maps',
-      'import',
-      'regnum-lb',
-      '--source=load-balancer.yaml',
-      '--global'
-    ]
-
-  # Create target HTTPS proxy
+  # Create new target HTTPS proxy with the new certificate
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args: [
       'compute',
       'target-https-proxies',
       'create',
-      'regnum-https-proxy',
+      'regnum-proxy',
       '--url-map=regnum-lb',
-      '--ssl-certificates=regnum-cert'
+      '--ssl-certificates=regnum-cert',
+      '--global'
     ]
 
-  # Create forwarding rule
+  # Update forwarding rule to use the new proxy
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [
+      'compute',
+      'forwarding-rules',
+      'update',
+      'regnum-https-forwarding-rule',
+      '--target-https-proxy=regnum-proxy',
+      '--global',
+      '--ports=443'
+    ]
+    allowFailure: true  # In case the rule doesn't exist yet
+
+  # Create forwarding rule if it doesn't exist
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args: [
@@ -121,10 +137,11 @@ steps:
       'forwarding-rules',
       'create',
       'regnum-https-forwarding-rule',
-      '--target-https-proxy=regnum-https-proxy',
+      '--target-https-proxy=regnum-proxy',
       '--global',
       '--ports=443'
     ]
+    allowFailure: true  # Skip if the rule already exists
 
 # Store the image name in Artifact Registry
 images:
