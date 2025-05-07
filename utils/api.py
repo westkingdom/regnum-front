@@ -2,7 +2,7 @@ import requests
 from typing import Dict, List, Optional
 
 class RegnumAPI:
-    def __init__(self, base_url: str = "https://34.95.77.147"):
+    def __init__(self, base_url: str = "https://api.westkingdom.org"):
         self.base_url = base_url
 
     def get_all_groups(self) -> Dict:
