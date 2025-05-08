@@ -5,6 +5,7 @@ from google_auth_oauthlib.flow import Flow
 import google.auth.transport.requests
 import os
 import json
+import datetime
 from typing import Dict, Any # Import typing
 from utils.logger import app_logger as logger
 
@@ -24,7 +25,7 @@ try:
         # IMPORTANT: Update redirect_uri for Cloud Run deployment
         # Get the Cloud Run service URL after first deployment and add it as an
         # authorized redirect URI in Google Cloud OAuth Client ID settings.
-        redirect_uri=os.environ.get('REDIRECT_URI', 'https://regnum-front-85382560394.us-west1.run.app')
+        redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
     )
     logger.info("OAuth flow configured successfully")
 except FileNotFoundError:
@@ -155,16 +156,18 @@ else:
             st.query_params.clear()
             st.rerun() 
 
-@st.cache_resource
-def add_health_check():
-    """Add a health check endpoint for the load balancer."""
-    from fastapi import FastAPI
-    app = st.server.server.app
+# Create a simple health check endpoint using Streamlit's routing
+def health_check():
+    """
+    Provides a simple health check page accessible at /health.
     
-    @app.get("/health")
-    def health_check():
-        logger.debug("Health check endpoint called")
-        return {"status": "healthy"}
+    This needs to be accessed directly as a page, not through the FastAPI layer.
+    For proper load balancer health checks, configure the health check URL to point to this.
+    """
+    logger.debug("Health check accessed")
+    if st.query_params.get('check') == 'health':
+        st.json({"status": "healthy", "timestamp": str(datetime.datetime.now())})
+        st.stop()
 
-# Call this at the start of your app
-add_health_check()
+# Call health check at the start of the app
+health_check()
