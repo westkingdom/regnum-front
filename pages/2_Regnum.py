@@ -6,6 +6,28 @@ from typing import Union, Optional, Tuple, List, Dict, Any # Import necessary ty
 # Make sure add_member_to_group is imported
 from utils.queries import get_group_members, is_valid_email, add_member_to_group
 from utils.email import send_registration_email
+from utils.logger import app_logger as logger
+from utils.auth_middleware import require_auth
+import os
+
+# Get OAuth flow function for authentication middleware
+def get_flow():
+    from google_auth_oauthlib.flow import Flow
+    SECRET_CREDENTIALS_PATH = '/oauth/google_credentials.json'
+    LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json'
+    credentials_path = SECRET_CREDENTIALS_PATH if os.path.exists(SECRET_CREDENTIALS_PATH) else LOCAL_CREDENTIALS_PATH
+    
+    try:
+        flow = Flow.from_client_secrets_file(
+            credentials_path,
+            scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+            redirect_uri=os.environ.get('REDIRECT_URI', 'https://regnum-front-85382560394.us-west1.run.app/')
+        )
+        return flow
+    except Exception as e:
+        logger.error(f"Failed to create OAuth flow: {str(e)}")
+        st.error(f"Authentication error: {e}")
+        st.stop()
 
 # --- Data Loading Function ---
 # Note: Type hint was tuple[list, dict], updated to standard Tuple[List, Dict]
@@ -71,6 +93,7 @@ def display_group_members(selected_group_id: str, selected_group_name: str) -> b
     try:
         # API response is expected to be like: {"members": [ {member_data}, ... ]}
         st.subheader(f"Members in {selected_group_name}") # Add subheader before fetch
+        logger.info(f"Fetching members for group: {selected_group_name} (ID: {selected_group_id})")
         api_response = get_group_members(selected_group_id)
 
         if api_response is not None:
@@ -95,26 +118,32 @@ def display_group_members(selected_group_id: str, selected_group_name: str) -> b
                         st.dataframe(member_df[columns_to_display], hide_index=True, use_container_width=True) # Add container width
                     elif not member_df.empty:
                         # Fallback if NO desired columns are present but DF is not empty
+                        logger.warning(f"Member data found for {selected_group_name}, but expected columns are missing")
                         st.warning("Member data found, but expected columns ('email', 'role', etc.) are missing. Displaying all available data:")
                         st.dataframe(member_df, hide_index=True, use_container_width=True)
                     else:
                         # Should not be hit if members_list was checked, but as a safeguard
+                        logger.info(f"Group {selected_group_name} has empty DataFrame for members")
                         st.info("No member data to display (DataFrame empty).") # Should be caught by outer 'if members_list'
 
                 except Exception as df_error:
+                    logger.error(f"Error processing member data into a table: {str(df_error)}")
                     st.error(f"Error processing member data into a table: {df_error}")
                     st.warning("Displaying raw member data instead (from exception handler):")
                     # Display the original API response if DataFrame fails
                     st.json(api_response) # Display raw data on error
 
             else: # members_list is empty
+                logger.info(f"Group {selected_group_name} has no members")
                 st.info(f"The group '{selected_group_name}' currently has no members.")
             return True # Success (members fetched/processed or group is empty)
         else: # api_response is None
+            logger.warning(f"Failed to fetch members for {selected_group_name}")
             st.error(f"Failed to fetch members for group '{selected_group_name}'. The API might be down or the group ID is invalid.")
             return False # API error
 
     except Exception as e: # Catch any other unexpected errors
+        logger.error(f"Error fetching members for {selected_group_name}: {str(e)}")
         st.error(f"An unexpected error occurred while fetching or displaying members for '{selected_group_name}': {e}")
         return False # Other error
 
@@ -171,12 +200,15 @@ def display_add_member_form(selected_group_name: str) -> Tuple[bool, Optional[Di
             is_valid = True # Assume valid initially
             # Perform validation within the form context
             if not sca_name:
+                 logger.warning("Empty SCA name submitted")
                  st.error("SCA Name is required.")
                  is_valid = False
             if not westkingdom_email:
+                 logger.warning("Empty email submitted")
                  st.error("Westkingdom email address is required.")
                  is_valid = False
             elif not is_valid_email(westkingdom_email): # Use utility function
+                 logger.warning(f"Invalid email format submitted: {westkingdom_email}")
                  st.error("Please provide a valid email address ending with @westkingdom.org.")
                  is_valid = False
 
@@ -198,6 +230,7 @@ def display_add_member_form(selected_group_name: str) -> Tuple[bool, Optional[Di
                     'effective_date': str(effective_date) if effective_date else 'N/A',
                     'end_date': str(end_date) if end_date else 'N/A'
                 }
+                logger.info(f"Form data collected for {westkingdom_email}")
                 # Don't return here yet, let the main logic handle it based on 'was_submitted' and 'form_data'
             # else: Validation errors are displayed above
 
@@ -225,84 +258,102 @@ def handle_form_submission(form_data: Dict[str, Any], selected_group_name: str, 
         None. Displays results and potentially reruns the Streamlit app.
     """
     st.info("Processing registration...") # Use info for processing steps
+    logger.info(f"Processing registration for {form_data.get('sca_name', 'N/A')} to group {selected_group_name}")
 
     # 1. Send notification email
     email_sent = send_registration_email(form_data, selected_group_name)
 
     if email_sent:
         st.success(f"Registration notification sent for {form_data.get('sca_name', 'N/A')}.") # Use .get for safety
+        logger.info(f"Registration email sent for {form_data.get('sca_name', 'N/A')}")
 
         # 2. Add member to the actual group via API
         st.info(f"Adding {form_data['westkingdom_email']} to group '{selected_group_name}'...") # Use quotes for clarity
+        logger.info(f"Attempting to add {form_data['westkingdom_email']} to group {selected_group_name}")
         member_added = add_member_to_group(selected_group_id, form_data['westkingdom_email'])
 
         if member_added:
+            logger.info(f"Successfully added {form_data['westkingdom_email']} to {selected_group_name}")
             st.success(f"Successfully added {form_data['westkingdom_email']} to the group '{selected_group_name}'.")
             # Rerun to refresh the member list displayed above the form
             st.rerun()
         else:
             # Error message already shown by add_member_to_group if API fails
+            logger.error(f"Failed to add {form_data['westkingdom_email']} to group {selected_group_name}")
             st.error(f"Failed to add {form_data['westkingdom_email']} to the group '{selected_group_name}'. The user might already be in the group, or an API error occurred. Please check logs or add manually if needed.")
             # Don't rerun here, let the user see the error.
 
     else:
         # Error message should be shown by send_registration_email
+        logger.error(f"Failed to send registration email for {form_data.get('sca_name', 'N/A')}")
         st.error("Failed to send registration notification email. Member was NOT added to the group. Please contact the administrator.")
 
 
-# --- Main Streamlit App Logic ---
-st.set_page_config(page_title="Regnum Data Entry") # More specific title
-st.title("Regnum Data Entry") # Match page title
+# Apply authentication protection
+@require_auth(get_flow)
+def main():
+    """Main application logic for Regnum Data Entry page."""
+    logger.info("Accessing Regnum Data Entry page")
+    
+    # --- Main Streamlit App Logic ---
+    st.set_page_config(page_title="Regnum Data Entry") # More specific title
+    st.title("Regnum Data Entry") # Match page title
 
-# --- Load group data ---
-group_options, group_name_to_id = load_group_data()
+    # --- Load group data ---
+    logger.debug("Fetching group data")
+    group_options, group_name_to_id = load_group_data()
 
-# --- Proceed only if groups loaded successfully ---
-if not group_options:
-    st.warning("Could not load group information. Cannot display member management or entry form.")
-    # Error message already displayed by load_group_data
-    st.stop() # Stop execution if groups aren't loaded
-else:
-    # --- Group Selection ---
-    selected_group_name = st.selectbox(
-        "Select Group to View/Manage Members", # More descriptive label
-        options=group_options,
-        index=None,
-        placeholder="Select a group..."
-    )
-
-    # --- Actions for Selected Group ---
-    if selected_group_name:
-        # st.write(f"Selected Group: {selected_group_name}") # Display name clearly
-        selected_group_id = group_name_to_id.get(selected_group_name)
-
-        if selected_group_id:
-            # --- Display Members ---
-            # Display members and check if successful before showing the form
-            # The function itself handles success/error messages
-            members_displayed_successfully = display_group_members(selected_group_id, selected_group_name)
-
-            # --- Display Add Member Form ---
-            if members_displayed_successfully:
-                st.divider() # Separate member list from the form
-                # Display the form and get submission status/data
-                # The function displays validation errors internally
-                submitted, form_data = display_add_member_form(selected_group_name)
-
-                # --- Handle Form Submission ---
-                # Handle submission *only* if the form was submitted in this run *and* data is valid (not None)
-                if submitted and form_data:
-                    handle_form_submission(form_data, selected_group_name, selected_group_id)
-                elif submitted and not form_data:
-                    # Form was submitted but validation failed (errors shown in display_add_member_form)
-                    st.warning("Submission failed validation checks. Please correct the errors above.")
-
-        else:
-            # This case should ideally not happen if the selectbox options are derived correctly
-            st.error(f"Could not find the ID for the selected group '{selected_group_name}'. Data inconsistency?")
+    # --- Proceed only if groups loaded successfully ---
+    if not group_options:
+        logger.warning("Failed to load group information")
+        st.warning("Could not load group information. Cannot display member management or entry form.")
+        # Error message already displayed by load_group_data
+        st.stop() # Stop execution if groups aren't loaded
     else:
-        st.info("Select a group from the dropdown above to view its members or add a new member.")
+        # --- Group Selection ---
+        selected_group_name = st.selectbox(
+            "Select Group to View/Manage Members", # More descriptive label
+            options=group_options,
+            index=None,
+            placeholder="Select a group..."
+        )
 
-# --- Footer or other info ---
-# st.info("End of Regnum page.")
+        # --- Actions for Selected Group ---
+        if selected_group_name:
+            # st.write(f"Selected Group: {selected_group_name}") # Display name clearly
+            selected_group_id = group_name_to_id.get(selected_group_name)
+
+            if selected_group_id:
+                # --- Display Members ---
+                # Display members and check if successful before showing the form
+                # The function itself handles success/error messages
+                members_displayed_successfully = display_group_members(selected_group_id, selected_group_name)
+
+                # --- Display Add Member Form ---
+                if members_displayed_successfully:
+                    st.divider() # Separate member list from the form
+                    # Display the form and get submission status/data
+                    # The function displays validation errors internally
+                    submitted, form_data = display_add_member_form(selected_group_name)
+
+                    # --- Handle Form Submission ---
+                    # Handle submission *only* if the form was submitted in this run *and* data is valid (not None)
+                    if submitted and form_data:
+                        handle_form_submission(form_data, selected_group_name, selected_group_id)
+                    elif submitted and not form_data:
+                        # Form was submitted but validation failed (errors shown in display_add_member_form)
+                        st.warning("Submission failed validation checks. Please correct the errors above.")
+                        logger.warning("Form submission failed validation")
+
+            else:
+                # This case should ideally not happen if the selectbox options are derived correctly
+                logger.error(f"Could not find ID for selected group '{selected_group_name}'")
+                st.error(f"Could not find the ID for the selected group '{selected_group_name}'. Data inconsistency?")
+        else:
+            st.info("Select a group from the dropdown above to view its members or add a new member.")
+
+
+# Call the main function if script is run directly
+if __name__ == "__main__":
+    main()
 
