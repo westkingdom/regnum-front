@@ -142,12 +142,13 @@ steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
-      - '-c'
-      - |
-        gcloud compute backend-services update regnum-backend-service \
-          --global \
-          --add-backend="service=${_SERVICE_NAME},region=${_REGION},port=80,protocol=HTTP"
-
+      [
+        gcloud compute backend-services add-backend regnum-front
+          '--instance-group=regnum-front '
+          '--instance-group-region=us-west1 '
+          '--port=80 '
+          '--balancing-mode=RATE '
+      ]
 # Store the image name in Artifact Registry
 images:
   - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
