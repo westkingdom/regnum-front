@@ -2,19 +2,27 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['version']
 
-  # 1. Check if SSL certificate exists
+  # 1. Check if SSL certificate exists and is ACTIVE
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        if ! gcloud compute ssl-certificates describe regnum-ssl-cert-temp --global &>/dev/null; then
+        # Check if certificate exists
+        if gcloud compute ssl-certificates describe regnum-api-cert-temp --global &>/dev/null; then
+          # Certificate exists, check if it's ACTIVE
+          STATUS=$(gcloud compute ssl-certificates describe regnum-api-cert-temp --global --format="value(status)")
+          if [ "$STATUS" == "ACTIVE" ]; then
+            echo "SSL certificate exists and is ACTIVE"
+          else
+            echo "SSL certificate exists but status is $STATUS, not creating a new one"
+          fi
+        else
+          # Certificate doesn't exist, create it
           echo "Creating SSL certificate..."
-          gcloud compute ssl-certificates create regnum-ssl-cert \
+          gcloud compute ssl-certificates regnum-api-cert-temp \
             --domains=regnum.westkingdom.org \
             --global
-        else
-          echo "SSL certificate already exists"
         fi
 
   # 2. Check if backend service exists
