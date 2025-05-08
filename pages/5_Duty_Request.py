@@ -19,7 +19,7 @@ def get_flow():
         flow = Flow.from_client_secrets_file(
             credentials_path,
             scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
-            redirect_uri=os.environ.get('REDIRECT_URI', 'https://regnum-front-85382560394.us-west1.run.app')
+            redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
         )
         return flow
     except Exception as e:
