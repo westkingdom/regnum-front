@@ -94,23 +94,30 @@ steps:
     args:
       - '-c'
       - |
+        # Create IP address if it doesn't exist
         if ! gcloud compute addresses describe regnum-ip-address --global &>/dev/null; then
           echo "Creating global IP address..."
           gcloud compute addresses create regnum-ip-address --global
         fi
-        # Store the IP address in a file for later use
-        gcloud compute addresses describe regnum-ip-address --global --format='value(address)' > /workspace/ip_address.txt
-        IP_ADDRESS=$(cat /workspace/ip_address.txt)
+        
+        # Get the IP address
+        IP=$(gcloud compute addresses describe regnum-ip-address --global --format='value(address)')
+        echo "Using IP address: $IP"
+        
+        # Create or update forwarding rule
         if ! gcloud compute forwarding-rules describe regnum-forwarding-rule --global &>/dev/null; then
           echo "Creating forwarding rule..."
           gcloud compute forwarding-rules create regnum-forwarding-rule \
             --global \
             --target-https-proxy=regnum-https-proxy \
             --ports=443 \
-            --address=$IP_ADDRESS
+            --address=$IP
         else
           echo "Forwarding rule already exists"
         fi
+        
+        # Display DNS information
+        echo "Please ensure your DNS record for regnum.westkingdom.org points to: $IP"
 
   # 7. Build the container image
   - name: 'gcr.io/cloud-builders/docker'
@@ -163,16 +170,6 @@ steps:
         '10'
       ]
 
-  # 10. Verify DNS configuration
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        echo "Verifying DNS configuration..."
-        IP_ADDRESS=$(cat /workspace/ip_address.txt)
-        echo "Please ensure your DNS record for regnum.westkingdom.org points to: $IP_ADDRESS"
-
 # Store the image name in Artifact Registry
 images:
   - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
@@ -182,7 +179,6 @@ substitutions:
   _REGION: 'us-west1'
   _ARTIFACT_REPO_NAME: 'regnum-artifacts'
   _SERVICE_NAME: 'regnum-front'
-  _IP_ADDRESS: ''  # This will be set when creating the IP address
 
 # Timeout for the entire build
 timeout: '1800s'  # 30 minutes
