@@ -154,7 +154,7 @@ images:
 
 # Define substitutions (variables)
 substitutions:
-  _REGION: 'global'
+  _REGION: 'us-west1'
   _ARTIFACT_REPO_NAME: 'regnum-artifacts'
   _SERVICE_NAME: 'regnum-front'
 
@@ -164,4 +164,3 @@ timeout: '1800s'  # 30 minutes
 # Add IAM permissions needed for the build
 options:
   logging: CLOUD_LOGGING_ONLY
-  machineType: 'E2_HIGHCPU_8'  # Use a more powerful machine for faster builds
