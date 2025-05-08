@@ -11,16 +11,16 @@ steps:
         # Check if certificate exists
         if gcloud compute ssl-certificates describe regnum-api-cert-temp --global &>/dev/null; then
           # Certificate exists, check if it's ACTIVE
-          STATUS=$(gcloud compute ssl-certificates describe regnum-api-cert-temp --global --format="value(status)")
-          if [ "$STATUS" == "ACTIVE" ]; then
+          cert_status=$(gcloud compute ssl-certificates describe regnum-api-cert-temp --global --format="value(status)")
+          if [ "$cert_status" == "ACTIVE" ]; then
             echo "SSL certificate exists and is ACTIVE"
           else
-            echo "SSL certificate exists but status is $STATUS, not creating a new one"
+            echo "SSL certificate exists but status is $cert_status, not creating a new one"
           fi
         else
           # Certificate doesn't exist, create it
           echo "Creating SSL certificate..."
-          gcloud compute ssl-certificates regnum-api-cert-temp \
+          gcloud compute ssl-certificates create regnum-api-cert-temp \
             --domains=regnum.westkingdom.org \
             --global
         fi
@@ -91,7 +91,7 @@ steps:
           echo "Creating HTTPS proxy..."
           gcloud compute target-https-proxies create regnum-https-proxy \
             --url-map=regnum-url-map \
-            --ssl-certificates=regnum-ssl-cert
+            --ssl-certificates=regnum-api-cert-temp
         else
           echo "HTTPS proxy already exists"
         fi
