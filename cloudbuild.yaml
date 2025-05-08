@@ -2,132 +2,7 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['version']
 
-  # 1. Check if SSL certificate exists and is ACTIVE
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        # Check if certificate exists
-        if gcloud compute ssl-certificates describe regnum-api-cert-temp --global &>/dev/null; then
-          # Certificate exists, check if it's ACTIVE
-          cert_status=$(gcloud compute ssl-certificates describe regnum-api-cert-temp --global --format="value(status)")
-          if [ "$cert_status" == "ACTIVE" ]; then
-            echo "SSL certificate exists and is ACTIVE"
-          else
-            echo "SSL certificate exists but status is $cert_status, not creating a new one"
-          fi
-        else
-          # Certificate doesn't exist, create it
-          echo "Creating SSL certificate..."
-          gcloud compute ssl-certificates create regnum-api-cert-temp \
-            --domains=regnum.westkingdom.org \
-            --global
-        fi
-
-  # 2. Check if backend service exists
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        if ! gcloud compute backend-services describe regnum-backend-service --global &>/dev/null; then
-          echo "Creating backend service..."
-          gcloud compute backend-services create regnum-backend-service \
-            --global \
-            --protocol=HTTP \
-            --port-name=http \
-            --health-checks=regnum-health-check \
-            --timeout=30s \
-            --connection-draining-timeout=30s
-        else
-          echo "Backend service already exists"
-        fi
-
-  # 3. Check if health check exists
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        if ! gcloud compute health-checks describe regnum-health-check --global &>/dev/null; then
-          echo "Creating health check..."
-          gcloud compute health-checks create http regnum-health-check \
-            --global \
-            --port=8080 \
-            --request-path=/ \
-            --check-interval=5s \
-            --timeout=5s \
-            --unhealthy-threshold=2 \
-            --healthy-threshold=2 \
-            --proxy-header=NONE
-        else
-          echo "Health check already exists"
-        fi
-
-  # 4. Check if URL map exists
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        if ! gcloud compute url-maps describe regnum-url-map --global &>/dev/null; then
-          echo "Creating URL map..."
-          gcloud compute url-maps create regnum-url-map \
-            --default-service=regnum-backend-service \
-            --host-rules="host=regnum.westkingdom.org" \
-            --path-matchers="path-matcher=default,default-service=regnum-backend-service"
-        else
-          echo "URL map already exists"
-        fi
-
-  # 5. Check if HTTPS proxy exists
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        if ! gcloud compute target-https-proxies describe regnum-https-proxy --global &>/dev/null; then
-          echo "Creating HTTPS proxy..."
-          gcloud compute target-https-proxies create regnum-https-proxy \
-            --url-map=regnum-url-map \
-            --ssl-certificates=regnum-api-cert-temp
-        else
-          echo "HTTPS proxy already exists"
-        fi
-
-  # 6. Check if forwarding rule exists
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        # Create IP address if it doesn't exist
-        if ! gcloud compute addresses describe regnum-ip-address --global &>/dev/null; then
-          echo "Creating global IP address..."
-          gcloud compute addresses create regnum-ip-address --global
-        fi
-        
-        # Get the IP address and store it in a variable (renamed to avoid substitution confusion)
-        ipaddr=$(gcloud compute addresses describe regnum-ip-address --global --format='value(address)')
-        echo "Using IP address: $ipaddr"
-        
-        # Create or update forwarding rule
-        if ! gcloud compute forwarding-rules describe regnum-forwarding-rule --global &>/dev/null; then
-          echo "Creating forwarding rule..."
-          gcloud compute forwarding-rules create regnum-forwarding-rule \
-            --global \
-            --target-https-proxy=regnum-https-proxy \
-            --ports=443 \
-            --address="$ipaddr"
-        else
-          echo "Forwarding rule already exists"
-        fi
-        
-        # Display DNS information
-        echo "Please ensure your DNS record for regnum.westkingdom.org points to: $ipaddr"
-
-  # 7. Build the container image
+  # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -137,7 +12,7 @@ steps:
         '.',
       ]
 
-  # 8. Push the container image to Artifact Registry
+  # Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -145,7 +20,7 @@ steps:
         '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
       ]
 
-  # 9. Deploy container image to Cloud Run
+  # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
