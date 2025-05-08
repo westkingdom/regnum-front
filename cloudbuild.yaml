@@ -100,9 +100,9 @@ steps:
           gcloud compute addresses create regnum-ip-address --global
         fi
         
-        # Get the IP address and store it in a variable
-        IP_ADDRESS=$(gcloud compute addresses describe regnum-ip-address --global --format='value(address)')
-        echo "Using IP address: $IP_ADDRESS"
+        # Get the IP address and store it in a variable (renamed to avoid substitution confusion)
+        ipaddr=$(gcloud compute addresses describe regnum-ip-address --global --format='value(address)')
+        echo "Using IP address: $ipaddr"
         
         # Create or update forwarding rule
         if ! gcloud compute forwarding-rules describe regnum-forwarding-rule --global &>/dev/null; then
@@ -111,13 +111,13 @@ steps:
             --global \
             --target-https-proxy=regnum-https-proxy \
             --ports=443 \
-            --address="$IP_ADDRESS"
+            --address="$ipaddr"
         else
           echo "Forwarding rule already exists"
         fi
         
         # Display DNS information
-        echo "Please ensure your DNS record for regnum.westkingdom.org points to: $IP_ADDRESS"
+        echo "Please ensure your DNS record for regnum.westkingdom.org points to: $ipaddr"
 
   # 7. Build the container image
   - name: 'gcr.io/cloud-builders/docker'
