@@ -146,7 +146,7 @@ steps:
       - |
         gcloud compute backend-services update regnum-backend-service \
           --global \
-          --add-backend=service=${_SERVICE_NAME},region=${_REGION}
+          --add-backend="service=${_SERVICE_NAME},region=${_REGION},port=8080"
 
 # Store the image name in Artifact Registry
 images:
