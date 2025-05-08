@@ -4,7 +4,7 @@ from utils.config import api_url
 # Updated import: get_all_groups now returns (options, name_to_id_map)
 from utils.queries import get_all_groups, get_group_members, add_member_to_group, remove_member_from_group, is_valid_email
 from utils.logger import app_logger as logger
-from utils.auth_middleware import require_auth
+from utils.auth_middleware import require_group_auth
 import pandas as pd
 import json
 import os
@@ -29,8 +29,8 @@ def get_flow():
         st.error(f"Authentication error: {e}")
         st.stop()
 
-# Apply the authentication middleware
-@require_auth(get_flow)
+# Apply the group authentication middleware
+@require_group_auth(get_flow, group_name="regnum-site", message="Sorry, you are not allowed to view these pages. If you are looking to take on a new duty, click on Duty Request in the left menu.")
 def main():
     logger.info("Accessing Groups management page")
     
