@@ -24,7 +24,7 @@ try:
         # IMPORTANT: Update redirect_uri for Cloud Run deployment
         # You'll need to get the Cloud Run service URL after the first deployment
         # and add it as an authorized redirect URI in your Google Cloud OAuth Client ID settings.
-        redirect_uri=os.environ.get('REDIRECT_URI', 'https://regnum.westkingdom.org') # Use env var or default
+        redirect_uri=os.environ.get('REDIRECT_URI', 'https://regnum-front-85382560394.us-west1.run.app') # Use env var or default
     )
     logger.info("OAuth flow configured successfully")
 except FileNotFoundError:

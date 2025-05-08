@@ -61,3 +61,5 @@ streamlit~=1.39.0
 google-auth-oauthlib
 google-api-python-client
 google-cloud-logging>=3.5.0
+fastapi
+uvicorn
