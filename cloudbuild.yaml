@@ -154,7 +154,7 @@ images:
 
 # Define substitutions (variables)
 substitutions:
-  _REGION: 'us-west1'
+  _REGION: 'global'
   _ARTIFACT_REPO_NAME: 'regnum-artifacts'
   _SERVICE_NAME: 'regnum-front'
 
