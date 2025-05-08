@@ -7,7 +7,7 @@ from typing import Union, Optional, Tuple, List, Dict, Any # Import necessary ty
 from utils.queries import get_group_members, is_valid_email, add_member_to_group
 from utils.email import send_registration_email
 from utils.logger import app_logger as logger
-from utils.auth_middleware import require_auth
+from utils.auth_middleware import require_group_auth
 import os
 
 # Get OAuth flow function for authentication middleware
@@ -290,7 +290,7 @@ def handle_form_submission(form_data: Dict[str, Any], selected_group_name: str, 
 
 
 # Apply authentication protection
-@require_auth(get_flow)
+@require_group_auth(get_flow, group_name="regnum-site", message="Sorry, you are not allowed to view these pages. If you are looking to take on a new duty, click on Duty Request in the left menu.")
 def main():
     """Main application logic for Regnum Data Entry page."""
     logger.info("Accessing Regnum Data Entry page")
