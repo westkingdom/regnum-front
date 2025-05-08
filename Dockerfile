@@ -20,13 +20,13 @@ COPY . .
 # Cloud Run expects containers to listen on port 8080 by default
 EXPOSE 8080
 
-# Define environment variable for the port Streamlit should listen on
+# Define environment variables
 ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
+ENV K_SERVICE=regnum-front
+ENV LOG_LEVEL=INFO
 
 # Run main.py when the container launches using Streamlit
 # Use 0.0.0.0 to bind to all network interfaces
 # Use --server.port $PORT to respect the Cloud Run environment variable
-# Use --server.enableCORS=false and --server.enableXsrfProtection=false if needed,
-# but be aware of security implications. Start without them.
-# Ensure Home.py is your intended entry point for the app.
 CMD ["streamlit", "run", "Home.py", "--server.port", "8080", "--server.address", "0.0.0.0"]
