@@ -31,10 +31,15 @@ def send_duty_request_email(form_data: Dict[str, Any], user_email: str) -> bool:
         print("--- Sending Duty Request Email (Simulated) ---")
         recipients = [user_email, RECIPIENT_COMMUNICATIONS, RECIPIENT_SITE]
         print(f"To: {', '.join(recipients)}")
-        print("Subject: New Duty/Job Request")
+        print("Subject: New Regnum Duty/Job Request")
         print("Body:")
+        print("This is a request from https://regnum.westkingdom.org")
+        print(f"The request was submitted by {form_data['Mundane Name']} with the email address {form_data['West Kingdom Google Email']}")
+        print(f"This request was submitted to the following group: {form_data['Requested Job']}")
+        print(f"The request originated from the following IP address: {form_data['IP Address']}")
         for key, value in form_data.items():
             print(f"- {key.replace('_', ' ').title()}: {value}")
+        print('')
         print("-----------------------------------------")
         import time
         time.sleep(1) # Simulate network delay

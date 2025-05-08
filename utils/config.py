@@ -1,5 +1,5 @@
 # Input for the API URL
-api_url = "https://api.westkingdom.org"
+api_url = "https://regnum-api-njxuammdla-uw.a.run.app/"
 
 client_id = "85382560394-7aqkmopbm521utmmhrtr5rijj1tl306r.apps.googleusercontent.com"
 # Define the scopes required for your application
