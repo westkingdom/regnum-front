@@ -138,18 +138,7 @@ steps:
         'managed',
       ]
 
-  # 10. Update backend service with new Cloud Run service
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud compute backend-services add-backend regnum-backend-service \
-          --global \
-          --instance-group=regnum-front \
-          --instance-group-region=us-west1 \
-          --port=80 \
-          --balancing-mode=RATE
+
 
 # Store the image name in Artifact Registry
 images:
