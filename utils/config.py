@@ -1,5 +1,5 @@
 # Input for the API URL
-api_url = "https://api.westkingdom.org"
+api_url = "https://regnum-api-njxuammdla-uw.a.run.app"
 
 client_id = "85382560394-7aqkmopbm521utmmhrtr5rijj1tl306r.apps.googleusercontent.com"
 # Define the scopes required for your application
@@ -10,7 +10,7 @@ SCOPES = [
     "https://mail.google.com/",
     "https://www.googleapis.com/auth/admin.directory.group.member.readonly"  # Add Directory API scope
 ]
-redirect_uri = "http://localhost:8501"
+redirect_uri = "http://regnum-front-85382560394.us-west1.run.app"
 
 # Regnum group check configuration
-REGNUM_ADMIN_GROUP = "regnum-site@westkingdom.org"
+REGNUM_ADMIN_GROUP = "00kgcv8k1r9idky"
