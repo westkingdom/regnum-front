@@ -9,6 +9,8 @@ import datetime
 from typing import Dict, Any # Import typing
 from googleapiclient.discovery import build
 from utils.logger import app_logger as logger
+from utils.auth import is_group_member
+from utils.config import REGNUM_ADMIN_GROUP
 
 # Define the path where the secret is mounted
 SECRET_CREDENTIALS_PATH = '/oauth/google_credentials.json' # Updated path
@@ -22,11 +24,13 @@ credentials_path = SECRET_CREDENTIALS_PATH if os.path.exists(SECRET_CREDENTIALS_
 try:
     flow = Flow.from_client_secrets_file(
         credentials_path,
-        scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
-        # IMPORTANT: Update redirect_uri for Cloud Run deployment
-        # Get the Cloud Run service URL after first deployment and add it as an
-        # authorized redirect URI in Google Cloud OAuth Client ID settings.
-        redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
+        scopes=[
+            'openid', 
+            'https://www.googleapis.com/auth/userinfo.email', 
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/admin.directory.group.member.readonly'  # Add Directory API scope
+        ],
+        redirect_uri=os.environ.get('REDIRECT_URI', 'https://regnum.westkingdom.org')
     )
     logger.info("OAuth flow configured successfully")
 except FileNotFoundError:
@@ -140,34 +144,42 @@ else:
         user_email = id_info.get('email', 'unknown')
         logger.info(f"Token verified for user: {user_email}")
 
+        # Store email in session state for use in other pages
+        st.session_state['user_email'] = user_email
+        
         # Verify organization
         if verify_organization(id_info):
-            user_email = id_info.get('email')
+            # Check if user is member of regnum-site group
+            is_admin = is_group_member(user_email, REGNUM_ADMIN_GROUP)
+            st.session_state['is_admin'] = is_admin
             
-            # Add the group membership check
-            if is_member_of_group(user_email, credentials=credentials):
-                st.success(f"Welcome {id_info.get('name')} ({user_email})")
-                st.write("You are authenticated.")
-                # --- Main Application Content (for authenticated users) ---
-                st.markdown("---")
-                st.header("Application Links")
-                st.page_link("pages/1_Groups.py", label="Manage Groups and Members", icon="👥")
-                st.page_link("pages/2_Regnum.py", label="Regnum Data Entry", icon="📝")
-                st.page_link("pages/5_Duty_Request.py", label="Request New Duty/Job", icon="✅")
-                # Add more links or content here
-
-                st.markdown("---")
-                if st.button("Logout"):
-                    print(f"DEBUG: User {user_email} logging out.")
-                    del st.session_state['credentials']
-                    st.query_params.clear() # Clear params on logout as well
-                    st.rerun()
+            # Display welcome message
+            st.success(f"Welcome {id_info.get('name')} ({user_email})")
+            
+            # Show admin status
+            if is_admin:
+                st.success("✅ You have admin access (member of regnum-site group)")
             else:
-                st.error(f"Access Denied: {user_email} is not a member of the regnum-site group.")
-                if st.button("Logout"):
-                    del st.session_state['credentials']
-                    st.query_params.clear()
-                    st.rerun()
+                st.warning("⚠️ You have basic access (not a member of regnum-site group)")
+                
+            # --- Main Application Content (for authenticated users) ---
+            st.markdown("---")
+            st.header("Application Links")
+            st.page_link("pages/1_Groups.py", label="Manage Groups and Members", icon="👥")
+            st.page_link("pages/2_Regnum.py", label="Regnum Data Entry", icon="📝")
+            st.page_link("pages/5_Duty_Request.py", label="Request New Duty/Job", icon="✅")
+            # Add more links or content here
+
+            st.markdown("---")
+            if st.button("Logout"):
+                print(f"DEBUG: User {user_email} logging out.")
+                del st.session_state['credentials']
+                if 'user_email' in st.session_state:
+                    del st.session_state['user_email']
+                if 'is_admin' in st.session_state:
+                    del st.session_state['is_admin']
+                st.query_params.clear() # Clear params on logout as well
+                st.rerun()
         else:
             # User belongs to wrong organization
             logger.warning(f"Access denied for non-WK user: {user_email}")
