@@ -54,7 +54,7 @@ def verify_organization(idinfo: Dict[str, Any]) -> bool:
     return idinfo.get('hd') == 'westkingdom.org'
 
 
-def is_member_of_group(email: str, group_id: str = 'regnum-site@westkingdom.org', credentials=None) -> bool:
+def is_member_of_group(email: str, group_id: str = '00kgcv8k1r9idky', credentials=None) -> bool:
     """
     Checks if the user is a member of the specified Google Group.
     
