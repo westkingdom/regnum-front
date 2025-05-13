@@ -7,6 +7,7 @@ import os
 import json
 import datetime
 from typing import Dict, Any # Import typing
+from googleapiclient.discovery import build
 from utils.logger import app_logger as logger
 
 # Define the path where the secret is mounted
@@ -51,6 +52,35 @@ def verify_organization(idinfo: Dict[str, Any]) -> bool:
         False otherwise.
     """
     return idinfo.get('hd') == 'westkingdom.org'
+
+
+def is_member_of_group(email: str, group_id: str = 'regnum-site@westkingdom.org', credentials=None) -> bool:
+    """
+    Checks if the user is a member of the specified Google Group.
+    
+    Args:
+        email: The user's email address to check
+        group_id: The Google Group email address
+        credentials: OAuth credentials with appropriate scopes
+        
+    Returns:
+        True if the user is a member of the group, False otherwise
+    """
+    try:
+        # Need Directory API scope for this to work
+        # 'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
+        service = build('admin', 'directory_v1', credentials=credentials)
+        
+        # List all members of the group
+        results = service.members().list(groupKey=group_id).execute()
+        members = results.get('members', [])
+        
+        # Check if user's email is in the group
+        return any(member.get('email', '').lower() == email.lower() for member in members)
+    except Exception as e:
+        print(f"ERROR: Failed to check group membership: {e}")
+        # Default to deny on error
+        return False
 
 
 # --- Streamlit App Logic ---
@@ -112,23 +142,32 @@ else:
 
         # Verify organization
         if verify_organization(id_info):
-            logger.info(f"User {user_email} authenticated successfully")
-            st.success(f"Welcome {id_info.get('name')} ({user_email})")
-            st.write("You are authenticated.")
-            # --- Main Application Content (for authenticated users) ---
-            st.markdown("---")
-            st.header("Application Links")
-            st.page_link("pages/1_Groups.py", label="Manage Groups and Members", icon="👥")
-            st.page_link("pages/2_Regnum.py", label="Regnum Data Entry", icon="📝")
-            st.page_link("pages/5_Duty_Request.py", label="Request New Duty/Job", icon="✅")
-            # Add more links or content here
+            user_email = id_info.get('email')
+            
+            # Add the group membership check
+            if is_member_of_group(user_email, credentials=credentials):
+                st.success(f"Welcome {id_info.get('name')} ({user_email})")
+                st.write("You are authenticated.")
+                # --- Main Application Content (for authenticated users) ---
+                st.markdown("---")
+                st.header("Application Links")
+                st.page_link("pages/1_Groups.py", label="Manage Groups and Members", icon="👥")
+                st.page_link("pages/2_Regnum.py", label="Regnum Data Entry", icon="📝")
+                st.page_link("pages/5_Duty_Request.py", label="Request New Duty/Job", icon="✅")
+                # Add more links or content here
 
-            st.markdown("---")
-            if st.button("Logout"):
-                logger.info(f"User {user_email} logging out")
-                del st.session_state['credentials']
-                st.query_params.clear() # Clear params on logout as well
-                st.rerun()
+                st.markdown("---")
+                if st.button("Logout"):
+                    print(f"DEBUG: User {user_email} logging out.")
+                    del st.session_state['credentials']
+                    st.query_params.clear() # Clear params on logout as well
+                    st.rerun()
+            else:
+                st.error(f"Access Denied: {user_email} is not a member of the regnum-site group.")
+                if st.button("Logout"):
+                    del st.session_state['credentials']
+                    st.query_params.clear()
+                    st.rerun()
         else:
             # User belongs to wrong organization
             logger.warning(f"Access denied for non-WK user: {user_email}")
