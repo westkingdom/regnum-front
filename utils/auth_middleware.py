@@ -6,6 +6,7 @@ import google.auth.transport.requests
 from utils.logger import app_logger as logger
 import requests
 import os
+from utils.config import REGNUM_ADMIN_GROUP
 
 def verify_organization(idinfo):
     """
@@ -30,10 +31,19 @@ def check_group_membership(email, group_name="regnum-site"):
     Returns:
         True if the user is a member of the specified group, False otherwise
     """
-    from utils.queries import get_group_members, get_all_groups
+    from utils.queries import get_group_members
+    from utils.auth import is_group_member
     
     try:
         logger.info(f"Checking if {email} is a member of {group_name} group")
+        
+        # If the group is "regnum-site", use the direct ID from config
+        if group_name == "regnum-site":
+            # Use the is_group_member function that takes an ID directly
+            return is_group_member(email, REGNUM_ADMIN_GROUP)
+        
+        # For other groups, use the existing name-based logic
+        from utils.queries import get_all_groups
         
         # Get the group ID from the name
         _, group_name_to_id = get_all_groups()
@@ -205,8 +215,50 @@ def require_group_auth(flow_provider, group_name="regnum-site", message="Sorry, 
                             st.write(f"Group being checked: {group_name}")
                             st.write(f"Your email: {user_email}")
                             
-                            # Show memberships
-                            if st.button("Check My Access"):
+                            # For regnum-site group (most common case)
+                            if group_name == "regnum-site":
+                                st.write(f"Group ID: {REGNUM_ADMIN_GROUP}")
+                                from utils.auth import is_group_member, get_directory_service
+                                
+                                # Check membership
+                                direct_check = is_group_member(user_email, REGNUM_ADMIN_GROUP)
+                                if direct_check:
+                                    st.success("✅ You ARE a member of this group according to direct check!")
+                                else:
+                                    st.error("❌ You are NOT a member of this group according to direct check.")
+                                
+                                # Show group details button
+                                if st.button("Check Group Details (Direct ID Method)"):
+                                    try:
+                                        service = get_directory_service()
+                                        if service:
+                                            try:
+                                                group_info = service.groups().get(groupKey=REGNUM_ADMIN_GROUP).execute()
+                                                st.write("Group information:")
+                                                st.json(group_info)
+                                                
+                                                # Get members list
+                                                members = service.members().list(groupKey=REGNUM_ADMIN_GROUP).execute()
+                                                st.write("Group members:")
+                                                if 'members' in members:
+                                                    member_emails = [m.get('email', '') for m in members.get('members', [])]
+                                                    st.write(member_emails)
+                                                    
+                                                    if user_email in member_emails:
+                                                        st.success("✅ Your email is in the members list!")
+                                                    else:
+                                                        st.error("❌ Your email is NOT in the members list.")
+                                                else:
+                                                    st.write("No members found in this group.")
+                                            except Exception as e:
+                                                st.error(f"Error getting group details: {e}")
+                                        else:
+                                            st.error("Could not create Directory API service.")
+                                    except Exception as e:
+                                        st.error(f"Error in directory service: {e}")
+                            
+                            # Show memberships for other groups (using name lookup)
+                            elif st.button("Check My Access"):
                                 from utils.queries import get_all_groups, get_group_members
                                 try:
                                     _, group_name_to_id = get_all_groups()
