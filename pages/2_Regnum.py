@@ -9,6 +9,8 @@ from utils.email import send_registration_email
 from utils.logger import app_logger as logger
 from utils.auth_middleware import require_group_auth
 import os
+import sys
+from Home import get_flow
 
 # Get OAuth flow function for authentication middleware
 def get_flow():

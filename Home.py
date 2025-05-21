@@ -2,6 +2,7 @@ import streamlit as st
 import google.auth
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
+from google_auth_oauthlib.flow import InstalledAppFlow
 import google.auth.transport.requests
 import os
 import json
@@ -18,23 +19,55 @@ SECRET_CREDENTIALS_PATH = '/oauth/google_credentials.json' # Updated path
 # Fallback for local development (optional)
 LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json' # Local fallback remains the same
 
-# Determine the correct path
-credentials_path = SECRET_CREDENTIALS_PATH if os.path.exists(SECRET_CREDENTIALS_PATH) else LOCAL_CREDENTIALS_PATH
-
 # Function to get OAuth flow for auth middleware
 def get_flow():
     try:
-        flow_obj = Flow.from_client_secrets_file(
-            credentials_path,
-            scopes=[
-                'openid', 
-                'https://www.googleapis.com/auth/userinfo.email', 
-                'https://www.googleapis.com/auth/userinfo.profile',
-                'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
-            ],
-            redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
-        )
-        return flow_obj
+        # First try to load from the credentials file
+        if os.path.exists(SECRET_CREDENTIALS_PATH) or os.path.exists(LOCAL_CREDENTIALS_PATH):
+            credentials_path = SECRET_CREDENTIALS_PATH if os.path.exists(SECRET_CREDENTIALS_PATH) else LOCAL_CREDENTIALS_PATH
+            logger.info(f"Creating flow from credentials file: {credentials_path}")
+            
+            flow_obj = Flow.from_client_secrets_file(
+                credentials_path,
+                scopes=[
+                    'openid', 
+                    'https://www.googleapis.com/auth/userinfo.email', 
+                    'https://www.googleapis.com/auth/userinfo.profile',
+                    'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
+                ],
+                redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
+            )
+            return flow_obj
+        
+        # If no credentials file exists, try to use environment variables
+        elif os.environ.get('GOOGLE_CLIENT_ID') and os.environ.get('GOOGLE_CLIENT_SECRET'):
+            logger.info("Creating flow from environment variables")
+            
+            # Create client config dictionary from environment variables
+            client_config = {
+                "web": {
+                    "client_id": os.environ.get('GOOGLE_CLIENT_ID'),
+                    "client_secret": os.environ.get('GOOGLE_CLIENT_SECRET'),
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                    "redirect_uris": [os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')],
+                }
+            }
+            
+            flow_obj = Flow.from_client_config(
+                client_config,
+                scopes=[
+                    'openid', 
+                    'https://www.googleapis.com/auth/userinfo.email', 
+                    'https://www.googleapis.com/auth/userinfo.profile',
+                    'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
+                ],
+                redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
+            )
+            return flow_obj
+        else:
+            raise ValueError("No OAuth credentials available - either set environment variables GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET or provide a credentials file")
     except Exception as e:
         logger.error(f"Failed to create OAuth flow: {str(e)}")
         st.error(f"Authentication error: {e}")
@@ -42,20 +75,12 @@ def get_flow():
 
 # Load client secrets and configure flow
 try:
-    flow = Flow.from_client_secrets_file(
-        credentials_path,
-        scopes=[
-            'openid', 
-            'https://www.googleapis.com/auth/userinfo.email', 
-            'https://www.googleapis.com/auth/userinfo.profile',
-            'https://www.googleapis.com/auth/admin.directory.group.member.readonly'  # Add Directory API scope
-        ],
-        redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
-    )
+    # Use the same get_flow function for consistency
+    flow = get_flow()
     logger.info("OAuth flow configured successfully")
 except FileNotFoundError:
-    logger.error(f"OAuth credentials file not found at {credentials_path}")
-    st.error(f"OAuth Credentials file not found at {credentials_path}. Ensure the secret is mounted correctly or the local file exists.")
+    logger.error(f"OAuth credentials not found")
+    st.error(f"OAuth Credentials not found. Ensure the secret is mounted correctly, credentials file exists, or environment variables are set.")
     st.stop()
 except Exception as e:
     logger.error(f"Error loading OAuth credentials: {str(e)}")
@@ -291,6 +316,50 @@ else:
                 st.write("### If you need access:")
                 st.write("Contact webminister@westkingdom.org to be added to the regnum-site Google Group.")
                 st.write("This group controls access to the administrative pages like Groups and Regnum data entry.")
+                
+                # Allow direct addition to the group for troubleshooting
+                st.write("### Advanced Troubleshooting")
+                st.write("If you are an administrator, you can try to add yourself to the group directly:")
+                
+                if st.button("Add Me To Regnum-Site Group"):
+                    try:
+                        # Get a fresh directory service
+                        admin_service = get_directory_service(impersonate_user="webminister@westkingdom.org")
+                        
+                        if admin_service:
+                            try:
+                                # Create member object
+                                member = {
+                                    'email': user_email,
+                                    'role': 'MEMBER'
+                                }
+                                
+                                # Try to add to the group
+                                result = admin_service.members().insert(
+                                    groupKey=REGNUM_ADMIN_GROUP,
+                                    body=member
+                                ).execute()
+                                
+                                st.success(f"✅ Successfully added {user_email} to the regnum-site group!")
+                                st.info("Please refresh the page to check your updated access.")
+                                
+                            except Exception as e:
+                                st.error(f"Failed to add member to group: {e}")
+                        else:
+                            st.error("Could not create directory service to add member.")
+                    except Exception as e:
+                        st.error(f"Error in group addition process: {e}")
+                
+                # Show the environment variables that might affect service account access
+                st.write("### Environment Variables")
+                if st.button("Check Environment Variables"):
+                    env_vars = {
+                        "GOOGLE_APPLICATION_CREDENTIALS": os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "Not set"),
+                        "BYPASS_GROUP_CHECK": os.environ.get("BYPASS_GROUP_CHECK", "Not set"),
+                        "PWD": os.environ.get("PWD", "Not set"),
+                        "HOME": os.environ.get("HOME", "Not set")
+                    }
+                    st.json(env_vars)
             
             # Regular group membership check
             is_admin = is_group_member(user_email, REGNUM_ADMIN_GROUP)

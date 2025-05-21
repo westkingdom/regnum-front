@@ -9,30 +9,8 @@ import pandas as pd
 import json
 import os
 import re
-
-# Get OAuth flow function for authentication middleware
-def get_flow():
-    from google_auth_oauthlib.flow import Flow
-    SECRET_CREDENTIALS_PATH = '/oauth/google_credentials.json'
-    LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json'
-    credentials_path = SECRET_CREDENTIALS_PATH if os.path.exists(SECRET_CREDENTIALS_PATH) else LOCAL_CREDENTIALS_PATH
-    
-    try:
-        flow = Flow.from_client_secrets_file(
-            credentials_path,
-            scopes=[
-                'openid', 
-                'https://www.googleapis.com/auth/userinfo.email', 
-                'https://www.googleapis.com/auth/userinfo.profile',
-                'https://www.googleapis.com/auth/admin.directory.group.member.readonly'  # Add Directory API scope
-            ],
-            redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
-        )
-        return flow
-    except Exception as e:
-        logger.error(f"Failed to create OAuth flow: {str(e)}")
-        st.error(f"Authentication error: {e}")
-        st.stop()
+import sys
+from Home import get_flow
 
 # Apply the group authentication middleware
 @require_group_membership()
