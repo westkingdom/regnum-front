@@ -2,6 +2,66 @@
 
 A web application for the West Kingdom organization that provides access to officer roster and reporting systems. The application uses Google Workspace authentication to restrict access based on membership in a Google Group.
 
+## Project Overview
+
+WKRegnum is a Streamlit-based web application for the West Kingdom (SCA) to manage their regnum (list of officers and their details). The application provides:
+
+### Core Components
+
+1. **Authentication System**:
+   - Google OAuth integration for user login
+   - Restricts access to @westkingdom.org domain users
+   - Group-based authorization for certain pages (e.g., "regnum-site" group)
+   - Authentication middleware for protecting routes
+
+2. **Main Features**:
+   - Home page with authentication flow
+   - Regnum management (viewing and editing kingdom officers)
+   - Group management (view/edit Google Groups)
+   - Duty Request form for users to request new roles/jobs
+
+3. **Technical Stack**:
+   - Streamlit for the web framework
+   - Google API integration (Directory API, OAuth)
+   - Docker containerization for deployment
+   - Cloud Run for hosting (based on GCP references)
+
+4. **Project Structure**:
+   - `Home.py`: Main application entry point with authentication
+   - `main.py`: Appears to be an older/alternative entry point
+   - `pages/`: Streamlit multi-page app structure
+     - `1_Groups.py`: Google Groups management
+     - `2_Regnum.py`: Kingdom officers management
+     - `5_Duty_Request.py`: Form for requesting new duties
+     - `health.py`: Health check endpoint
+   - `utils/`: Utility modules
+     - `auth.py`, `auth_middleware.py`: Authentication utilities
+     - `email.py`: Email sending functionality
+     - `queries.py`: API queries for Google services
+     - `config.py`: Configuration constants
+
+5. **Deployment**:
+   - Docker configuration (`Dockerfile`, `docker-compose.yaml`)
+   - GCP Cloud Build integration (`cloudbuild.yaml`)
+   - Load balancer configuration (`load-balancer.yaml`)
+
+### Key Workflows
+
+1. **Authentication Flow**:
+   - Users must sign in with Google (@westkingdom.org account)
+   - Token verification and domain validation
+   - For restricted pages, group membership verification
+
+2. **Group Management**:
+   - View Google Groups and members
+   - Add members to groups
+   - Permission controls based on user roles
+
+3. **Duty Request Process**:
+   - Form to collect user information
+   - Email notifications to relevant parties
+   - Data validation before submission
+
 ## Local Development Setup
 
 1. Clone the repository
