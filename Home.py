@@ -171,9 +171,9 @@ def is_member_of_group(email: str, group_id: str = '00kgcv8k1r9idky', credential
         return False
 
 
-# --- Streamlit App Logic ---
-st.set_page_config(page_title="Regnum Home") # Set a page title
-st.title("West Kingdom Regnum Portal") # Updated title
+# --- WKRegnum App Logic ---
+st.set_page_config(page_title="WKRegnum - West Kingdom Regnum Portal") # Updated title
+st.title("WKRegnum - West Kingdom Regnum Portal") # Updated title
 
 # --- Authentication Flow ---
 
@@ -274,7 +274,7 @@ else:
             
             # Add content for the Home page
             st.markdown("""
-            ## Welcome to the West Kingdom Regnum Portal
+            ## Welcome to WKRegnum - The West Kingdom Regnum Portal
             
             This application provides access to the West Kingdom's officer roster and reporting system. Here you can:
             

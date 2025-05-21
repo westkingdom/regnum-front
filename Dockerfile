@@ -23,10 +23,10 @@ EXPOSE 8080
 # Define environment variables
 ENV PORT=8080
 ENV PYTHONUNBUFFERED=1
-ENV K_SERVICE=regnum-front
+ENV K_SERVICE=wkregnum
 ENV LOG_LEVEL=INFO
 
-# Run main.py when the container launches using Streamlit
+# Run the WKRegnum application when the container launches
 # Use 0.0.0.0 to bind to all network interfaces
 # Use --server.port $PORT to respect the Cloud Run environment variable
 CMD ["streamlit", "run", "Home.py", "--server.port", "8080", "--server.address", "0.0.0.0"]

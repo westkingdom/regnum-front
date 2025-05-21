@@ -1,6 +1,6 @@
-# West Kingdom Regnum Portal
+# WKRegnum - West Kingdom Regnum Portal
 
-A Streamlit web application for the West Kingdom organization that provides access to officer roster and reporting systems. The application uses Google Workspace authentication to restrict access based on membership in a Google Group.
+A web application for the West Kingdom organization that provides access to officer roster and reporting systems. The application uses Google Workspace authentication to restrict access based on membership in a Google Group.
 
 ## Local Development Setup
 
@@ -72,4 +72,4 @@ The application is deployed to Google Cloud Run using Cloud Build with the follo
 
 1. Never commit OAuth credentials or service account keys to the repository
 2. The `BYPASS_GROUP_CHECK` should always be set to "false" in production
-3. Authentication tokens are stored in Streamlit's session state and expire after the OAuth token lifetime 
+3. Authentication tokens are stored in session state and expire after the OAuth token lifetime 
