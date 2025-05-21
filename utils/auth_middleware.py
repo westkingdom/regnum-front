@@ -82,10 +82,19 @@ def require_auth(flow_provider):
             if 'credentials' not in st.session_state:
                 logger.info("User not authenticated, redirecting to login")
                 st.error("Please login to access this page")
+                # Add explicit warning about westkingdom.org requirement
+                st.warning("You must be logged in with a @westkingdom.org Google account to access this application.")
                 try:
                     flow = flow_provider()
                     auth_url, _ = flow.authorization_url(prompt='consent')
-                    st.markdown(f'<a href="{auth_url}" target="_self">Login with Google</a>', unsafe_allow_html=True)
+                    # Improved login button with styling
+                    st.markdown(f'''
+                    <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0;">
+                        <a href="{auth_url}" target="_self" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 1.2em;">
+                            Login with Google (West Kingdom Account)
+                        </a>
+                    </div>
+                    ''', unsafe_allow_html=True)
                 except Exception as e:
                     logger.error(f"Error generating authorization URL: {str(e)}")
                     st.error(f"Error generating authorization URL: {e}")
@@ -129,13 +138,13 @@ def require_auth(flow_provider):
         return wrapper
     return decorator
 
-def require_group_auth(flow_provider, group_name="Regnum", message="Sorry, you are not allowed to view these pages. If you are looking to take on a new duty, click on Duty Request in the left menu."):
+def require_group_auth(flow_provider, group_name="regnum-site", message="Sorry, you are not allowed to view these pages. If you are looking to take on a new duty, click on Duty Request in the left menu."):
     """
     Authentication middleware decorator that ensures users are logged in AND members of a specific group.
     
     Args:
         flow_provider: A function that returns the OAuth flow object
-        group_name: The Google Group name to check membership for (default: Regnum)
+        group_name: The Google Group name to check membership for (default: regnum-site)
         message: The message to display if the user is not a member of the group
         
     Returns:
@@ -147,10 +156,19 @@ def require_group_auth(flow_provider, group_name="Regnum", message="Sorry, you a
             if 'credentials' not in st.session_state:
                 logger.info("User not authenticated, redirecting to login")
                 st.error("Please login to access this page")
+                # Add explicit warning about westkingdom.org requirement
+                st.warning("You must be logged in with a @westkingdom.org Google account to access this application.")
                 try:
                     flow = flow_provider()
                     auth_url, _ = flow.authorization_url(prompt='consent')
-                    st.markdown(f'<a href="{auth_url}" target="_self">Login with Google</a>', unsafe_allow_html=True)
+                    # Improved login button with styling
+                    st.markdown(f'''
+                    <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0;">
+                        <a href="{auth_url}" target="_self" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 1.2em;">
+                            Login with Google (West Kingdom Account)
+                        </a>
+                    </div>
+                    ''', unsafe_allow_html=True)
                 except Exception as e:
                     logger.error(f"Error generating authorization URL: {str(e)}")
                     st.error(f"Error generating authorization URL: {e}")

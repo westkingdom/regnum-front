@@ -110,6 +110,10 @@ def main():
     # --- Streamlit Form Page ---
     st.set_page_config(page_title="Duty Request Form")
     st.title("Duty/Job Request Form")
+    
+    # Display explicit warning about requiring westkingdom.org account
+    st.warning("You must be logged in with a @westkingdom.org Google account to access this application.")
+    
     st.markdown("""
     Use this form to request assignment to a new duty or job within the Kingdom structure.
     Your request will be emailed to Communications and the Regnum Site administrators,
