@@ -17,6 +17,20 @@ LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json' # Local fallback remain
 # Determine the correct path
 credentials_path = SECRET_CREDENTIALS_PATH if os.path.exists(SECRET_CREDENTIALS_PATH) else LOCAL_CREDENTIALS_PATH
 
+# Function to get OAuth flow for auth middleware
+def get_flow():
+    try:
+        flow_obj = Flow.from_client_secrets_file(
+            credentials_path,
+            scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+            redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
+        )
+        return flow_obj
+    except Exception as e:
+        logger.error(f"Failed to create OAuth flow: {str(e)}")
+        st.error(f"Authentication error: {e}")
+        st.stop()
+
 # Load client secrets and configure flow
 try:
     flow = Flow.from_client_secrets_file(
@@ -52,20 +66,6 @@ def verify_organization(idinfo: Dict[str, Any]) -> bool:
     """
     return idinfo.get('hd') == 'westkingdom.org'
 
-
-# Function to get OAuth flow for auth middleware
-def get_flow():
-    try:
-        flow_obj = Flow.from_client_secrets_file(
-            credentials_path,
-            scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
-            redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
-        )
-        return flow_obj
-    except Exception as e:
-        logger.error(f"Failed to create OAuth flow: {str(e)}")
-        st.error(f"Authentication error: {e}")
-        st.stop()
 
 # --- Streamlit App Logic ---
 st.set_page_config(page_title="Regnum Home") # Set a page title
