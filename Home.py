@@ -53,6 +53,20 @@ def verify_organization(idinfo: Dict[str, Any]) -> bool:
     return idinfo.get('hd') == 'westkingdom.org'
 
 
+# Function to get OAuth flow for auth middleware
+def get_flow():
+    try:
+        flow_obj = Flow.from_client_secrets_file(
+            credentials_path,
+            scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+            redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
+        )
+        return flow_obj
+    except Exception as e:
+        logger.error(f"Failed to create OAuth flow: {str(e)}")
+        st.error(f"Authentication error: {e}")
+        st.stop()
+
 # --- Streamlit App Logic ---
 st.set_page_config(page_title="Regnum Home") # Set a page title
 st.title("West Kingdom Regnum Portal") # Updated title
@@ -76,6 +90,9 @@ if 'code' in query_params and 'credentials' not in st.session_state:
         logger.error(f"Error fetching OAuth token: {str(e)}")
         st.error(f"Error fetching OAuth token: {e}")
 
+# Display explicit warning about needing westkingdom.org account
+st.warning("You must be logged in with a @westkingdom.org Google account to access this application.")
+
 # 2. Check if User is Authenticated (has credentials in session)
 if 'credentials' not in st.session_state:
     # User is not logged in, display login link
@@ -92,7 +109,6 @@ if 'credentials' not in st.session_state:
             </a>
         </div>
         """, unsafe_allow_html=True)
-        st.info("You must log in with your @westkingdom.org Google account to access this application.")
     except Exception as e:
         logger.error(f"Error generating authorization URL: {str(e)}")
         st.error(f"Error generating authorization URL: {e}")
@@ -113,15 +129,28 @@ else:
         # Verify organization
         if verify_organization(id_info):
             logger.info(f"User {user_email} authenticated successfully")
+            
+            # Check if user is member of regnum-site group for specific pages
+            from utils.auth_middleware import check_group_membership
+            
+            # Display appropriate content based on authentication and group membership
             st.success(f"Welcome {id_info.get('name')} ({user_email})")
             st.write("You are authenticated.")
             # --- Main Application Content (for authenticated users) ---
             st.markdown("---")
             st.header("Application Links")
-            st.page_link("pages/1_Groups.py", label="Manage Groups and Members", icon="👥")
-            st.page_link("pages/2_Regnum.py", label="Regnum Data Entry", icon="📝")
+            
+            is_regnum_site_member = check_group_membership(user_email, "regnum-site")
+            
+            # Always show Duty Request page
             st.page_link("pages/5_Duty_Request.py", label="Request New Duty/Job", icon="✅")
-            # Add more links or content here
+            
+            # Only show restricted pages if user is in regnum-site group
+            if is_regnum_site_member:
+                st.page_link("pages/1_Groups.py", label="Manage Groups and Members", icon="👥")
+                st.page_link("pages/2_Regnum.py", label="Regnum Data Entry", icon="📝")
+            else:
+                st.warning("Note: You don't have access to administration pages. Access to Groups and Regnum pages requires membership in the regnum-site group.")
 
             st.markdown("---")
             if st.button("Logout"):
