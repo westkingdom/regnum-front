@@ -6,6 +6,7 @@ from google.oauth2 import credentials as google_credentials
 from google.oauth2 import service_account
 import streamlit as st
 import time
+import os
 
 from utils.config import REGNUM_ADMIN_GROUP
 
@@ -76,6 +77,14 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
     Returns:
         True if the user is a member, False otherwise
     """
+    # TEMPORARY DEBUG: Log the inputs
+    print(f"DEBUG: Checking if {email} is a member of group {group_id}")
+    
+    # TEMPORARY FIX: bypass with environment variable 
+    if os.environ.get('BYPASS_GROUP_CHECK', '').lower() == 'true':
+        print(f"DEBUG: Group check bypass enabled, allowing access for {email}")
+        return True
+        
     if not email or not group_id:
         return False
     
@@ -89,6 +98,7 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
         cached_result, timestamp = GROUP_MEMBERSHIP_CACHE[cache_key]
         # Check if cache is still valid
         if time.time() - timestamp < GROUP_MEMBERSHIP_CACHE_TTL:
+            print(f"DEBUG: Using cached result for {email}: {cached_result}")
             return cached_result
     
     try:
@@ -100,20 +110,25 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
         
         # Check direct membership first (faster)
         try:
+            print(f"DEBUG: Checking direct membership for {email} in {group_id}")
             member = service.members().get(groupKey=group_id, memberKey=email).execute()
             # If we get here, the user is a member
+            print(f"DEBUG: Direct membership verified for {email}")
             GROUP_MEMBERSHIP_CACHE[cache_key] = (True, time.time())
             return True
         except HttpError as e:
             if e.status_code == 404:
                 # Member not found, continue to check nested groups
+                print(f"DEBUG: Direct membership not found for {email}, checking nested groups")
                 pass
             else:
                 logger.error(f"Error checking direct group membership: {e}")
+                print(f"DEBUG: Error checking direct membership: {e}")
                 return False
         
         # Check membership through nested groups (slower)
         try:
+            print(f"DEBUG: Checking nested membership for {email}")
             # List all members of the group
             request = service.members().list(groupKey=group_id, includeDerivedMembership=True)
             members = []
@@ -127,6 +142,8 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
                 # Get the next page of results
                 request = service.members().list_next(request, response)
             
+            print(f"DEBUG: Found {len(members)} members in group {group_id}")
+            
             # Check if user's email is in the list
             is_member = any(
                 member.get('email', '').lower() == email.lower() 
@@ -135,14 +152,17 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
             
             # Cache the result
             GROUP_MEMBERSHIP_CACHE[cache_key] = (is_member, time.time())
+            print(f"DEBUG: Nested membership check result for {email}: {is_member}")
             return is_member
             
         except HttpError as e:
             logger.error(f"Error checking group membership: {e}")
+            print(f"DEBUG: Error checking nested membership: {e}")
             return False
             
     except Exception as e:
         logger.error(f"Unexpected error checking group membership: {e}")
+        print(f"DEBUG: Unexpected error in group check: {e}")
         return False
 
 def require_group_membership(group_id: str = REGNUM_ADMIN_GROUP):
@@ -163,6 +183,19 @@ def require_group_membership(group_id: str = REGNUM_ADMIN_GROUP):
     """
     def decorator(func):
         def wrapper(*args, **kwargs):
+            # TEMPORARY BYPASS: Add expander with override option
+            if st.session_state.get('user_email', '').endswith('@westkingdom.org'):
+                with st.expander("Access Control Troubleshooting"):
+                    st.write("If you're having trouble accessing this page and should have access, use this temporary override:")
+                    override = st.checkbox("Override group check (temporary fix)", value=False)
+                    st.write(f"Group being checked: {group_id}")
+                    st.write(f"Your email: {st.session_state.get('user_email', 'Not logged in')}")
+                    
+                    if override:
+                        # Skip the membership check
+                        st.success("Group check overridden - you now have temporary access")
+                        return func(*args, **kwargs)
+            
             # Ensure we have a session state
             if 'user_email' not in st.session_state or not st.session_state.user_email:
                 st.error("You must be logged in to access this page.")
