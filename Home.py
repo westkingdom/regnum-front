@@ -134,7 +134,7 @@ def is_member_of_group(email: str, group_id: str = '00kgcv8k1r9idky', credential
         try:
             logger.debug(f"Checking direct membership for {email} in group {group_id}")
             response = service.members().get(groupKey=group_id, memberKey=email).execute()
-            # If we get here without exception, the user is a member
+            # If we get here, the user is a member
             logger.info(f"User {email} is a member of group {group_id}")
             return True
         except HttpError as e:
@@ -180,15 +180,34 @@ st.title("West Kingdom Regnum Portal") # Updated title
 # 1. Handle OAuth Callback
 # Check if 'code' is in query params (meaning user is returning from Google Auth)
 # and if we don't already have credentials stored in the session state.
-query_params = st.query_params
-if 'code' in query_params and 'credentials' not in st.session_state:
+# Compatibility handling for different Streamlit versions
+try:
+    # Try using st.query_params (newer Streamlit versions)
+    query_params = st.query_params
+    code_param = query_params.get('code', None)
+    
+    # Function to clear query params in newer Streamlit versions
+    def clear_query_params():
+        st.query_params.clear()
+except AttributeError:
+    # Fallback for older Streamlit versions
+    # Get parameters directly from URL using experimental_get_query_params
+    query_params = st.experimental_get_query_params()
+    code_param = query_params.get('code', [None])[0]  # Extract first element if it's a list
+    
+    # Function to clear query params in older Streamlit versions
+    def clear_query_params():
+        st.experimental_set_query_params()
+
+# Handle the authentication code
+if code_param and 'credentials' not in st.session_state:
     try:
         logger.info("OAuth code received, attempting to fetch token")
-        flow.fetch_token(code=query_params['code'])
+        flow.fetch_token(code=code_param)
         st.session_state['credentials'] = flow.credentials
         logger.info("Token fetched successfully, storing credentials in session state")
         # Clear query params after fetching token to prevent re-processing
-        st.query_params.clear()
+        clear_query_params()
         st.rerun() # Rerun to process the newly logged-in state immediately
     except Exception as e:
         logger.error(f"Error fetching OAuth token: {str(e)}")
@@ -248,74 +267,57 @@ else:
                 st.success("✅ You have admin access (member of regnum-site group)")
             else:
                 st.warning("⚠️ You have basic access (not a member of regnum-site group)")
-                
-            # --- Main Application Content (for authenticated users) ---
-            st.markdown("---")
-            st.header("Application Links")
+
+            # Display BYPASS_GROUP_CHECK status if it's enabled
+            if os.environ.get('BYPASS_GROUP_CHECK', '').lower() == 'true':
+                st.warning("⚠️ BYPASS_GROUP_CHECK is enabled - Group membership checks are bypassed for @westkingdom.org emails")
             
-            # Always show Duty Request page
-            st.page_link("pages/5_Duty_Request.py", label="Request New Duty/Job", icon="✅")
+            # Add content for the Home page
+            st.markdown("""
+            ## Welcome to the West Kingdom Regnum Portal
             
-            # Only show restricted pages if user is in regnum-site group
+            This application provides access to the West Kingdom's officer roster and reporting system. Here you can:
+            
+            - View current officers and deputies
+            - Search for officers by title or branch
+            - Access office email templates
+            - Generate reports
+            
+            Use the sidebar menu to navigate between different sections of the application.
+            """)
+            
+            # Display admin specific message
             if is_admin:
-                st.page_link("pages/1_Groups.py", label="Manage Groups and Members", icon="👥")
-                st.page_link("pages/2_Regnum.py", label="Regnum Data Entry", icon="📝")
-            else:
-                st.warning("Note: You don't have access to administration pages. Access to Groups and Regnum pages requires membership in the regnum-site group.")
+                st.info("""
+                ### Admin Functions
                 
-                # Show more helpful information about how to get access
-                st.info("To request access to administrative functions, please contact webminister@westkingdom.org")
+                As an administrator, you have access to additional features:
+                - Manage officer information
+                - Add or remove officers
+                - Configure email templates
+                - Edit branch information
+                """)
         else:
-            # Not a Western Digital account
-            logger.warning(f"User {user_email} attempted to access app with non-Western Kingdom account")
-            st.error("You must use a @westkingdom.org email address to access this application.")
-            st.warning("If you are a Kingdom officer without a westkingdom.org email, please contact webminister@westkingdom.org.")
-            st.button("Logout", on_click=lambda: st.session_state.clear())
+            # Handle non-westkingdom.org users
+            logger.warning(f"Non-westkingdom.org user attempted to authenticate: {user_email}")
+            st.error(f"Access denied. You must use a @westkingdom.org Google account to access this application.")
+            st.warning("Your account is not in the westkingdom.org domain. Please log out and try again with a westkingdom.org account.")
+            
+            # Add a logout button
+            if st.button("Logout"):
+                # Clear session state and redirect to login
+                for key in list(st.session_state.keys()):
+                    del st.session_state[key]
+                st.rerun()
     except Exception as e:
-        logger.error(f"Error verifying ID token: {str(e)}")
+        logger.error(f"Error verifying token: {str(e)}")
         st.error(f"Authentication error: {e}")
 
-# Add health check and status, hidden from normal UI
-if 'healthz' in st.query_params:
-    health_check()
-
-# Debug section for authentication and token issues (accessed via query param)
-if 'debug' in st.query_params and st.query_params['debug'] == 'auth':
-    st.markdown("---")
-    st.subheader("Debug Information")
-    
-    with st.expander("Authentication Details"):
-        if 'credentials' in st.session_state:
-            st.write("Authentication Status: ✓ User is authenticated")
-            credentials = st.session_state['credentials']
-            st.json({
-                "token_type": credentials.token_type,
-                "expires_at": datetime.datetime.fromtimestamp(credentials.expiry).strftime('%Y-%m-%d %H:%M:%S'),
-                "scopes": credentials.scopes if hasattr(credentials, 'scopes') else "Not available"
-            })
-        else:
-            st.write("Authentication Status: ✗ User is not authenticated")
-            
-        if 'user_email' in st.session_state:
-            st.write(f"User Email: {st.session_state.get('user_email')}")
-        if 'is_admin' in st.session_state:
-            st.write(f"Admin Access: {'Yes' if st.session_state.get('is_admin') else 'No'}")
-
-
+# Health check endpoint for Cloud Run
 def health_check():
-    """
-    Internal endpoint for health checks.
-    Used by Google Cloud Run to determine if the service is healthy.
-    """
-    st.write("Service Status: Healthy")
-    st.write(f"App Version: 1.0.0")
-    st.write(f"Environment: {os.environ.get('ENVIRONMENT', 'Not set')}")
-    st.write(f"Backend API: {os.environ.get('REGNUM_API_URL', 'Not set')}")
-    # Hide the main UI components when displaying health check
-    st.markdown("""
-    <style>
-        .main > div:first-child {display: none}
-        header {visibility: hidden}
-        footer {visibility: hidden}
-    </style>
-    """, unsafe_allow_html=True)
+    """Return a 200 status for Cloud Run health checks"""
+    return {"status": "ok", "timestamp": datetime.datetime.now().isoformat()}
+
+# This is only called by Cloud Run health checks
+if os.environ.get('K_SERVICE') and os.environ.get('HEALTH_CHECK') == 'true':
+    health_check()

@@ -34,7 +34,7 @@ steps:
         '${_REGION}',
         '--allow-unauthenticated',
         '--set-secrets=/secrets/sa/service_account.json=regnum-service-account-key:latest',
-        '--set-env-vars=IMPERSONATED_USER_EMAIL=webminister@westkingdom.org,REDIRECT_URL=${_BASE_URL},BASE_URL=${_BASE_URL},REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,GOOGLE_CLIENT_ID=${_GOOGLE_CLIENT_ID},GOOGLE_CLIENT_SECRET=${_GOOGLE_CLIENT_SECRET}',
+        '--set-env-vars=IMPERSONATED_USER_EMAIL=webminister@westkingdom.org,REDIRECT_URL=${_BASE_URL},BASE_URL=${_BASE_URL},REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,GOOGLE_CLIENT_ID=${_GOOGLE_CLIENT_ID},GOOGLE_CLIENT_SECRET=${_GOOGLE_CLIENT_SECRET},BYPASS_GROUP_CHECK=${_BYPASS_GROUP_CHECK}',
         '--platform',
         'managed',
         '--port',
@@ -63,6 +63,7 @@ substitutions:
   _BASE_URL: 'https://regnum-front-85382560394.us-west1.run.app'
   _GOOGLE_CLIENT_ID: '' # Will be provided during build trigger
   _GOOGLE_CLIENT_SECRET: '' # Will be provided during build trigger
+  _BYPASS_GROUP_CHECK: 'false' # Set to 'true' to bypass group membership checks
 
 # Timeout for the entire build
 timeout: '1800s'  # 30 minutes
