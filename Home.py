@@ -7,7 +7,10 @@ import os
 import json
 import datetime
 from typing import Dict, Any # Import typing
+from googleapiclient.discovery import build
 from utils.logger import app_logger as logger
+from utils.auth import is_group_member
+from utils.config import REGNUM_ADMIN_GROUP
 
 # Define the path where the secret is mounted
 SECRET_CREDENTIALS_PATH = '/oauth/google_credentials.json' # Updated path
@@ -35,11 +38,13 @@ def get_flow():
 try:
     flow = Flow.from_client_secrets_file(
         credentials_path,
-        scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
-        # IMPORTANT: Update redirect_uri for Cloud Run deployment
-        # Get the Cloud Run service URL after first deployment and add it as an
-        # authorized redirect URI in Google Cloud OAuth Client ID settings.
-        redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
+        scopes=[
+            'openid', 
+            'https://www.googleapis.com/auth/userinfo.email', 
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/admin.directory.group.member.readonly'  # Add Directory API scope
+        ],
+        redirect_uri=os.environ.get('REDIRECT_URI', 'https://regnum.westkingdom.org')
     )
     logger.info("OAuth flow configured successfully")
 except FileNotFoundError:
@@ -65,6 +70,35 @@ def verify_organization(idinfo: Dict[str, Any]) -> bool:
         False otherwise.
     """
     return idinfo.get('hd') == 'westkingdom.org'
+
+
+def is_member_of_group(email: str, group_id: str = '00kgcv8k1r9idky', credentials=None) -> bool:
+    """
+    Checks if the user is a member of the specified Google Group.
+    
+    Args:
+        email: The user's email address to check
+        group_id: The Google Group email address
+        credentials: OAuth credentials with appropriate scopes
+        
+    Returns:
+        True if the user is a member of the group, False otherwise
+    """
+    try:
+        # Need Directory API scope for this to work
+        # 'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
+        service = build('admin', 'directory_v1', credentials=credentials)
+        
+        # List all members of the group
+        results = service.members().list(groupKey=group_id).execute()
+        members = results.get('members', [])
+        
+        # Check if user's email is in the group
+        return any(member.get('email', '').lower() == email.lower() for member in members)
+    except Exception as e:
+        print(f"ERROR: Failed to check group membership: {e}")
+        # Default to deny on error
+        return False
 
 
 # --- Streamlit App Logic ---
@@ -126,27 +160,34 @@ else:
         user_email = id_info.get('email', 'unknown')
         logger.info(f"Token verified for user: {user_email}")
 
+        # Store email in session state for use in other pages
+        st.session_state['user_email'] = user_email
+        
         # Verify organization
         if verify_organization(id_info):
+            # Check if user is member of regnum-site group using the new auth system
+            is_admin = is_group_member(user_email, REGNUM_ADMIN_GROUP)
+            st.session_state['is_admin'] = is_admin
             logger.info(f"User {user_email} authenticated successfully")
             
-            # Check if user is member of regnum-site group for specific pages
-            from utils.auth_middleware import check_group_membership
-            
-            # Display appropriate content based on authentication and group membership
+            # Display welcome message
             st.success(f"Welcome {id_info.get('name')} ({user_email})")
-            st.write("You are authenticated.")
+            
+            # Show admin status
+            if is_admin:
+                st.success("✅ You have admin access (member of regnum-site group)")
+            else:
+                st.warning("⚠️ You have basic access (not a member of regnum-site group)")
+                
             # --- Main Application Content (for authenticated users) ---
             st.markdown("---")
             st.header("Application Links")
-            
-            is_regnum_site_member = check_group_membership(user_email, "regnum-site")
             
             # Always show Duty Request page
             st.page_link("pages/5_Duty_Request.py", label="Request New Duty/Job", icon="✅")
             
             # Only show restricted pages if user is in regnum-site group
-            if is_regnum_site_member:
+            if is_admin:
                 st.page_link("pages/1_Groups.py", label="Manage Groups and Members", icon="👥")
                 st.page_link("pages/2_Regnum.py", label="Regnum Data Entry", icon="📝")
             else:
@@ -154,8 +195,12 @@ else:
 
             st.markdown("---")
             if st.button("Logout"):
-                logger.info(f"User {user_email} logging out")
+                print(f"DEBUG: User {user_email} logging out.")
                 del st.session_state['credentials']
+                if 'user_email' in st.session_state:
+                    del st.session_state['user_email']
+                if 'is_admin' in st.session_state:
+                    del st.session_state['is_admin']
                 st.query_params.clear() # Clear params on logout as well
                 st.rerun()
         else:
