@@ -8,6 +8,7 @@ import json
 import datetime
 from typing import Dict, Any # Import typing
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from utils.logger import app_logger as logger
 from utils.auth import is_group_member, get_directory_service
 from utils.config import REGNUM_ADMIN_GROUP
@@ -83,25 +84,64 @@ def is_member_of_group(email: str, group_id: str = '00kgcv8k1r9idky', credential
     
     Args:
         email: The user's email address to check
-        group_id: The Google Group email address
+        group_id: The Google Group ID
         credentials: OAuth credentials with appropriate scopes
         
     Returns:
         True if the user is a member of the group, False otherwise
     """
     try:
+        logger.info(f"Checking if {email} is a member of group {group_id}")
+        
         # Need Directory API scope for this to work
         # 'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
-        service = build('admin', 'directory_v1', credentials=credentials)
+        if credentials is None:
+            # Use the service account method if no credentials provided
+            service = get_directory_service()
+            if not service:
+                logger.error("Failed to create directory service with service account")
+                return False
+        else:
+            # Use the provided user credentials
+            service = build('admin', 'directory_v1', credentials=credentials)
+        
+        # Try direct membership check first
+        try:
+            logger.debug(f"Checking direct membership for {email} in group {group_id}")
+            response = service.members().get(groupKey=group_id, memberKey=email).execute()
+            # If we get here without exception, the user is a member
+            logger.info(f"User {email} is a member of group {group_id}")
+            return True
+        except HttpError as e:
+            if e.resp.status == 404:
+                # User is not a direct member, continue to check full member list
+                logger.info(f"User {email} is not a direct member of group {group_id}")
+                pass
+            else:
+                logger.error(f"Error checking direct membership: {str(e)}")
+                return False
         
         # List all members of the group
-        results = service.members().list(groupKey=group_id).execute()
-        members = results.get('members', [])
-        
-        # Check if user's email is in the group
-        return any(member.get('email', '').lower() == email.lower() for member in members)
+        try:
+            logger.debug(f"Fetching all members of group {group_id}")
+            results = service.members().list(groupKey=group_id, includeDerivedMembership=True).execute()
+            members = results.get('members', [])
+            
+            # Check if user's email is in the group
+            is_member = any(member.get('email', '').lower() == email.lower() for member in members)
+            
+            if is_member:
+                logger.info(f"User {email} found in members list of group {group_id}")
+            else:
+                logger.info(f"User {email} NOT found in members list of group {group_id}")
+                
+            return is_member
+        except Exception as e:
+            logger.error(f"Error listing group members: {str(e)}")
+            return False
+            
     except Exception as e:
-        print(f"ERROR: Failed to check group membership: {e}")
+        logger.error(f"Failed to check group membership: {e}")
         # Default to deny on error
         return False
 
@@ -184,33 +224,68 @@ else:
                 
                 # Check if credentials have the right scopes
                 st.write("Credential Scopes:")
+                scope_list = []
                 if hasattr(credentials, 'scopes'):
-                    for scope in credentials.scopes:
+                    scope_list = credentials.scopes
+                    for scope in scope_list:
                         st.write(f"- {scope}")
                 else:
                     st.write("No scopes found in credentials")
-                
-                # Try checking membership directly
-                try:
-                    direct_check = is_group_member(user_email, REGNUM_ADMIN_GROUP)
-                    st.write(f"Direct Group Membership Check Result: {direct_check}")
                     
-                    # Try to fetch group details
-                    if service and st.button("Check Group Details"):
-                        try:
-                            group_info = service.groups().get(groupKey=REGNUM_ADMIN_GROUP).execute()
-                            st.write("Group information:")
-                            st.json(group_info)
-                            
-                            # Get members list
-                            members = service.members().list(groupKey=REGNUM_ADMIN_GROUP).execute()
-                            st.write("Group members:")
+                # Check if the required scope is present
+                required_scope = 'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
+                if required_scope in scope_list:
+                    st.success(f"✅ Directory API scope is present in credentials")
+                else:
+                    st.error(f"❌ Directory API scope is missing from credentials")
+                    st.info(f"Required scope: {required_scope}")
+                
+                # Try both methods of checking membership
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.subheader("Method 1: Direct API Check")
+                    try:
+                        direct_result = is_member_of_group(user_email, REGNUM_ADMIN_GROUP, credentials=credentials)
+                        if direct_result:
+                            st.success("✅ You ARE a member using direct check")
+                        else:
+                            st.error("❌ You are NOT a member using direct check")
+                    except Exception as e:
+                        st.error(f"Error in direct check: {e}")
+                
+                with col2:
+                    st.subheader("Method 2: Auth Utility Check")
+                    try:
+                        utility_result = is_group_member(user_email, REGNUM_ADMIN_GROUP)
+                        if utility_result:
+                            st.success("✅ You ARE a member using auth.py check")
+                        else:
+                            st.error("❌ You are NOT a member using auth.py check")
+                    except Exception as e:
+                        st.error(f"Error in utility check: {e}")
+                
+                # Try to fetch group details
+                if service and st.button("Check Group Details"):
+                    try:
+                        group_info = service.groups().get(groupKey=REGNUM_ADMIN_GROUP).execute()
+                        st.write("Group information:")
+                        st.json(group_info)
+                        
+                        # Get members list
+                        members = service.members().list(groupKey=REGNUM_ADMIN_GROUP).execute()
+                        st.write("Group members:")
+                        if 'members' in members:
                             member_emails = [m.get('email', '') for m in members.get('members', [])]
                             st.write(member_emails)
-                        except Exception as e:
-                            st.write(f"Error getting group details: {e}")
-                except Exception as e:
-                    st.write(f"Error in direct membership check: {str(e)}")
+                            
+                            if user_email in member_emails:
+                                st.success(f"✅ Your email {user_email} is in the members list!")
+                            else:
+                                st.error(f"❌ Your email {user_email} is NOT in the members list.")
+                        else:
+                            st.write("No members found in this group.")
+                    except Exception as e:
+                        st.write(f"Error getting group details: {e}")
                     
                 # Explain how to fix the issue
                 st.write("### If you need access:")
