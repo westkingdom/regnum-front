@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-A utility script to test authentication and group membership functionality.
+A utility script to test authentication and group membership functionality for WKRegnum.
 This script helps diagnose issues with Google Group membership detection.
 """
 
@@ -160,14 +160,14 @@ def test_bypass_mode(email):
     return result1, result2
 
 def main():
-    parser = argparse.ArgumentParser(description="Test Google Groups authentication and membership")
+    parser = argparse.ArgumentParser(description="Test WKRegnum Google Groups authentication and membership")
     parser.add_argument("email", help="Email address to check for group membership")
     parser.add_argument("--bypass", action="store_true", help="Test the BYPASS_GROUP_CHECK functionality")
     parser.add_argument("--service-account", action="store_true", help="Only test service account access")
     
     args = parser.parse_args()
     
-    logger.info("=== Google Groups Authentication Test ===")
+    logger.info("=== WKRegnum Google Groups Authentication Test ===")
     
     # Service account test
     if args.service_account:

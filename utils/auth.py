@@ -180,11 +180,11 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
 
 def require_group_membership(group_id: str = REGNUM_ADMIN_GROUP):
     """
-    Decorator function to require group membership for specific Streamlit pages.
+    Decorator function to require group membership for specific WKRegnum pages.
     
     Usage:
         @require_group_membership()
-        def my_streamlit_page():
+        def my_app_page():
             st.title("Protected Page")
             # Rest of your page
     

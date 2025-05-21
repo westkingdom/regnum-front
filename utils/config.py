@@ -10,7 +10,7 @@ SCOPES = [
     "https://mail.google.com/",
     "https://www.googleapis.com/auth/admin.directory.group.member.readonly"  # Add Directory API scope
 ]
-redirect_uri = "https://regnum-front-85382560394.us-west1.run.app"
+redirect_uri = "https://wkregnum-85382560394.us-west1.run.app"
 
 # Regnum group check configuration
 REGNUM_ADMIN_GROUP = "00kgcv8k1r9idky"

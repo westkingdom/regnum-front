@@ -59,8 +59,8 @@ images:
 substitutions:
   _REGION: 'us-west1'
   _ARTIFACT_REPO_NAME: 'regnum-artifacts'
-  _SERVICE_NAME: 'regnum-front'
-  _BASE_URL: 'https://regnum-front-85382560394.us-west1.run.app'
+  _SERVICE_NAME: 'wkregnum'
+  _BASE_URL: 'https://wkregnum-85382560394.us-west1.run.app'
   _GOOGLE_CLIENT_ID: '' # Will be provided during build trigger
   _GOOGLE_CLIENT_SECRET: '' # Will be provided during build trigger
   _BYPASS_GROUP_CHECK: 'false' # Set to 'true' to bypass group membership checks
