@@ -54,9 +54,6 @@ def get_directory_service(credentials=None, impersonate_user: str = "webminister
         
         if not os.path.exists(sa_file):
             logger.error(f"Service account file not found at {sa_file}")
-            print(f"ERROR: Service account file not found at {sa_file}")
-            print(f"Current directory: {os.getcwd()}")
-            print(f"Files in directory: {os.listdir('.')}")
             return None
             
         # Create service account credentials with domain-wide delegation
@@ -67,7 +64,6 @@ def get_directory_service(credentials=None, impersonate_user: str = "webminister
         ]
         
         logger.info(f"Loading service account from: {sa_file}")
-        print(f"Loading service account from: {sa_file}")
         
         sa_credentials = service_account.Credentials.from_service_account_file(
             sa_file, 
@@ -81,10 +77,6 @@ def get_directory_service(credentials=None, impersonate_user: str = "webminister
     
     except Exception as e:
         logger.error(f"Error creating directory service: {e}")
-        print(f"ERROR creating directory service: {e}")
-        if isinstance(e, FileNotFoundError):
-            print(f"Current directory: {os.getcwd()}")
-            print(f"Files in directory: {os.listdir('.')}")
         return None
 
 def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
@@ -100,17 +92,6 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
     Returns:
         True if the user is a member, False otherwise
     """
-    # CRITICAL DEBUG: Log the inputs
-    print(f"DEBUG: Checking if {email} is a member of group {group_id}")
-    
-    # TEMPORARY FIX: For local development, assume ownership of the site if email matches specific patterns
-    if email.endswith('@westkingdom.org') and ('webminister' in email.lower() or 
-                                             'karius.hutzelmann' in email.lower() or
-                                             'geri.stander' in email.lower() or
-                                             os.environ.get('BYPASS_GROUP_CHECK', '').lower() == 'true'):
-        print(f"DEBUG: Local development bypass enabled, allowing access for {email}")
-        return True
-        
     if not email or not group_id:
         return False
     
@@ -124,7 +105,6 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
         cached_result, timestamp = GROUP_MEMBERSHIP_CACHE[cache_key]
         # Check if cache is still valid
         if time.time() - timestamp < GROUP_MEMBERSHIP_CACHE_TTL:
-            print(f"DEBUG: Using cached result for {email}: {cached_result}")
             return cached_result
     
     try:
@@ -132,50 +112,28 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
         service = get_directory_service()
         if not service:
             logger.error("Failed to create directory service")
-            print(f"DEBUG: Service account access error. The service account likely needs domain-wide delegation configured in Google Workspace.")
-            print(f"DEBUG: Please contact your Google Workspace administrator to fix this issue.")
-            print(f"DEBUG: For local development, you can set the environment variable BYPASS_GROUP_CHECK=true")
-            # For development, return True for specific email patterns to enable testing
-            if email.endswith('@westkingdom.org') and ('webminister' in email.lower() or 
-                                                     'karius.hutzelmann' in email.lower() or
-                                                     'geri.stander' in email.lower()):
-                print(f"DEBUG: Special email bypass for development, allowing access for {email}")
-                return True
             return False
         
         # Check direct membership first (faster)
         try:
-            print(f"DEBUG: Checking direct membership for {email} in {group_id}")
             member = service.members().get(groupKey=group_id, memberKey=email).execute()
             # If we get here, the user is a member
-            print(f"DEBUG: Direct membership verified for {email}")
             GROUP_MEMBERSHIP_CACHE[cache_key] = (True, time.time())
             return True
         except HttpError as e:
             if e.status_code == 404:
                 # Member not found, continue to check nested groups
-                print(f"DEBUG: Direct membership not found for {email}, checking nested groups")
                 pass
             elif e.status_code == 401 or e.status_code == 403:
                 # Not authorized - likely an issue with service account permissions
                 logger.error(f"Service account permission error: {e}")
-                print(f"DEBUG: Service account permission error: {e}")
-                print(f"DEBUG: For local development, you can set the environment variable BYPASS_GROUP_CHECK=true")
-                # For development, return True for specific email patterns to enable testing
-                if email.endswith('@westkingdom.org') and ('webminister' in email.lower() or 
-                                                         'karius.hutzelmann' in email.lower() or
-                                                         'geri.stander' in email.lower()):
-                    print(f"DEBUG: Special email bypass for development, allowing access for {email}")
-                    return True
                 return False
             else:
                 logger.error(f"Error checking direct group membership: {e}")
-                print(f"DEBUG: Error checking direct membership: {e}")
                 return False
         
         # Check membership through nested groups (slower)
         try:
-            print(f"DEBUG: Checking nested membership for {email}")
             # List all members of the group
             request = service.members().list(groupKey=group_id, includeDerivedMembership=True)
             members = []
@@ -189,8 +147,6 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
                 # Get the next page of results
                 request = service.members().list_next(request, response)
             
-            print(f"DEBUG: Found {len(members)} members in group {group_id}")
-            
             # Check if user's email is in the list
             is_member = any(
                 member.get('email', '').lower() == email.lower() 
@@ -199,30 +155,19 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
             
             # Cache the result
             GROUP_MEMBERSHIP_CACHE[cache_key] = (is_member, time.time())
-            print(f"DEBUG: Nested membership check result for {email}: {is_member}")
             return is_member
             
         except HttpError as e:
             # Handle authorization errors
             if e.status_code == 401 or e.status_code == 403:
                 logger.error(f"Service account permission error: {e}")
-                print(f"DEBUG: Service account lacks permission to list group members: {e}")
-                print(f"DEBUG: For local development, you can set the environment variable BYPASS_GROUP_CHECK=true")
-                # For development, return True for specific email patterns to enable testing
-                if email.endswith('@westkingdom.org') and ('webminister' in email.lower() or 
-                                                         'karius.hutzelmann' in email.lower() or
-                                                         'geri.stander' in email.lower()):
-                    print(f"DEBUG: Special email bypass for development, allowing access for {email}")
-                    return True
                 return False
             else:
                 logger.error(f"Error checking group membership: {e}")
-                print(f"DEBUG: Error checking nested membership: {e}")
                 return False
             
     except Exception as e:
         logger.error(f"Unexpected error checking group membership: {e}")
-        print(f"DEBUG: Unexpected error in group check: {e}")
         return False
 
 def require_group_membership(group_id: str = REGNUM_ADMIN_GROUP):
@@ -243,40 +188,6 @@ def require_group_membership(group_id: str = REGNUM_ADMIN_GROUP):
     """
     def decorator(func):
         def wrapper(*args, **kwargs):
-            # TEMPORARY BYPASS: Add expander with override option
-            if st.session_state.get('user_email', '').endswith('@westkingdom.org'):
-                with st.expander("Access Control Troubleshooting"):
-                    st.write("If you're having trouble accessing this page and should have access, use this temporary override:")
-                    override = st.checkbox("Override group check (temporary fix)", value=False)
-                    st.write(f"Group being checked: {group_id}")
-                    st.write(f"Your email: {st.session_state.get('user_email', 'Not logged in')}")
-                    
-                    # Advanced troubleshooting for regnum-site group
-                    if group_id == REGNUM_ADMIN_GROUP:
-                        st.write("You're trying to access a page that requires membership in the 'regnum-site' Google Group.")
-                        
-                        # Show detailed membership status info
-                        try:
-                            service = get_directory_service()
-                            if service:
-                                st.write("Successfully connected to Google Directory API")
-                                if st.button("Check Group Details"):
-                                    try:
-                                        group_info = service.groups().get(groupKey=group_id).execute()
-                                        st.write("Group information:")
-                                        st.json(group_info)
-                                    except Exception as e:
-                                        st.write(f"Error getting group details: {e}")
-                            else:
-                                st.write("❌ Failed to connect to Google Directory API")
-                        except Exception as e:
-                            st.write(f"Error in directory service setup: {e}")
-                    
-                    if override:
-                        # Skip the membership check
-                        st.success("Group check overridden - you now have temporary access")
-                        return func(*args, **kwargs)
-            
             # Ensure we have a session state
             if 'user_email' not in st.session_state or not st.session_state.user_email:
                 st.error("You must be logged in to access this page.")

@@ -236,142 +236,9 @@ else:
         # Verify organization
         if verify_organization(id_info):
             # Check if user is member of regnum-site group using the new auth system
-            
-            # DEBUGGING: Add detailed information about the group check
-            with st.expander("Debug Information (Admin Only)"):
-                st.write(f"User Email: {user_email}")
-                st.write(f"Admin Group ID: {REGNUM_ADMIN_GROUP}")
-                st.write(f"Admin Group Name: regnum-site")
-                
-                # Get directory service status
-                service = get_directory_service(credentials=credentials)
-                st.write(f"Directory Service Created: {service is not None}")
-                
-                # Check if credentials have the right scopes
-                st.write("Credential Scopes:")
-                scope_list = []
-                if hasattr(credentials, 'scopes'):
-                    scope_list = credentials.scopes
-                    for scope in scope_list:
-                        st.write(f"- {scope}")
-                else:
-                    st.write("No scopes found in credentials")
-                    
-                # Check if the required scope is present
-                required_scope = 'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
-                if required_scope in scope_list:
-                    st.success(f"✅ Directory API scope is present in credentials")
-                else:
-                    st.error(f"❌ Directory API scope is missing from credentials")
-                    st.info(f"Required scope: {required_scope}")
-                
-                # Try both methods of checking membership
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.subheader("Method 1: Direct API Check")
-                    try:
-                        direct_result = is_member_of_group(user_email, REGNUM_ADMIN_GROUP, credentials=credentials)
-                        if direct_result:
-                            st.success("✅ You ARE a member using direct check")
-                        else:
-                            st.error("❌ You are NOT a member using direct check")
-                    except Exception as e:
-                        st.error(f"Error in direct check: {e}")
-                
-                with col2:
-                    st.subheader("Method 2: Auth Utility Check")
-                    try:
-                        utility_result = is_group_member(user_email, REGNUM_ADMIN_GROUP)
-                        if utility_result:
-                            st.success("✅ You ARE a member using auth.py check")
-                        else:
-                            st.error("❌ You are NOT a member using auth.py check")
-                    except Exception as e:
-                        st.error(f"Error in utility check: {e}")
-                
-                # Try to fetch group details
-                if service and st.button("Check Group Details"):
-                    try:
-                        group_info = service.groups().get(groupKey=REGNUM_ADMIN_GROUP).execute()
-                        st.write("Group information:")
-                        st.json(group_info)
-                        
-                        # Get members list
-                        members = service.members().list(groupKey=REGNUM_ADMIN_GROUP).execute()
-                        st.write("Group members:")
-                        if 'members' in members:
-                            member_emails = [m.get('email', '') for m in members.get('members', [])]
-                            st.write(member_emails)
-                            
-                            if user_email in member_emails:
-                                st.success(f"✅ Your email {user_email} is in the members list!")
-                            else:
-                                st.error(f"❌ Your email {user_email} is NOT in the members list.")
-                        else:
-                            st.write("No members found in this group.")
-                    except Exception as e:
-                        st.write(f"Error getting group details: {e}")
-                    
-                # Explain how to fix the issue
-                st.write("### If you need access:")
-                st.write("Contact webminister@westkingdom.org to be added to the regnum-site Google Group.")
-                st.write("This group controls access to the administrative pages like Groups and Regnum data entry.")
-                
-                # Allow direct addition to the group for troubleshooting
-                st.write("### Advanced Troubleshooting")
-                st.write("If you are an administrator, you can try to add yourself to the group directly:")
-                
-                if st.button("Add Me To Regnum-Site Group"):
-                    try:
-                        # Get a fresh directory service
-                        admin_service = get_directory_service(impersonate_user="webminister@westkingdom.org")
-                        
-                        if admin_service:
-                            try:
-                                # Create member object
-                                member = {
-                                    'email': user_email,
-                                    'role': 'MEMBER'
-                                }
-                                
-                                # Try to add to the group
-                                result = admin_service.members().insert(
-                                    groupKey=REGNUM_ADMIN_GROUP,
-                                    body=member
-                                ).execute()
-                                
-                                st.success(f"✅ Successfully added {user_email} to the regnum-site group!")
-                                st.info("Please refresh the page to check your updated access.")
-                                
-                            except Exception as e:
-                                st.error(f"Failed to add member to group: {e}")
-                        else:
-                            st.error("Could not create directory service to add member.")
-                    except Exception as e:
-                        st.error(f"Error in group addition process: {e}")
-                
-                # Show the environment variables that might affect service account access
-                st.write("### Environment Variables")
-                if st.button("Check Environment Variables"):
-                    env_vars = {
-                        "GOOGLE_APPLICATION_CREDENTIALS": os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "Not set"),
-                        "BYPASS_GROUP_CHECK": os.environ.get("BYPASS_GROUP_CHECK", "Not set"),
-                        "PWD": os.environ.get("PWD", "Not set"),
-                        "HOME": os.environ.get("HOME", "Not set")
-                    }
-                    st.json(env_vars)
-            
-            # Regular group membership check
             is_admin = is_group_member(user_email, REGNUM_ADMIN_GROUP)
             st.session_state['is_admin'] = is_admin
             logger.info(f"User {user_email} authenticated successfully")
-            
-            # TEMP FIX: Force admin access for troubleshooting
-            if user_email.endswith('@westkingdom.org'):
-                override_admin = st.checkbox("Override admin access (temporary fix)", value=False)
-                if override_admin:
-                    is_admin = True
-                    st.session_state['is_admin'] = True
             
             # Display welcome message
             st.success(f"Welcome {id_info.get('name')} ({user_email})")
@@ -397,70 +264,58 @@ else:
                 st.warning("Note: You don't have access to administration pages. Access to Groups and Regnum pages requires membership in the regnum-site group.")
                 
                 # Show more helpful information about how to get access
-                if user_email.endswith('@westkingdom.org'):
-                    with st.expander("How to get access to admin pages"):
-                        st.write("""
-                        ### Administrative Access
-                        
-                        To access the Groups and Regnum pages, you need to be a member of the 'regnum-site' Google Group.
-                        
-                        #### How to request access:
-                        1. Email webminister@westkingdom.org with your request
-                        2. Include your role or position that requires this access
-                        3. Wait for confirmation that you've been added to the group
-                        
-                        Only users with administrative responsibilities for the Regnum site should have this access.
-                        """)
-
-            st.markdown("---")
-            if st.button("Logout"):
-                print(f"DEBUG: User {user_email} logging out.")
-                del st.session_state['credentials']
-                if 'user_email' in st.session_state:
-                    del st.session_state['user_email']
-                if 'is_admin' in st.session_state:
-                    del st.session_state['is_admin']
-                st.query_params.clear() # Clear params on logout as well
-                st.rerun()
+                st.info("To request access to administrative functions, please contact webminister@westkingdom.org")
         else:
-            # User belongs to wrong organization
-            logger.warning(f"Access denied for non-WK user: {user_email}")
-            st.error(f"Access Denied: User {user_email} does not belong to the required 'westkingdom.org' organization.")
-            if st.button("Logout"):
-                del st.session_state['credentials']
-                st.query_params.clear()
-                st.rerun()
-
-    except ValueError as e:
-        # Token expired or invalid signature/audience etc.
-        logger.warning(f"ID token verification failed: {str(e)}")
-        st.warning(f"Session expired or invalid: {e}. Please login again.")
-        # Clear credentials to force re-login
-        if 'credentials' in st.session_state:
-            del st.session_state['credentials']
-        st.query_params.clear()
-        st.rerun() # Rerun to show login link again
+            # Not a Western Digital account
+            logger.warning(f"User {user_email} attempted to access app with non-Western Kingdom account")
+            st.error("You must use a @westkingdom.org email address to access this application.")
+            st.warning("If you are a Kingdom officer without a westkingdom.org email, please contact webminister@westkingdom.org.")
+            st.button("Logout", on_click=lambda: st.session_state.clear())
     except Exception as e:
-        # Catch-all for other verification errors
-        logger.error(f"Error verifying token: {str(e)}")
-        st.error(f"An error occurred during authentication verification: {e}")
-        if st.button("Logout"):
-            del st.session_state['credentials']
-            st.query_params.clear()
-            st.rerun() 
+        logger.error(f"Error verifying ID token: {str(e)}")
+        st.error(f"Authentication error: {e}")
 
-# Create a simple health check endpoint using Streamlit's routing
+# Add health check and status, hidden from normal UI
+if 'healthz' in st.query_params:
+    health_check()
+
+# Debug section for authentication and token issues (accessed via query param)
+if 'debug' in st.query_params and st.query_params['debug'] == 'auth':
+    st.markdown("---")
+    st.subheader("Debug Information")
+    
+    with st.expander("Authentication Details"):
+        if 'credentials' in st.session_state:
+            st.write("Authentication Status: ✓ User is authenticated")
+            credentials = st.session_state['credentials']
+            st.json({
+                "token_type": credentials.token_type,
+                "expires_at": datetime.datetime.fromtimestamp(credentials.expiry).strftime('%Y-%m-%d %H:%M:%S'),
+                "scopes": credentials.scopes if hasattr(credentials, 'scopes') else "Not available"
+            })
+        else:
+            st.write("Authentication Status: ✗ User is not authenticated")
+            
+        if 'user_email' in st.session_state:
+            st.write(f"User Email: {st.session_state.get('user_email')}")
+        if 'is_admin' in st.session_state:
+            st.write(f"Admin Access: {'Yes' if st.session_state.get('is_admin') else 'No'}")
+
+
 def health_check():
     """
-    Provides a simple health check page accessible at /health.
-    
-    This needs to be accessed directly as a page, not through the FastAPI layer.
-    For proper load balancer health checks, configure the health check URL to point to this.
+    Internal endpoint for health checks.
+    Used by Google Cloud Run to determine if the service is healthy.
     """
-    logger.debug("Health check accessed")
-    if st.query_params.get('check') == 'health':
-        st.json({"status": "healthy", "timestamp": str(datetime.datetime.now())})
-        st.stop()
-
-# Call health check at the start of the app
-health_check()
+    st.write("Service Status: Healthy")
+    st.write(f"App Version: 1.0.0")
+    st.write(f"Environment: {os.environ.get('ENVIRONMENT', 'Not set')}")
+    st.write(f"Backend API: {os.environ.get('REGNUM_API_URL', 'Not set')}")
+    # Hide the main UI components when displaying health check
+    st.markdown("""
+    <style>
+        .main > div:first-child {display: none}
+        header {visibility: hidden}
+        footer {visibility: hidden}
+    </style>
+    """, unsafe_allow_html=True)
