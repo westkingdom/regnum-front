@@ -33,8 +33,8 @@ steps:
         '--region',
         '${_REGION}',
         '--allow-unauthenticated',
-        '--set-secrets=/secrets/sa/service_account.json=regnum-service-account-key:latest,/oauth/google_credentials.json=regnum-google-credentials:latest',
-        '--set-env-vars=IMPERSONATED_USER_EMAIL=webminister@westkingdom.org,REDIRECT_URI=https://regnum-front-85382560394.us-west1.run.app,BASE_URL=https://regnum-front-85382560394.us-west1.run.app,REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app',
+        '--set-secrets=/secrets/sa/service_account.json=regnum-service-account-key:latest',
+        '--set-env-vars=IMPERSONATED_USER_EMAIL=webminister@westkingdom.org,REDIRECT_URL=${_BASE_URL},BASE_URL=${_BASE_URL},REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,GOOGLE_CLIENT_ID=${_GOOGLE_CLIENT_ID},GOOGLE_CLIENT_SECRET=${_GOOGLE_CLIENT_SECRET}',
         '--platform',
         'managed',
         '--port',
@@ -60,6 +60,9 @@ substitutions:
   _REGION: 'us-west1'
   _ARTIFACT_REPO_NAME: 'regnum-artifacts'
   _SERVICE_NAME: 'regnum-front'
+  _BASE_URL: 'https://regnum-front-85382560394.us-west1.run.app'
+  _GOOGLE_CLIENT_ID: '' # Will be provided during build trigger
+  _GOOGLE_CLIENT_SECRET: '' # Will be provided during build trigger
 
 # Timeout for the entire build
 timeout: '1800s'  # 30 minutes
