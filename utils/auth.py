@@ -92,6 +92,14 @@ def is_group_member(email: str, group_id: str = REGNUM_ADMIN_GROUP) -> bool:
     Returns:
         True if the user is a member, False otherwise
     """
+    # Check for bypass environment variable for development/testing
+    bypass_check = os.environ.get('BYPASS_GROUP_CHECK', '').lower() == 'true'
+    if bypass_check:
+        # In bypass mode, automatically grant access to @westkingdom.org emails
+        if email and email.lower().endswith('@westkingdom.org'):
+            logger.warning(f"BYPASS_GROUP_CHECK enabled: Auto-approving {email} for group {group_id}")
+            return True
+    
     if not email or not group_id:
         return False
     
