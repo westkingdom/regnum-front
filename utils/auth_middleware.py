@@ -196,8 +196,48 @@ def require_group_auth(flow_provider, group_name="regnum-site", message="Sorry, 
                         del st.session_state['credentials']
                         st.rerun()
                     
-                    # Check group membership
+                    # Add troubleshooting expander
                     user_email = id_info.get('email', '')
+                    if user_email.endswith('@westkingdom.org'):
+                        with st.expander("Access Control Troubleshooting"):
+                            st.write("If you're having trouble accessing this page and should have access, use this temporary override:")
+                            override = st.checkbox("Override group check (temporary fix)", value=False)
+                            st.write(f"Group being checked: {group_name}")
+                            st.write(f"Your email: {user_email}")
+                            
+                            # Show memberships
+                            if st.button("Check My Access"):
+                                from utils.queries import get_all_groups, get_group_members
+                                try:
+                                    _, group_name_to_id = get_all_groups()
+                                    if group_name in group_name_to_id:
+                                        group_id = group_name_to_id[group_name]
+                                        st.write(f"Group '{group_name}' has ID: {group_id}")
+                                        
+                                        # Get members
+                                        response = get_group_members(group_id)
+                                        if response and 'members' in response:
+                                            members = response['members']
+                                            member_emails = [m.get('email', '').lower() for m in members]
+                                            
+                                            if user_email.lower() in member_emails:
+                                                st.success("✅ You ARE a member of this group! If you're still having access issues, there might be a technical problem.")
+                                            else:
+                                                st.error("❌ You are NOT a member of this group.")
+                                                st.write("Group members:")
+                                                st.write(member_emails)
+                                        else:
+                                            st.error("Could not retrieve group members.")
+                                    else:
+                                        st.error(f"Group '{group_name}' not found in the system.")
+                                except Exception as e:
+                                    st.error(f"Error checking group membership: {e}")
+                            
+                            if override:
+                                st.success("Group check overridden - you now have temporary access")
+                                return func(*args, **kwargs)
+                    
+                    # Check group membership
                     if not check_group_membership(user_email, group_name):
                         logger.warning(f"Access denied for user {user_email}: Not a member of {group_name} group")
                         st.error(message)

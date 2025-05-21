@@ -191,6 +191,27 @@ def require_group_membership(group_id: str = REGNUM_ADMIN_GROUP):
                     st.write(f"Group being checked: {group_id}")
                     st.write(f"Your email: {st.session_state.get('user_email', 'Not logged in')}")
                     
+                    # Advanced troubleshooting for regnum-site group
+                    if group_id == REGNUM_ADMIN_GROUP:
+                        st.write("You're trying to access a page that requires membership in the 'regnum-site' Google Group.")
+                        
+                        # Show detailed membership status info
+                        try:
+                            service = get_directory_service()
+                            if service:
+                                st.write("Successfully connected to Google Directory API")
+                                if st.button("Check Group Details"):
+                                    try:
+                                        group_info = service.groups().get(groupKey=group_id).execute()
+                                        st.write("Group information:")
+                                        st.json(group_info)
+                                    except Exception as e:
+                                        st.write(f"Error getting group details: {e}")
+                            else:
+                                st.write("❌ Failed to connect to Google Directory API")
+                        except Exception as e:
+                            st.write(f"Error in directory service setup: {e}")
+                    
                     if override:
                         # Skip the membership check
                         st.success("Group check overridden - you now have temporary access")
@@ -204,7 +225,12 @@ def require_group_membership(group_id: str = REGNUM_ADMIN_GROUP):
             # Check if user is a member of the required group
             user_email = st.session_state.user_email
             if not is_group_member(user_email, group_id):
-                st.error(f"Access denied: You must be a member of the {group_id} group to access this page.")
+                # Use a more user-friendly error message
+                friendly_group_name = "regnum-site" if group_id == REGNUM_ADMIN_GROUP else group_id
+                st.error(f"Access denied: You must be a member of the '{friendly_group_name}' group to access this page.")
+                
+                # Add a helpful message about how to get access
+                st.warning("If you need access to this page, please contact webminister@westkingdom.org to be added to the appropriate group.")
                 st.stop()
             
             # If we get here, user has permission, so run the function

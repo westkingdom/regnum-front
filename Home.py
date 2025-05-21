@@ -176,6 +176,7 @@ else:
             with st.expander("Debug Information (Admin Only)"):
                 st.write(f"User Email: {user_email}")
                 st.write(f"Admin Group ID: {REGNUM_ADMIN_GROUP}")
+                st.write(f"Admin Group Name: regnum-site")
                 
                 # Get directory service status
                 service = get_directory_service(credentials=credentials)
@@ -193,8 +194,28 @@ else:
                 try:
                     direct_check = is_group_member(user_email, REGNUM_ADMIN_GROUP)
                     st.write(f"Direct Group Membership Check Result: {direct_check}")
+                    
+                    # Try to fetch group details
+                    if service and st.button("Check Group Details"):
+                        try:
+                            group_info = service.groups().get(groupKey=REGNUM_ADMIN_GROUP).execute()
+                            st.write("Group information:")
+                            st.json(group_info)
+                            
+                            # Get members list
+                            members = service.members().list(groupKey=REGNUM_ADMIN_GROUP).execute()
+                            st.write("Group members:")
+                            member_emails = [m.get('email', '') for m in members.get('members', [])]
+                            st.write(member_emails)
+                        except Exception as e:
+                            st.write(f"Error getting group details: {e}")
                 except Exception as e:
                     st.write(f"Error in direct membership check: {str(e)}")
+                    
+                # Explain how to fix the issue
+                st.write("### If you need access:")
+                st.write("Contact webminister@westkingdom.org to be added to the regnum-site Google Group.")
+                st.write("This group controls access to the administrative pages like Groups and Regnum data entry.")
             
             # Regular group membership check
             is_admin = is_group_member(user_email, REGNUM_ADMIN_GROUP)
@@ -230,6 +251,22 @@ else:
                 st.page_link("pages/2_Regnum.py", label="Regnum Data Entry", icon="📝")
             else:
                 st.warning("Note: You don't have access to administration pages. Access to Groups and Regnum pages requires membership in the regnum-site group.")
+                
+                # Show more helpful information about how to get access
+                if user_email.endswith('@westkingdom.org'):
+                    with st.expander("How to get access to admin pages"):
+                        st.write("""
+                        ### Administrative Access
+                        
+                        To access the Groups and Regnum pages, you need to be a member of the 'regnum-site' Google Group.
+                        
+                        #### How to request access:
+                        1. Email webminister@westkingdom.org with your request
+                        2. Include your role or position that requires this access
+                        3. Wait for confirmation that you've been added to the group
+                        
+                        Only users with administrative responsibilities for the Regnum site should have this access.
+                        """)
 
             st.markdown("---")
             if st.button("Logout"):
