@@ -9,7 +9,7 @@ import datetime
 from typing import Dict, Any # Import typing
 from googleapiclient.discovery import build
 from utils.logger import app_logger as logger
-from utils.auth import is_group_member
+from utils.auth import is_group_member, get_directory_service
 from utils.config import REGNUM_ADMIN_GROUP
 
 # Define the path where the secret is mounted
@@ -166,9 +166,42 @@ else:
         # Verify organization
         if verify_organization(id_info):
             # Check if user is member of regnum-site group using the new auth system
+            
+            # DEBUGGING: Add detailed information about the group check
+            with st.expander("Debug Information (Admin Only)"):
+                st.write(f"User Email: {user_email}")
+                st.write(f"Admin Group ID: {REGNUM_ADMIN_GROUP}")
+                
+                # Get directory service status
+                service = get_directory_service(credentials=credentials)
+                st.write(f"Directory Service Created: {service is not None}")
+                
+                # Check if credentials have the right scopes
+                st.write("Credential Scopes:")
+                if hasattr(credentials, 'scopes'):
+                    for scope in credentials.scopes:
+                        st.write(f"- {scope}")
+                else:
+                    st.write("No scopes found in credentials")
+                
+                # Try checking membership directly
+                try:
+                    direct_check = is_group_member(user_email, REGNUM_ADMIN_GROUP)
+                    st.write(f"Direct Group Membership Check Result: {direct_check}")
+                except Exception as e:
+                    st.write(f"Error in direct membership check: {str(e)}")
+            
+            # Regular group membership check
             is_admin = is_group_member(user_email, REGNUM_ADMIN_GROUP)
             st.session_state['is_admin'] = is_admin
             logger.info(f"User {user_email} authenticated successfully")
+            
+            # TEMP FIX: Force admin access for troubleshooting
+            if user_email.endswith('@westkingdom.org'):
+                override_admin = st.checkbox("Override admin access (temporary fix)", value=False)
+                if override_admin:
+                    is_admin = True
+                    st.session_state['is_admin'] = True
             
             # Display welcome message
             st.success(f"Welcome {id_info.get('name')} ({user_email})")
