@@ -35,7 +35,7 @@ def get_flow():
                     'https://www.googleapis.com/auth/userinfo.profile',
                     'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
                 ],
-                redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
+                redirect_uri=os.environ.get('REDIRECT_URL', 'https://wkregnum-njxuammdla-uw.a.run.app')
             )
             return flow_obj
         
@@ -51,7 +51,7 @@ def get_flow():
                     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
                     "token_uri": "https://oauth2.googleapis.com/token",
                     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-                    "redirect_uris": [os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')],
+                    "redirect_uris": [os.environ.get('REDIRECT_URL', 'https://wkregnum-njxuammdla-uw.a.run.app')],
                 }
             }
             
@@ -63,7 +63,7 @@ def get_flow():
                     'https://www.googleapis.com/auth/userinfo.profile',
                     'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
                 ],
-                redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
+                redirect_uri=os.environ.get('REDIRECT_URL', 'https://wkregnum-njxuammdla-uw.a.run.app')
             )
             return flow_obj
         else:

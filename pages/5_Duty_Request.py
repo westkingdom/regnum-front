@@ -24,7 +24,7 @@ def get_flow():
                 'https://www.googleapis.com/auth/userinfo.profile',
                 'https://www.googleapis.com/auth/admin.directory.group.member.readonly'  # Add Directory API scope
             ],
-            redirect_uri=os.environ.get('REDIRECT_URL', 'https://regnum-front-85382560394.us-west1.run.app')
+            redirect_uri=os.environ.get('REDIRECT_URL', 'https://wkregnum-njxuammdla-uw.a.run.app')
         )
         return flow
     except Exception as e:
