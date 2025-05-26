@@ -267,6 +267,22 @@ else:
                 st.success("✅ You have admin access (member of regnum-site group)")
             else:
                 st.warning("⚠️ You have basic access (not a member of regnum-site group)")
+                
+                # Add a button to show debug information - only visible to non-admins for troubleshooting
+                debug_section = st.expander("Group Membership Debug Info")
+                with debug_section:
+                    st.write("### Debug Information")
+                    st.write(f"Your email: {user_email}")
+                    st.write(f"Group ID: {REGNUM_ADMIN_GROUP}")
+                    st.write(f"BYPASS_GROUP_CHECK: {os.environ.get('BYPASS_GROUP_CHECK', 'not set')}")
+                    
+                    # Add a temporary bypass button for testing
+                    st.write("### Temporary Access")
+                    st.warning("This is for debugging only and will only work for this session.")
+                    if st.button("Grant temporary admin access"):
+                        st.session_state['is_admin'] = True
+                        st.success("Temporary admin access granted. This will only last for your current session.")
+                        st.rerun()
 
             # Display BYPASS_GROUP_CHECK status if it's enabled
             if os.environ.get('BYPASS_GROUP_CHECK', '').lower() == 'true':
