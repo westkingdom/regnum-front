@@ -1,13 +1,13 @@
 name: regnum-lb
-defaultService: regions/us-west1/backendServices/regnum-front
+defaultService: regions/us-west1/backendServices/wkregnum
 hostRules:
 - hosts:
   - regnum.westkingdom.org
   pathMatcher: main
 pathMatchers:
 - name: main
-  defaultService: regions/us-west1/backendServices/regnum-front
+  defaultService: regions/us-west1/backendServices/wkregnum
   pathRules:
   - paths:
     - /*
-    service: regions/us-west1/backendServices/regnum-front 
+    service: regions/us-west1/backendServices/wkregnum 
