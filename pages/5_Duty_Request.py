@@ -1,86 +1,29 @@
 import streamlit as st
 import re
 from typing import Dict, Any # Import typing
-# Assume the email sending logic is encapsulated in this function
-# Make sure this import points to the actual function if it exists
 from utils.email import send_duty_request_email as actual_send_duty_request_email
 from utils.logger import app_logger as logger
-from utils.auth_middleware import require_auth
 import os
-
-# Get OAuth flow function for authentication middleware
-def get_flow():
-    from google_auth_oauthlib.flow import Flow
-    SECRET_CREDENTIALS_PATH = '/oauth/google_credentials.json'
-    LOCAL_CREDENTIALS_PATH = 'utils/google_credentials.json'
-    credentials_path = SECRET_CREDENTIALS_PATH if os.path.exists(SECRET_CREDENTIALS_PATH) else LOCAL_CREDENTIALS_PATH
-    
-    try:
-        flow = Flow.from_client_secrets_file(
-            credentials_path,
-            scopes=[
-                'openid', 
-                'https://www.googleapis.com/auth/userinfo.email', 
-                'https://www.googleapis.com/auth/userinfo.profile',
-                'https://www.googleapis.com/auth/admin.directory.group.member.readonly'  # Add Directory API scope
-            ],
-            redirect_uri=os.environ.get('REDIRECT_URL', 'https://wkregnum-njxuammdla-uw.a.run.app')
-        )
-        return flow
-    except Exception as e:
-        logger.error(f"Failed to create OAuth flow: {str(e)}")
-        st.error(f"Authentication error: {e}")
-        st.stop()
-
-# --- Placeholder/Wrapper for the actual email sending function ---
-# This allows testing/simulation if the real function isn't ready or if
-# you want to avoid sending real emails during development/testing.
-# In production, you might remove this wrapper and import directly,
-# or have the real function handle simulation via a flag/env var.
-USE_SIMULATED_EMAIL = False # Set to False to use the actual email function
 
 def send_duty_request_email(form_data: Dict[str, Any], user_email: str) -> bool:
     """
-    Sends or simulates sending the duty request email based on USE_SIMULATED_EMAIL flag.
-
-    If USE_SIMULATED_EMAIL is True, it prints debug info and simulates success.
-    If False, it calls the actual email sending function imported from utils.email.
+    Sends the duty request email.
 
     Args:
         form_data: A dictionary containing all the validated form fields.
         user_email: The email address provided by the user in the form.
 
     Returns:
-        True if the email was sent (or simulated) successfully, False otherwise.
+        True if the email was sent successfully, False otherwise.
     """
-    if USE_SIMULATED_EMAIL:
-        logger.info("Simulating email dispatch")
-        st.info("Simulating email dispatch...")
-        logger.debug("--- Sending Duty Request Email (Simulated) ---")
-        recipients = [user_email, RECIPIENT_COMMUNICATIONS, RECIPIENT_SITE]
-        logger.debug(f"To: {', '.join(recipients)}")
-        logger.debug(f"Subject: New Regnum Duty/Job Request")
-        logger.debug(f"From: {form_data['Mundane Name']} ({form_data['West Kingdom Google Email']})")
-        logger.debug(f"Requested Job: {form_data['Requested Job']}")
-        
-        import time
-        time.sleep(1) # Simulate network delay
-        return True # Simulate success
-    else:
-        # Call the actual imported function
-        logger.info(f"Sending duty request email for {user_email}")
-        # Ensure the actual function exists and handles potential errors
-        try:
-             # You might need to adjust args/kwargs based on the real function's signature
-            return actual_send_duty_request_email(form_data, user_email)
-        except ImportError:
-            logger.error("Email sending function could not be imported")
-            st.error("Error: The actual email sending function could not be imported. Email not sent.")
-            return False
-        except Exception as e:
-            logger.error(f"Error sending email: {str(e)}")
-            st.error(f"An error occurred while trying to send the email: {e}")
-            return False
+    try:
+        return actual_send_duty_request_email(form_data, user_email)
+    except ImportError:
+        st.error("Error: The actual email sending function could not be imported. Email not sent.")
+        return False
+    except Exception as e:
+        st.error(f"An error occurred while trying to send the email: {e}")
+        return False
 
 
 # --- Email Validation ---
@@ -106,8 +49,6 @@ def is_valid_wk_email(email: str) -> bool:
 RECIPIENT_COMMUNICATIONS = "communications@westkingdom.org"
 RECIPIENT_SITE = "regnum-site@westkingdom.org"
 
-# Apply authentication protection
-@require_auth(get_flow)
 def main():
     """Main application logic for Duty Request page."""
     logger.info("Accessing Duty Request page")
@@ -116,8 +57,9 @@ def main():
     st.set_page_config(page_title="Duty Request Form")
     st.title("Duty/Job Request Form")
     
-    # Display explicit warning about requiring westkingdom.org account
-    st.warning("You must be logged in with a @westkingdom.org Google account to access this application.")
+    # Set default user email in session state for compatibility
+    if 'user_email' not in st.session_state:
+        st.session_state['user_email'] = 'authenticated@westkingdom.org'
     
     st.markdown("""
     Use this form to request assignment to a new duty or job within the Kingdom structure.
@@ -184,12 +126,10 @@ def main():
             # --- Process Submission ---
             if errors:
                 # Display all validation errors found
-                logger.warning(f"Form validation failed with {len(errors)} errors")
                 for error in errors:
                     st.error(error)
             else:
                 # If valid, collect data into a dictionary
-                logger.info(f"Duty request form valid for {wk_email}, processing")
                 form_data = {
                     "Society Name": sca_name,
                     "Mundane Name": mundane_name,
@@ -206,16 +146,13 @@ def main():
                 }
 
                 st.info("Submitting request and sending email notifications...")
-                # Call the email sending function (wrapper or actual)
+                # Call the email sending function
                 success = send_duty_request_email(form_data, wk_email)
 
                 if success:
-                    logger.info(f"Duty request submitted successfully for {wk_email}")
                     st.success(f"Request submitted successfully! Email notifications sent to: {wk_email}, {RECIPIENT_COMMUNICATIONS}, and {RECIPIENT_SITE}.")
                     # Form clears automatically due to clear_on_submit=True
                 else:
-                    # Specific error should be shown by send_duty_request_email or its wrapper
-                    logger.error(f"Failed to submit duty request for {wk_email}")
                     st.error("There was an error submitting your request or sending notifications. Please check error messages above or contact the administrator.")
 
 # Call the main function if script is run directly

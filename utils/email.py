@@ -2,7 +2,6 @@ import base64
 import os.path
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import json  # Import json for pretty printing
 import smtplib
 
 # Use service account credentials
@@ -44,10 +43,8 @@ def get_gmail_service():
     sa_key_path = SECRET_SA_KEY_PATH if os.path.exists(SECRET_SA_KEY_PATH) else LOCAL_SA_KEY_PATH
 
     if not os.path.exists(sa_key_path):
-        error_msg = f"DEBUG: Service Account key file not found at expected path: {sa_key_path}"
-        print(error_msg)
         try:
-            st.error(error_msg)
+            st.error(f"Service Account key file not found at expected path: {sa_key_path}")
         except Exception:
             pass  # Ignore if not in Streamlit context
         return None
@@ -59,13 +56,9 @@ def get_gmail_service():
             scopes=SCOPES,
             subject=IMPERSONATED_USER_EMAIL  # The user to impersonate
         )
-        print(f"DEBUG: Successfully loaded Service Account credentials from {sa_key_path}, impersonating {IMPERSONATED_USER_EMAIL}")
-
     except Exception as e:
-        error_msg = f"DEBUG: Error loading Service Account credentials from {sa_key_path}: {e}"
-        print(error_msg)
         try:
-            st.error(error_msg)
+            st.error(f"Error loading Service Account credentials: {e}")
         except Exception:
             pass
         return None
@@ -74,22 +67,17 @@ def get_gmail_service():
     if creds:
         try:
             service = build('gmail', 'v1', credentials=creds)
-            print("DEBUG: Gmail service built successfully using Service Account.")
             return service
-        except HttpError as error:
-            print(f'DEBUG: An HTTP error occurred building the Gmail service: {error}')
+        except HttpError:
             return None
-        except Exception as e:
-            print(f'DEBUG: An unexpected error occurred building service: {e}')
+        except Exception:
             return None
     else:
-        print("DEBUG: Failed to obtain valid credentials in get_gmail_service.")
         return None
 
 
 def create_message(sender, to, cc, subject, message_text):
     """Create a message for an email, including CC."""
-    print(f"DEBUG: create_message called with sender='{sender}', to='{to}', cc='{cc}', subject='{subject}'")
     message = MIMEMultipart()
     message['to'] = to
     message['cc'] = cc
@@ -98,71 +86,29 @@ def create_message(sender, to, cc, subject, message_text):
     msg = MIMEText(message_text)
     message.attach(msg)
     raw_message = base64.urlsafe_b64encode(message.as_bytes()).decode()
-    print("DEBUG: Raw message created for sending.")
-    # Optionally print part of the raw message for verification, be careful with large messages
-    # print(f"DEBUG: Raw message snippet (first 100 chars): {raw_message[:100]}")
     return {'raw': raw_message}
 
 
 def send_message(service, user_id, message):
-    """Send an email message using the impersonated user ID with added debugging."""
-    print(f"DEBUG: send_message called for user_id='{user_id}'.")
-    # Optionally print the message structure being sent (can be large)
-    # try:
-    #     print(f"DEBUG: Sending message body structure: {json.dumps(message, indent=2)}")
-    # except Exception as json_e:
-    #     print(f"DEBUG: Could not JSON dump message body: {json_e}")
-
+    """Send an email message using the impersonated user ID."""
     if not service:
-        print("DEBUG: Error in send_message - Gmail service object is None.")
         return None
 
     try:
-        print(f"DEBUG: Attempting service.users().messages().send(userId='{user_id}', ...)")
         # Use the impersonated user's email as the userId
         sent_message_response = (service.users().messages().send(userId=user_id, body=message)
                                  .execute())
-        print(f"DEBUG: Gmail API send successful. Response: {sent_message_response}")
-        if sent_message_response and 'id' in sent_message_response:
-             print(f'DEBUG: Message Id: {sent_message_response["id"]} sent as {user_id}')
         return sent_message_response
-    except HttpError as error:
-        print(f"DEBUG: HttpError occurred sending the email as {user_id}. Status: {error.resp.status}")
-        error_content = "N/A"
-        try:
-            # Attempt to decode error content for more details
-            error_content = error.content.decode('utf-8')
-            print(f"DEBUG: HttpError details: {error_content}")
-        except Exception as decode_err:
-            print(f"DEBUG: Could not decode HttpError content: {decode_err}. Raw content: {error.content}")
-
-        # Check for common delegation errors more explicitly
-        if "Delegation denied" in error_content:
-            print("DEBUG: Delegation denied error detected. Check Google Workspace Admin Console Domain-Wide Delegation settings.")
-            print(f"DEBUG: Ensure Client ID for the service account is authorized for scope: {SCOPES}")
-            print(f"DEBUG: Ensure the impersonated user ({user_id}) exists and is active in the Workspace.")
-        elif error.resp.status == 400:
-            print("DEBUG: Received HTTP 400 Bad Request. Check message format, recipients, and API usage.")
-        elif error.resp.status == 403:
-             print("DEBUG: Received HTTP 403 Forbidden. Check API permissions, scopes, and potential quota issues.")
-        # Add more specific checks if needed
-
+    except HttpError:
         return None
-    except Exception as e:
-        # Catch any other unexpected errors during the send process
-        print(f'DEBUG: An unexpected non-HTTP error occurred during sending as {user_id}: {type(e).__name__} - {e}')
-        import traceback
-        print("DEBUG: Traceback:")
-        traceback.print_exc()  # Print the full traceback for unexpected errors
+    except Exception:
         return None
 
 
 def send_registration_email(form_data: dict, group_name: str):
     """Constructs and sends the registration email using form data via Service Account."""
-    print("DEBUG: send_registration_email called.")
     service = get_gmail_service()  # Call the updated function
     if not service:
-        print("DEBUG: Failed to get Gmail service in send_registration_email. Email not sent.")
         try:
             st.error("Failed to initialize email service. Notification not sent.")
         except Exception:
@@ -193,13 +139,10 @@ def send_registration_email(form_data: dict, group_name: str):
     message = create_message(IMPERSONATED_USER_EMAIL, ADMIN_EMAIL, COMMUNICATIONS_EMAIL, subject, body)
 
     if message:
-        print(f"DEBUG: Sending email via send_message function as {IMPERSONATED_USER_EMAIL} to {ADMIN_EMAIL}, CC {COMMUNICATIONS_EMAIL}...")
         sent_message = send_message(service, IMPERSONATED_USER_EMAIL, message)
         if sent_message:
-            print("DEBUG: Email sent successfully confirmed by send_registration_email.")
             return True
         else:
-            print("DEBUG: send_message returned failure in send_registration_email.")
             try:
                 # Display a more generic error to the user, details are in logs
                 st.error("Failed to send notification email. Please check logs or contact admin.")
@@ -207,7 +150,6 @@ def send_registration_email(form_data: dict, group_name: str):
                 pass
             return False
     else:
-        print("DEBUG: Failed to create email message in send_registration_email.")
         return False
 
 
@@ -217,7 +159,6 @@ def send_duty_request_email(form_data: dict, user_email: str) -> bool:
     Replace this with your actual email sending implementation (e.g., Gmail API).
     """
     if not all([SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SENDER_EMAIL]):
-         print("ERROR: SMTP environment variables not configured.")
          # In Streamlit, use st.error or log appropriately
          return False
 
@@ -243,11 +184,8 @@ def send_duty_request_email(form_data: dict, user_email: str) -> bool:
             server.ehlo() # Say hello again after TLS
             server.login(SMTP_USERNAME, SMTP_PASSWORD)
             server.sendmail(SENDER_EMAIL, recipients, msg.as_string())
-            print(f"Duty request email sent successfully to {', '.join(recipients)}") # Log success
             return True
     except smtplib.SMTPAuthenticationError:
-        print("ERROR: SMTP Authentication failed. Check username/password.")
         return False
-    except Exception as e:
-        print(f"ERROR: Failed to send duty request email: {e}") # Log detailed error
+    except Exception:
         return False

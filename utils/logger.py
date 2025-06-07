@@ -22,7 +22,7 @@ def setup_logger(name=None):
     
     # Only configure if handlers haven't been set up
     if not logger.handlers:
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.WARNING)
         
         # Determine if we're running in Cloud Run
         in_cloud_run = os.environ.get('K_SERVICE') is not None

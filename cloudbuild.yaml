@@ -4,21 +4,11 @@ steps:
 
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
-        'build',
-        '-t',
-        '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
-        '.',
-      ]
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/regnum-front:$COMMIT_SHA', '.']
 
-  # Push the container image to Artifact Registry
+  # Push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      [
-        'push',
-        '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
-      ]
+    args: ['push', 'gcr.io/$PROJECT_ID/regnum-front:$COMMIT_SHA']
 
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -27,43 +17,35 @@ steps:
       [
         'run',
         'deploy',
-        '${_SERVICE_NAME}',
+        'regnum-front',
         '--image',
-        '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
+        'gcr.io/$PROJECT_ID/regnum-front:$COMMIT_SHA',
         '--region',
-        '${_REGION}',
-        '--allow-unauthenticated',
-        '--set-secrets=/secrets/sa/service_account.json=regnum-service-account-key:latest',
-        '--set-env-vars=IMPERSONATED_USER_EMAIL=webminister@westkingdom.org,REDIRECT_URL=${_BASE_URL},BASE_URL=${_BASE_URL},REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,GOOGLE_CLIENT_ID=${_GOOGLE_CLIENT_ID},GOOGLE_CLIENT_SECRET=${_GOOGLE_CLIENT_SECRET},BYPASS_GROUP_CHECK=${_BYPASS_GROUP_CHECK}',
+        'us-west1',
         '--platform',
         'managed',
         '--port',
-        '8080',
-        '--timeout',
-        '300s',
+        '8501',
+        '--allow-unauthenticated',
         '--memory',
-        '512Mi',
-        '--cpu',
-        '1',
-        '--min-instances',
-        '1',
-        '--max-instances',
-        '10'
+        '1Gi',
+        '--set-env-vars',
+        'REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,BASE_URL=https://wkregnum-njxuammdla-uw.a.run.app,REDIRECT_URL=https://wkregnum-njxuammdla-uw.a.run.app,REGNUM_ADMIN_GROUP=00kgcv8k1r9idky,BYPASS_AUTH=false,BYPASS_GROUP_CHECK=false,USE_MOCK_DATA=false,STREAMLIT_ENV=production',
+        '--set-secrets',
+        '/oauth/google_credentials.json=google-oauth-credentials:latest,/secrets/sa/service_account.json=regnum-service-account:latest'
       ]
 
-# Store the image name in Artifact Registry
+# Store the image name in Container Registry
 images:
-  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/regnum-front:$COMMIT_SHA'
 
 # Define substitutions (variables)
 substitutions:
   _REGION: 'us-west1'
-  _ARTIFACT_REPO_NAME: 'regnum-artifacts'
-  _SERVICE_NAME: 'wkregnum'
+  _SERVICE_NAME: 'regnum-front'
   _BASE_URL: 'https://wkregnum-njxuammdla-uw.a.run.app'
-  _GOOGLE_CLIENT_ID: '' # Will be provided during build trigger
-  _GOOGLE_CLIENT_SECRET: '' # Will be provided during build trigger
-  _BYPASS_GROUP_CHECK: 'false' # Set to 'true' to bypass group membership checks
+  _REDIRECT_URL: 'https://wkregnum-njxuammdla-uw.a.run.app'
+  _REGNUM_ADMIN_GROUP: '00kgcv8k1r9idky'
 
 # Timeout for the entire build
 timeout: '1800s'  # 30 minutes
