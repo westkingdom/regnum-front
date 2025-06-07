@@ -6,7 +6,8 @@ import google.auth.transport.requests
 from utils.logger import app_logger as logger
 import requests
 import os
-from utils.config import REGNUM_ADMIN_GROUP
+from utils.config import REGNUM_ADMIN_GROUP, BYPASS_GROUP_CHECK
+from utils.auth import get_directory_service, is_group_member
 
 def verify_organization(idinfo):
     """
@@ -20,6 +21,21 @@ def verify_organization(idinfo):
     """
     return idinfo.get('hd') == 'westkingdom.org'
 
+def check_user_domain(email):
+    """
+    Checks if an email belongs to the westkingdom.org domain.
+    Simple string check, no API calls needed.
+    
+    Args:
+        email: Email address to check
+        
+    Returns:
+        True if the email ends with @westkingdom.org, False otherwise
+    """
+    if not email:
+        return False
+    return email.lower().endswith('@westkingdom.org')
+
 def check_group_membership(email, group_name="regnum-site"):
     """
     Checks if a user is a member of a specific Google Group.
@@ -31,9 +47,6 @@ def check_group_membership(email, group_name="regnum-site"):
     Returns:
         True if the user is a member of the specified group, False otherwise
     """
-    from utils.queries import get_group_members
-    from utils.auth import is_group_member
-    
     try:
         logger.info(f"Checking if {email} is a member of {group_name} group")
         
@@ -55,33 +68,18 @@ def check_group_membership(email, group_name="regnum-site"):
             
         group_id = group_name_to_id[group_name]
         
-        # Get members of the group
-        response = get_group_members(group_id)
-        
-        if not response or 'members' not in response:
-            logger.warning(f"Failed to get members for group {group_name} (ID: {group_id})")
-            return False
-            
-        members = response.get('members', [])
-        
-        # Check if the user's email is in the members list
-        for member in members:
-            if member.get('email', '').lower() == email.lower():
-                logger.info(f"User {email} is a member of {group_name} group")
-                return True
-                
-        logger.info(f"User {email} is NOT a member of {group_name} group")
-        return False
+        # Use the auth module's is_group_member function
+        return is_group_member(email, group_id)
     except Exception as e:
         logger.error(f"Error checking group membership: {str(e)}")
         return False
 
 def require_auth(flow_provider):
     """
-    Authentication middleware decorator that ensures users are logged in.
+    Authentication middleware decorator that requires valid Google OAuth authentication.
     
     Args:
-        flow_provider: A function that returns the OAuth flow object
+        flow_provider: Function that returns the configured OAuth flow
     
     Returns:
         A decorator function that checks authentication status
@@ -89,226 +87,165 @@ def require_auth(flow_provider):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if 'credentials' not in st.session_state:
-                logger.info("User not authenticated, redirecting to login")
-                st.error("Please login to access this page")
-                # Add explicit warning about westkingdom.org requirement
-                st.warning("You must be logged in with a @westkingdom.org Google account to access this application.")
-                try:
-                    flow = flow_provider()
-                    auth_url, _ = flow.authorization_url(prompt='consent')
-                    # Improved login button with styling
-                    st.markdown(f'''
-                    <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0;">
-                        <a href="{auth_url}" target="_self" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 1.2em;">
-                            Login with Google (West Kingdom Account)
-                        </a>
-                    </div>
-                    ''', unsafe_allow_html=True)
-                except Exception as e:
-                    logger.error(f"Error generating authorization URL: {str(e)}")
-                    st.error(f"Error generating authorization URL: {e}")
+            # Check if we should bypass authentication entirely
+            if os.environ.get('BYPASS_AUTH', 'false').lower() == 'true':
+                logger.info("Authentication bypassed due to BYPASS_AUTH=true")
+                if 'user_email' not in st.session_state:
+                    st.session_state['user_email'] = 'authenticated@westkingdom.org'
+                return func(*args, **kwargs)
+            
+            # Check if user is already authenticated
+            if 'credentials' not in st.session_state or 'user_email' not in st.session_state:
+                st.error("Authentication required. Please return to the home page to log in.")
+                st.info("You need to authenticate with your @westkingdom.org Google account to access this page.")
+                
+                # Provide a link back to home
+                if st.button("Go to Login Page"):
+                    st.switch_page("Home.py")
+                
                 st.stop()
-            else:
-                # Verify the token is still valid
+            
+            # Verify the credentials are still valid
+            try:
                 credentials = st.session_state['credentials']
                 request = google.auth.transport.requests.Request()
                 
-                try:
-                    id_info = id_token.verify_oauth2_token(
-                        credentials.id_token, request, credentials.client_id
-                    )
-                    
-                    # Check if token is expired
-                    if 'exp' in id_info and time.time() > id_info['exp']:
-                        logger.warning("Token expired, redirecting to login")
-                        del st.session_state['credentials']
-                        st.rerun()
-                        
-                    # Verify organization
-                    if not verify_organization(id_info):
-                        logger.warning(f"Access denied for non-WK user: {id_info.get('email', 'unknown')}")
-                        st.error("Access denied. User does not belong to westkingdom.org")
-                        del st.session_state['credentials']
-                        st.rerun()
-                    
-                    # Token is valid, let the function run
-                    logger.debug(f"Authenticated access to {func.__name__} by {id_info.get('email', 'unknown')}")
-                    
-                except ValueError as e:
-                    logger.warning(f"Token validation error: {str(e)}")
+                # Verify the ID token
+                id_info = id_token.verify_oauth2_token(
+                    credentials.id_token, request, credentials.client_id
+                )
+                
+                # Check if token is expired
+                current_time = time.time()
+                if id_info.get('exp', 0) < current_time:
+                    logger.warning("Token expired, clearing session")
                     del st.session_state['credentials']
+                    del st.session_state['user_email']
+                    st.error("Your session has expired. Please log in again.")
                     st.rerun()
-                except Exception as e:
-                    logger.error(f"Authentication error: {str(e)}")
-                    st.error(f"Authentication error: {e}")
+                
+                # Verify organization
+                if not verify_organization(id_info):
+                    st.error("Access denied. You must use a @westkingdom.org account.")
                     st.stop()
-                    
+                
+                # Update user email in session state
+                st.session_state['user_email'] = id_info.get('email')
+                
+            except Exception as e:
+                logger.error(f"Error verifying credentials: {str(e)}")
+                # Clear invalid credentials
+                if 'credentials' in st.session_state:
+                    del st.session_state['credentials']
+                if 'user_email' in st.session_state:
+                    del st.session_state['user_email']
+                st.error("Authentication error. Please log in again.")
+                st.rerun()
+            
+            # Call the wrapped function
             return func(*args, **kwargs)
         return wrapper
     return decorator
 
-def require_group_auth(flow_provider, group_name="regnum-site", message="Sorry, you are not allowed to view these pages. If you are looking to take on a new duty, click on Duty Request in the left menu."):
+def require_group_auth(flow_provider, group_name=None, message=None):
     """
-    Authentication middleware decorator that ensures users are logged in AND members of a specific group.
+    Group authentication middleware decorator that requires both authentication and group membership.
     
     Args:
-        flow_provider: A function that returns the OAuth flow object
-        group_name: The Google Group name to check membership for (default: regnum-site)
-        message: The message to display if the user is not a member of the group
-        
+        flow_provider: Function that returns the configured OAuth flow
+        group_name: Name of the required group (defaults to "regnum-site")
+        message: Custom message to display on access denial
+    
     Returns:
-        A decorator function that checks authentication status and group membership
+        A decorator function that checks authentication and group membership
     """
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if 'credentials' not in st.session_state:
-                logger.info("User not authenticated, redirecting to login")
-                st.error("Please login to access this page")
-                # Add explicit warning about westkingdom.org requirement
-                st.warning("You must be logged in with a @westkingdom.org Google account to access this application.")
-                try:
-                    flow = flow_provider()
-                    auth_url, _ = flow.authorization_url(prompt='consent')
-                    # Improved login button with styling
-                    st.markdown(f'''
-                    <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0;">
-                        <a href="{auth_url}" target="_self" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 1.2em;">
-                            Login with Google (West Kingdom Account)
-                        </a>
-                    </div>
-                    ''', unsafe_allow_html=True)
-                except Exception as e:
-                    logger.error(f"Error generating authorization URL: {str(e)}")
-                    st.error(f"Error generating authorization URL: {e}")
+            # First, ensure basic authentication
+            auth_decorator = require_auth(flow_provider)
+            auth_wrapper = auth_decorator(lambda: None)
+            
+            try:
+                auth_wrapper()  # This will handle authentication or stop execution
+            except:
+                return  # Authentication failed, stop here
+            
+            # Check if we should bypass group checks
+            if BYPASS_GROUP_CHECK:
+                logger.info("Group authentication bypassed due to BYPASS_GROUP_CHECK=true")
+                st.session_state['is_admin'] = True
+                return func(*args, **kwargs)
+            
+            # Now check group membership
+            user_email = st.session_state.get('user_email')
+            if not user_email:
+                st.error("No user email found in session. Please log in again.")
                 st.stop()
-            else:
-                # Verify the token is still valid
-                credentials = st.session_state['credentials']
-                request = google.auth.transport.requests.Request()
+            
+            # Determine which group to check
+            target_group = group_name or "regnum-site"
+            
+            # Check group membership
+            if not check_group_membership(user_email, target_group):
+                # Display custom message or default
+                if message:
+                    st.error(message)
+                else:
+                    st.error(f"Access denied: You must be a member of the '{target_group}' group to access this page.")
                 
-                try:
-                    id_info = id_token.verify_oauth2_token(
-                        credentials.id_token, request, credentials.client_id
-                    )
+                st.warning("If you need access to this page, please contact webminister@westkingdom.org to be added to the appropriate group.")
+                
+                # Show current user info for debugging
+                st.info(f"Current user: {user_email}")
+                
+                # Add debug information if in development
+                if os.environ.get('STREAMLIT_ENV') == 'development':
+                    st.info(f"Debug: Checking membership for {user_email} in group {target_group}")
                     
-                    # Check if token is expired
-                    if 'exp' in id_info and time.time() > id_info['exp']:
-                        logger.warning("Token expired, redirecting to login")
-                        del st.session_state['credentials']
+                    # Add a temporary bypass for development
+                    if st.button("🚨 Development Bypass (DO NOT USE IN PRODUCTION)"):
+                        st.session_state['is_admin'] = True
+                        st.warning("Group check bypassed for development. This should not be available in production!")
                         st.rerun()
-                        
-                    # Verify organization
-                    if not verify_organization(id_info):
-                        logger.warning(f"Access denied for non-WK user: {id_info.get('email', 'unknown')}")
-                        st.error("Access denied. User does not belong to westkingdom.org")
-                        del st.session_state['credentials']
-                        st.rerun()
-                    
-                    # Add troubleshooting expander
-                    user_email = id_info.get('email', '')
-                    if user_email.endswith('@westkingdom.org'):
-                        with st.expander("Access Control Troubleshooting"):
-                            st.write("If you're having trouble accessing this page and should have access, use this temporary override:")
-                            override = st.checkbox("Override group check (temporary fix)", value=False)
-                            st.write(f"Group being checked: {group_name}")
-                            st.write(f"Your email: {user_email}")
-                            
-                            # For regnum-site group (most common case)
-                            if group_name == "regnum-site":
-                                st.write(f"Group ID: {REGNUM_ADMIN_GROUP}")
-                                from utils.auth import is_group_member, get_directory_service
-                                
-                                # Check membership
-                                direct_check = is_group_member(user_email, REGNUM_ADMIN_GROUP)
-                                if direct_check:
-                                    st.success("✅ You ARE a member of this group according to direct check!")
-                                else:
-                                    st.error("❌ You are NOT a member of this group according to direct check.")
-                                
-                                # Show group details button
-                                if st.button("Check Group Details (Direct ID Method)"):
-                                    try:
-                                        service = get_directory_service()
-                                        if service:
-                                            try:
-                                                group_info = service.groups().get(groupKey=REGNUM_ADMIN_GROUP).execute()
-                                                st.write("Group information:")
-                                                st.json(group_info)
-                                                
-                                                # Get members list
-                                                members = service.members().list(groupKey=REGNUM_ADMIN_GROUP).execute()
-                                                st.write("Group members:")
-                                                if 'members' in members:
-                                                    member_emails = [m.get('email', '') for m in members.get('members', [])]
-                                                    st.write(member_emails)
-                                                    
-                                                    if user_email in member_emails:
-                                                        st.success("✅ Your email is in the members list!")
-                                                    else:
-                                                        st.error("❌ Your email is NOT in the members list.")
-                                                else:
-                                                    st.write("No members found in this group.")
-                                            except Exception as e:
-                                                st.error(f"Error getting group details: {e}")
-                                        else:
-                                            st.error("Could not create Directory API service.")
-                                    except Exception as e:
-                                        st.error(f"Error in directory service: {e}")
-                            
-                            # Show memberships for other groups (using name lookup)
-                            elif st.button("Check My Access"):
-                                from utils.queries import get_all_groups, get_group_members
-                                try:
-                                    _, group_name_to_id = get_all_groups()
-                                    if group_name in group_name_to_id:
-                                        group_id = group_name_to_id[group_name]
-                                        st.write(f"Group '{group_name}' has ID: {group_id}")
-                                        
-                                        # Get members
-                                        response = get_group_members(group_id)
-                                        if response and 'members' in response:
-                                            members = response['members']
-                                            member_emails = [m.get('email', '').lower() for m in members]
-                                            
-                                            if user_email.lower() in member_emails:
-                                                st.success("✅ You ARE a member of this group! If you're still having access issues, there might be a technical problem.")
-                                            else:
-                                                st.error("❌ You are NOT a member of this group.")
-                                                st.write("Group members:")
-                                                st.write(member_emails)
-                                        else:
-                                            st.error("Could not retrieve group members.")
-                                    else:
-                                        st.error(f"Group '{group_name}' not found in the system.")
-                                except Exception as e:
-                                    st.error(f"Error checking group membership: {e}")
-                            
-                            if override:
-                                st.success("Group check overridden - you now have temporary access")
-                                return func(*args, **kwargs)
-                    
-                    # Check group membership
-                    if not check_group_membership(user_email, group_name):
-                        logger.warning(f"Access denied for user {user_email}: Not a member of {group_name} group")
-                        st.error(message)
-                        # Link to Duty Request page
-                        st.markdown('<a href="/Duty_Request" target="_self">Go to Duty Request</a>', unsafe_allow_html=True)
-                        st.stop()
-                    
-                    # User is authenticated and has group membership, let the function run
-                    logger.debug(f"Authenticated access to {func.__name__} by {user_email} (member of {group_name})")
-                    
-                except ValueError as e:
-                    logger.warning(f"Token validation error: {str(e)}")
-                    del st.session_state['credentials']
-                    st.rerun()
-                except Exception as e:
-                    logger.error(f"Authentication error: {str(e)}")
-                    st.error(f"Authentication error: {e}")
-                    st.stop()
-                    
+                
+                st.stop()
+            
+            # User has proper group membership
+            st.session_state['is_admin'] = True
+            logger.info(f"User {user_email} has access to {target_group} group")
+            
+            # Call the wrapped function
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
+def service_account_auth(func):
+    """
+    Legacy authentication middleware - kept for backward compatibility.
+    Now redirects to proper OAuth flow.
+    
+    Args:
+        func: The function to decorate
+    
+    Returns:
+        A decorated function that ensures proper authentication
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        logger.warning("service_account_auth is deprecated. Please use require_auth instead.")
+        
+        # Check if user is authenticated via OAuth
+        if 'credentials' not in st.session_state or 'user_email' not in st.session_state:
+            st.error("Authentication required. Please return to the home page to log in with Google.")
+            st.info("This page requires Google OAuth authentication with your @westkingdom.org account.")
+            
+            if st.button("Go to Login Page"):
+                st.switch_page("Home.py")
+            
+            st.stop()
+        
+        # User is authenticated, proceed
+        return func(*args, **kwargs)
+    
+    return wrapper

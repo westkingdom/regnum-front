@@ -3,7 +3,6 @@ import datetime
 from utils.logger import app_logger as logger
 
 # Simple health check page that returns HTTP 200
-logger.debug("Health check page accessed")
 st.set_page_config(page_title="Health Check")
 
 # Return a simple JSON response

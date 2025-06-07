@@ -4,29 +4,44 @@ from utils.config import api_url
 # Updated import: get_all_groups now returns (options, name_to_id_map)
 from utils.queries import get_all_groups, get_group_members, add_member_to_group, remove_member_from_group, is_valid_email
 from utils.logger import app_logger as logger
-from utils.auth import require_group_membership
+from utils.auth_middleware import require_group_auth
 import pandas as pd
 import json
 import os
 import re
 import sys
 
-# Apply the group authentication middleware
-@require_group_membership()
+# Set page configuration
+st.set_page_config(page_title="Group Management", page_icon="👥", layout="wide")
+
+# Create a dummy flow provider for the decorator (required for compatibility)
+def get_flow():
+    return None
+
+# Apply group authentication middleware - requires regnum-site group membership
+@require_group_auth(get_flow, group_name="regnum-site", message="Access denied: Group management requires administrative privileges.")
 def main():
     logger.info("Accessing Groups management page")
     
+    # Display current user info
+    if 'user_email' in st.session_state:
+        st.sidebar.success(f"Logged in as: {st.session_state['user_email']}")
+        if st.session_state.get('is_admin', False):
+            st.sidebar.info("🔑 Administrator Access")
+    
     # Streamlit UI
     st.title("Group Management")
+    st.markdown("Manage Google Groups and their memberships for the West Kingdom.")
 
     # --- Fetch group data ONCE ---
     logger.debug("Fetching all groups data")
-    group_options, group_name_to_id = get_all_groups()
+    all_groups, group_name_to_id = get_all_groups()
 
     # Check for errors during initial group load
-    if not group_options:
+    if not all_groups:
         logger.warning("No groups found or failed to load groups")
         st.warning("No groups found or failed to load groups. Cannot proceed with group management.")
+        st.info("This could be due to API connectivity issues or insufficient permissions.")
         st.stop() # Stop execution if no groups are loaded
 
     # Create tabs for different group operations
@@ -34,10 +49,13 @@ def main():
 
     with st.sidebar:
         st.header("Actions")
-        if st.button("Create New Group"):
-            # Navigate to Create Group tab or handle differently if needed
-            # For now, just rerun might not be the best UX, consider setting active tab
-            st.experimental_rerun()
+        st.markdown("### Quick Actions")
+        if st.button("🔄 Refresh Groups"):
+            st.cache_data.clear()
+            st.rerun()
+        
+        st.markdown("### Statistics")
+        st.metric("Total Groups", len(all_groups))
 
     # Tab for viewing groups and members
     with tab1:
@@ -47,7 +65,7 @@ def main():
         search_term_view = st.text_input("Search Groups", "", key="view_search") # Renamed key slightly
 
         # Filter group names based on search term
-        filtered_group_names_view = [name for name in group_options if search_term_view.lower() in name.lower()]
+        filtered_group_names_view = [name for name in all_groups if search_term_view.lower() in name.lower()]
 
         # Selectbox for selecting a group by name
         selected_group_name_view = st.selectbox(
@@ -70,6 +88,7 @@ def main():
                     api_response = get_group_members(selected_id)
 
                     st.write(f"### Group: {selected_group_name_view}") # Display the selected name
+                    st.write(f"**Group ID:** `{selected_id}`")
 
                     # Display members - Applying Regnum formatting
                     if api_response is not None:
@@ -126,6 +145,7 @@ def main():
     # Tab 2: Create New Group
     with tab2:
         st.header("Create New Group")
+        st.warning("⚠️ Group creation functionality is not yet implemented.")
 
         # Add input fields for creating a new group
         with st.form(key="create_group_form"):
@@ -143,7 +163,7 @@ def main():
         search_term_manage = st.text_input("Search Groups", key="manage_search") # Use unique key
 
         # Filter group names based on search term
-        filtered_group_names_manage = [name for name in group_options if search_term_manage.lower() in name.lower()]
+        filtered_group_names_manage = [name for name in all_groups if search_term_manage.lower() in name.lower()]
 
         selected_group_name_manage = st.selectbox(
             "Select a Group to Manage", # Slightly clearer label
@@ -265,6 +285,5 @@ def main():
         else: # No group selected in Manage tab
             st.info("Please select a group above to manage its members.")
 
-# Call the main function
-if __name__ == "__main__":
-    main()
+# Call the main function to execute the page with authentication
+main()

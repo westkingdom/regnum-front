@@ -1,135 +1,231 @@
 # WKRegnum - West Kingdom Regnum Portal
 
-A web application for the West Kingdom organization that provides access to officer roster and reporting systems. The application uses Google Workspace authentication to restrict access based on membership in a Google Group.
+A Streamlit-based web application for managing the West Kingdom's officer roster (regnum) and Google Groups.
 
-## Project Overview
+## Features
 
-WKRegnum is a Streamlit-based web application for the West Kingdom (SCA) to manage their regnum (list of officers and their details). The application provides:
+- **Google OAuth Authentication**: Secure login with @westkingdom.org accounts
+- **Group-based Authorization**: Admin features restricted to regnum-site group members
+- **Officer Management**: View and manage the current officer roster
+- **Group Management**: Manage Google Groups and memberships (admin only)
+- **Email Integration**: Send duty request emails and notifications
+- **Responsive Design**: Works on desktop and mobile devices
 
-### Core Components
+## Architecture
 
-1. **Authentication System**:
-   - Google OAuth integration for user login
-   - Restricts access to @westkingdom.org domain users
-   - Group-based authorization for certain pages (e.g., "regnum-site" group)
-   - Authentication middleware for protecting routes
+- **Frontend**: Streamlit web application
+- **Authentication**: Google OAuth 2.0 with domain restriction
+- **Authorization**: Google Groups API for membership verification
+- **API**: RESTful backend for data management
+- **Deployment**: Google Cloud Run with Docker containers
 
-2. **Main Features**:
-   - Home page with authentication flow
-   - Regnum management (viewing and editing kingdom officers)
-   - Group management (view/edit Google Groups)
-   - Duty Request form for users to request new roles/jobs
+## Authentication Setup
 
-3. **Technical Stack**:
-   - Streamlit for the web framework
-   - Google API integration (Directory API, OAuth)
-   - Docker containerization for deployment
-   - Cloud Run for hosting (based on GCP references)
+### Prerequisites
 
-4. **Project Structure**:
-   - `Home.py`: Main application entry point with authentication
-   - `main.py`: Appears to be an older/alternative entry point
-   - `pages/`: Streamlit multi-page app structure
-     - `1_Groups.py`: Google Groups management
-     - `2_Regnum.py`: Kingdom officers management
-     - `5_Duty_Request.py`: Form for requesting new duties
-     - `health.py`: Health check endpoint
-   - `utils/`: Utility modules
-     - `auth.py`, `auth_middleware.py`: Authentication utilities
-     - `email.py`: Email sending functionality
-     - `queries.py`: API queries for Google services
-     - `config.py`: Configuration constants
+1. **Google Cloud Project** with the following APIs enabled:
+   - Google+ API
+   - Admin SDK API
+   - Identity and Access Management (IAM) API
 
-5. **Deployment**:
-   - Docker configuration (`Dockerfile`, `docker-compose.yaml`)
-   - GCP Cloud Build integration (`cloudbuild.yaml`)
-   - Load balancer configuration (`load-balancer.yaml`)
+2. **Google Workspace Domain** (westkingdom.org) with admin access
 
-### Key Workflows
+### OAuth Client Configuration
 
-1. **Authentication Flow**:
-   - Users must sign in with Google (@westkingdom.org account)
-   - Token verification and domain validation
-   - For restricted pages, group membership verification
+1. **Create OAuth 2.0 Client ID**:
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Navigate to APIs & Services > Credentials
+   - Create OAuth 2.0 Client ID (Web application)
+   - Add authorized redirect URIs:
+     - `https://wkregnum-njxuammdla-uw.a.run.app` (production)
+     - `http://localhost:8501` (development)
 
-2. **Group Management**:
-   - View Google Groups and members
-   - Add members to groups
-   - Permission controls based on user roles
+2. **Download Credentials**:
+   - Download the JSON file and save as `utils/google_credentials.json`
+   - For Cloud Run, upload as a secret named `google-oauth-credentials`
 
-3. **Duty Request Process**:
-   - Form to collect user information
-   - Email notifications to relevant parties
-   - Data validation before submission
+### Service Account Setup
 
-## Local Development Setup
+1. **Create Service Account**:
+   ```bash
+   gcloud iam service-accounts create regnum-service-account \
+       --display-name="Regnum Service Account" \
+       --description="Service account for WKRegnum application"
+   ```
 
-1. Clone the repository
-2. Install dependencies:
+2. **Enable Domain-Wide Delegation**:
+   - Go to Google Cloud Console > IAM & Admin > Service Accounts
+   - Edit the service account
+   - Check "Enable Google Workspace Domain-wide Delegation"
+   - Note the Client ID (numeric)
+
+3. **Configure Google Workspace Admin Console**:
+   - Go to [Google Admin Console](https://admin.google.com/)
+   - Navigate to Security > API Controls > Domain-wide Delegation
+   - Add the service account Client ID with these scopes:
+     ```
+     https://www.googleapis.com/auth/admin.directory.group.member.readonly
+     https://www.googleapis.com/auth/admin.directory.group.readonly
+     ```
+
+4. **Create and Download Key**:
+   ```bash
+   gcloud iam service-accounts keys create regnum-service-account-key.json \
+       --iam-account=regnum-service-account@PROJECT_ID.iam.gserviceaccount.com
+   ```
+
+5. **Upload to Cloud Run**:
+   ```bash
+   gcloud secrets create regnum-service-account \
+       --data-file=regnum-service-account-key.json
+   ```
+
+### Group Configuration
+
+1. **Create Admin Group**:
+   - Create a Google Group: `regnum-site@westkingdom.org`
+   - Add administrators to this group
+   - Note the group ID (found in Admin Console)
+
+2. **Update Configuration**:
+   - Set `REGNUM_ADMIN_GROUP` environment variable to the group ID
+   - Example: `00kgcv8k1r9idky`
+
+## Local Development
+
+### Setup
+
+1. **Clone Repository**:
+   ```bash
+   git clone <repository-url>
+   cd regnum-front
+   ```
+
+2. **Install Dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Run the local development script:
+3. **Configure Credentials**:
+   - Place `google_credentials.json` in `utils/` directory
+   - Place `regnum-service-account-key.json` in project root
+
+4. **Run Application**:
    ```bash
    ./run_local_dev.sh
    ```
 
-   This script sets up the required environment variables:
-   - `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` for OAuth authentication
-   - `REDIRECT_URL` and `BASE_URL` for the OAuth callback
-   - `BYPASS_GROUP_CHECK=true` to allow any @westkingdom.org email to access the application
+### Environment Variables
 
-## Authentication System
-
-The application uses Google OAuth for authentication and restricts access based on:
-
-1. **Domain Verification**: Only users with @westkingdom.org email addresses can log in
-2. **Group Membership**: Admin features require membership in the regnum-site Google Group
-
-### Testing Authentication
-
-To test group membership verification, use the `test_auth.py` script:
+For local development, you can modify these in `run_local_dev.sh`:
 
 ```bash
-# Test if a user is a member of the regnum-site group
-./test_auth.py user@westkingdom.org
+# Authentication settings
+export BYPASS_AUTH=false              # Set to true to skip OAuth
+export BYPASS_GROUP_CHECK=false       # Set to true to skip group checks
 
-# Test if the BYPASS_GROUP_CHECK functionality works
-./test_auth.py user@westkingdom.org --bypass
+# API settings  
+export USE_MOCK_DATA=false            # Set to true for mock API responses
+export REGNUM_API_URL="https://regnum-api-njxuammdla-uw.a.run.app"
 
-# Only test service account access and permissions
-./test_auth.py --service-account
+# OAuth settings
+export REDIRECT_URL="http://localhost:8501"
+export GOOGLE_CLIENT_ID="your-client-id"
+export GOOGLE_CLIENT_SECRET="your-client-secret"
 ```
 
-### Troubleshooting Authentication Issues
+## Deployment
 
-If users cannot access the application despite being part of the correct Google Group:
+### Cloud Run Deployment
 
-1. Check that the service account has domain-wide delegation enabled
-2. Verify the service account has the required OAuth scopes:
-   - https://www.googleapis.com/auth/admin.directory.group.readonly
-   - https://www.googleapis.com/auth/admin.directory.group.member.readonly
-   - https://www.googleapis.com/auth/admin.directory.user.readonly
-3. Make sure the service account key file is correctly mounted in the Cloud Run service
-4. Verify that the `IMPERSONATED_USER_EMAIL` is an admin user in the Google Workspace
+1. **Build and Deploy**:
+   ```bash
+   gcloud builds submit --config cloudbuild.yaml
+   ```
 
-## Production Deployment
+2. **Environment Variables** (set in cloudbuild.yaml):
+   ```yaml
+   BYPASS_AUTH=false
+   BYPASS_GROUP_CHECK=false
+   USE_MOCK_DATA=false
+   REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app
+   BASE_URL=https://wkregnum-njxuammdla-uw.a.run.app
+   REDIRECT_URL=https://wkregnum-njxuammdla-uw.a.run.app
+   REGNUM_ADMIN_GROUP=00kgcv8k1r9idky
+   ```
 
-The application is deployed to Google Cloud Run using Cloud Build with the following considerations:
+3. **Secrets Configuration**:
+   - OAuth credentials: `/oauth/google_credentials.json`
+   - Service account key: `/secrets/sa/service_account.json`
 
-1. **Environment Variables**: Set in the Cloud Build trigger as substitution variables:
-   - `_GOOGLE_CLIENT_ID`: OAuth Client ID
-   - `_GOOGLE_CLIENT_SECRET`: OAuth Client Secret
-   - `_BASE_URL`: The URL where the application is hosted
-   - `_BYPASS_GROUP_CHECK`: Set to "false" for production, or "true" for testing
+### Required Permissions
 
-2. **Service Account**: For the Directory API access, a service account key is mounted as a secret:
-   - Secret path: `/secrets/sa/service_account.json`
-   - Secret name: `regnum-service-account-key`
+The service account needs these IAM roles:
+- `roles/secretmanager.secretAccessor` (for accessing secrets)
+- Domain-wide delegation for Google Workspace APIs
+
+## Troubleshooting
+
+### Authentication Issues
+
+1. **"Access blocked: This app's request is invalid"**:
+   - Check OAuth client configuration in Google Cloud Console
+   - Verify redirect URIs match exactly
+   - Ensure domain verification is complete
+
+2. **"Group membership check failed"**:
+   - Verify service account has domain-wide delegation
+   - Check Google Workspace Admin Console API scopes
+   - Confirm group ID is correct in environment variables
+
+3. **"Credentials file not found"**:
+   - For local development: Check `utils/google_credentials.json` exists
+   - For Cloud Run: Verify secret mounting in cloudbuild.yaml
+
+### API Issues
+
+1. **"No groups found"**:
+   - Check API connectivity to regnum-api service
+   - Verify service account permissions
+   - Enable mock data for testing: `USE_MOCK_DATA=true`
+
+2. **"Failed to fetch members"**:
+   - Verify group ID exists and is accessible
+   - Check service account has proper scopes
+   - Review Cloud Run logs for detailed errors
+
+### Development Tips
+
+1. **Enable Debug Mode**:
+   ```bash
+   export STREAMLIT_ENV=development
+   ```
+
+2. **View Logs**:
+   ```bash
+   gcloud logs read --service=regnum-front --limit=50
+   ```
+
+3. **Test Authentication Locally**:
+   - Use `pages/debug.py` for authentication testing
+   - Password: `debug123`
 
 ## Security Considerations
 
-1. Never commit OAuth credentials or service account keys to the repository
-2. The `BYPASS_GROUP_CHECK` should always be set to "false" in production
-3. Authentication tokens are stored in session state and expire after the OAuth token lifetime 
+- OAuth credentials should never be committed to version control
+- Service account keys should be stored as Cloud Secrets
+- Group membership is cached for 5 minutes to reduce API calls
+- All authentication can be bypassed in development (never in production)
+
+## Contributing
+
+1. Test authentication changes locally first
+2. Ensure all bypass flags are set to `false` for production
+3. Update documentation for any configuration changes
+4. Test group membership verification with actual Google Groups
+
+## Support
+
+For issues with authentication or group access, contact:
+- **Technical Issues**: webminister@westkingdom.org
+- **Group Access**: webminister@westkingdom.org 

@@ -7,10 +7,8 @@ from typing import Union, Optional, Tuple, List, Dict, Any # Import necessary ty
 from utils.queries import get_group_members, is_valid_email, add_member_to_group
 from utils.email import send_registration_email
 from utils.logger import app_logger as logger
-from utils.auth_middleware import require_group_auth
 import os
 import sys
-from Home import get_flow
 
 # --- Data Loading Function ---
 # Note: Type hint was tuple[list, dict], updated to standard Tuple[List, Dict]
@@ -272,8 +270,6 @@ def handle_form_submission(form_data: Dict[str, Any], selected_group_name: str, 
         st.error("Failed to send registration notification email. Member was NOT added to the group. Please contact the administrator.")
 
 
-# Apply authentication protection
-@require_group_auth(get_flow, group_name="regnum-site", message="Sorry, you are not allowed to view these pages. If you are looking to take on a new duty, click on Duty Request in the left menu.")
 def main():
     """Main application logic for Regnum Data Entry page."""
     logger.info("Accessing Regnum Data Entry page")
@@ -283,7 +279,6 @@ def main():
     st.title("Regnum Data Entry") # Match page title
 
     # --- Load group data ---
-    logger.debug("Fetching group data")
     group_options, group_name_to_id = load_group_data()
 
     # --- Proceed only if groups loaded successfully ---
