@@ -30,9 +30,7 @@ steps:
         '--memory',
         '1Gi',
         '--set-env-vars',
-        'REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,BASE_URL=https://wkregnum-njxuammdla-uw.a.run.app,REDIRECT_URL=https://wkregnum-njxuammdla-uw.a.run.app,REGNUM_ADMIN_GROUP=00kgcv8k1r9idky,BYPASS_AUTH=false,BYPASS_GROUP_CHECK=false,USE_MOCK_DATA=false,STREAMLIT_ENV=production',
-        '--set-secrets',
-        '/oauth/google_credentials.json=google-oauth-credentials:latest,/secrets/sa/service_account.json=regnum-service-account:latest'
+        'REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,BASE_URL=https://wkregnum-njxuammdla-uw.a.run.app,STREAMLIT_ENV=production'
       ]
 
 # Store the image name in Container Registry
@@ -44,8 +42,6 @@ substitutions:
   _REGION: 'us-west1'
   _SERVICE_NAME: 'regnum-front'
   _BASE_URL: 'https://wkregnum-njxuammdla-uw.a.run.app'
-  _REDIRECT_URL: 'https://wkregnum-njxuammdla-uw.a.run.app'
-  _REGNUM_ADMIN_GROUP: '00kgcv8k1r9idky'
 
 # Timeout for the entire build
 timeout: '1800s'  # 30 minutes

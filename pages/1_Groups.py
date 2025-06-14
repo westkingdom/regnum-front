@@ -1,10 +1,8 @@
 import streamlit as st
 import requests
 from utils.config import api_url
-# Updated import: get_all_groups now returns (options, name_to_id_map)
 from utils.queries import get_all_groups, get_group_members, add_member_to_group, remove_member_from_group, is_valid_email
 from utils.logger import app_logger as logger
-from utils.auth_middleware import require_group_auth
 import pandas as pd
 import json
 import os
@@ -14,27 +12,25 @@ import sys
 # Set page configuration
 st.set_page_config(page_title="Group Management", page_icon="👥", layout="wide")
 
-# Create a dummy flow provider for the decorator (required for compatibility)
-def get_flow():
-    return None
-
-# Apply group authentication middleware - requires regnum-site group membership
-@require_group_auth(get_flow, group_name="regnum-site", message="Access denied: Group management requires administrative privileges.")
+# Main function - now publicly accessible
 def main():
-    logger.info("Accessing Groups management page")
+    logger.info("Accessing Groups management page - public access")
+    
+    # Initialize session state for public access
+    if 'user_email' not in st.session_state:
+        st.session_state['user_email'] = 'public@westkingdom.org'
+        st.session_state['user_name'] = 'Public User'
+        st.session_state['is_admin'] = True
     
     # Display current user info
-    if 'user_email' in st.session_state:
-        st.sidebar.success(f"Logged in as: {st.session_state['user_email']}")
-        if st.session_state.get('is_admin', False):
-            st.sidebar.info("🔑 Administrator Access")
+    st.sidebar.success(f"Public Access Mode")
+    st.sidebar.info("🔑 Full Access Granted")
     
     # Streamlit UI
     st.title("Group Management")
     st.markdown("Manage Google Groups and their memberships for the West Kingdom.")
 
     # --- Fetch group data ONCE ---
-    logger.debug("Fetching all groups data")
     all_groups, group_name_to_id = get_all_groups()
 
     # Check for errors during initial group load
@@ -285,5 +281,5 @@ def main():
         else: # No group selected in Manage tab
             st.info("Please select a group above to manage its members.")
 
-# Call the main function to execute the page with authentication
+# Call the main function to execute the page
 main()
