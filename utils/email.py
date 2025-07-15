@@ -1,4 +1,5 @@
 import base64
+import os
 import os.path
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -158,8 +159,27 @@ def send_duty_request_email(form_data: dict, user_email: str) -> bool:
     Sends the duty request email to the specified recipients.
     Replace this with your actual email sending implementation (e.g., Gmail API).
     """
+    # Check if we're in development mode and SMTP is not configured
+    if os.environ.get("STREAMLIT_ENV") == "development" and not all([SMTP_SERVER, SMTP_USERNAME, SMTP_PASSWORD]):
+        try:
+            st.warning("⚠️ Development Mode: Email sending is disabled. SMTP credentials not configured.")
+            st.info("📧 In production, this would send emails to:")
+            st.write(f"- User: {user_email}")
+            st.write(f"- Communications: {RECIPIENT_COMMUNICATIONS}")
+            st.write(f"- Site Admin: {RECIPIENT_SITE}")
+            st.success("✅ Form submission completed successfully (development mode)")
+            return True
+        except Exception:
+            # Not in Streamlit context, just log and return True for dev mode
+            print("Development mode: Email sending skipped")
+            return True
+    
     if not all([SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SENDER_EMAIL]):
-         # In Streamlit, use st.error or log appropriately
+         # In production, this is a real error
+         try:
+             st.error("Email configuration is incomplete. Please contact the administrator.")
+         except Exception:
+             pass
          return False
 
     subject = "New Duty/Job Request Submitted"

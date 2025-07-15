@@ -12,6 +12,13 @@ export BASE_URL="http://localhost:8501"
 # Set environment for development
 export STREAMLIT_ENV="development"
 
+# Email configuration for local development
+# Configure these with your email service credentials
+export SMTP_SERVER="smtp.gmail.com"
+export SMTP_PORT="587"
+export SMTP_SENDER_EMAIL="your-email@gmail.com"
+export SMTP_SENDER_PASSWORD="your-app-password"
+
 # Display configuration message
 echo "==================================================="
 echo "Running WKRegnum Portal in LOCAL DEVELOPMENT MODE"
