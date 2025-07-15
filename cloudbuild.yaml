@@ -17,11 +17,11 @@ steps:
       [
         'run',
         'deploy',
-        'regnum-front',
+        '${_SERVICE_NAME}',
         '--image',
         'gcr.io/$PROJECT_ID/regnum-front:$COMMIT_SHA',
         '--region',
-        'us-west1',
+        '${_REGION}',
         '--platform',
         'managed',
         '--port',
@@ -30,7 +30,7 @@ steps:
         '--memory',
         '1Gi',
         '--set-env-vars',
-        'REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,BASE_URL=https://wkregnum-njxuammdla-uw.a.run.app,STREAMLIT_ENV=production'
+        'REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,BASE_URL=${_BASE_URL},STREAMLIT_ENV=production'
       ]
 
 # Store the image name in Container Registry
