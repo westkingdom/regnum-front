@@ -22,11 +22,13 @@ The application now uses JWT (JSON Web Tokens) for authentication with the follo
 ### Demo Credentials (Development)
 
 **Administrator Account:**
+
 - Email: `admin@westkingdom.org`
 - Password: `admin123`
 - Role: `admin`
 
 **Standard User Account:**
+
 - Email: `user@westkingdom.org`
 - Password: `user123`
 - Role: `user`
@@ -97,11 +99,13 @@ Update `cloudbuild.yaml` with your production values:
 ## Page Protection Levels
 
 ### Protected Pages (Authentication Required)
+
 - `Home.py` - Main dashboard
 - `pages/1_Groups.py` - Group management
 - `pages/2_Regnum.py` - Regnum data entry
 
 ### Public Pages (No Authentication)
+
 - `pages/0_Login.py` - Login interface
 - `pages/5_Duty_Request.py` - Duty request form (with reCAPTCHA)
 - `pages/health.py` - Health check endpoint
@@ -117,12 +121,14 @@ Update `cloudbuild.yaml` with your production values:
 ## Development vs Production
 
 ### Development Mode
+
 - Simplified password verification
 - reCAPTCHA verification disabled
 - Demo credentials available
 - Detailed logging
 
 ### Production Mode
+
 - Secure password hashing required
 - Full reCAPTCHA verification
 - Environment-based configuration
@@ -158,6 +164,7 @@ The authentication system integrates with the existing API structure:
 ### Logs
 
 Authentication events are logged with the following patterns:
+
 - `JWT token created for user: {email}`
 - `User authenticated successfully: {email}`
 - `Authentication failed for user: {email}`
