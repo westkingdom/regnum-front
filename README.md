@@ -4,7 +4,7 @@ A Streamlit-based web application for managing the West Kingdom's officer roster
 
 ## Features
 
-- **Public Access**: No login required - all features available to everyone
+- **Public Access**: No login required for new duty form
 - **Officer Management**: View and manage the current officer roster
 - **Group Management**: Manage Google Groups and memberships
 - **Email Integration**: Send duty request emails and notifications
@@ -15,7 +15,6 @@ A Streamlit-based web application for managing the West Kingdom's officer roster
 - **Frontend**: Streamlit web application
 - **API**: RESTful backend for data management
 - **Deployment**: Google Cloud Run with Docker containers
-- **Public Access**: No authentication barriers
 
 ## Quick Start
 
@@ -76,7 +75,6 @@ The deployed application will be publicly accessible at the Cloud Run URL.
 - **Reports**: Generate basic and advanced reports
 - **Group Management**: Manage Google Groups and memberships
 - **Officer Management**: Add/edit officer information
-- **Email Templates**: Configure email templates
 - **Duty Requests**: Submit duty request forms
 
 ## Troubleshooting
@@ -101,10 +99,9 @@ The deployed application will be publicly accessible at the Cloud Run URL.
 
 ## Security Considerations
 
-- **Public Access**: The application is now publicly accessible to anyone
-- **No Authentication**: All users have full administrative access
+
+- **Authentication**: Uses JWT authentification
 - **API Security**: Backend API should implement its own security measures
-- **Data Sensitivity**: Consider the implications of public access to organizational data
 
 ## Contributing
 
@@ -118,13 +115,3 @@ For technical issues, contact:
 - **Technical Issues**: webminister@westkingdom.org
 - **Feature Requests**: webminister@westkingdom.org
 
-## Migration Notes
-
-This application has been converted from an authenticated system to a publicly accessible one:
-
-- **Removed**: Google OAuth authentication
-- **Removed**: Google Groups membership verification
-- **Removed**: Domain restrictions (@westkingdom.org)
-- **Removed**: All debugging and mock data functionality
-- **Added**: Public access for all users
-- **Simplified**: Deployment configuration 
