@@ -14,12 +14,12 @@ JWT_EXPIRATION_HOURS = 24
 # Simple user database (in production, use a proper database)
 USERS_DB = {
     'webminister@westkingdom.org': {
-        'password_hash': 'admin123',  # In production, use proper password hashing
+        'password_hash': '$2b$12$ArcdDcOI23TK.uxqMah4u.eX08mGGM4aGZg5jPX0BoFcwOzYz.A/e',  # In production, use proper password hashing
         'name': 'Administrator',
         'role': 'admin'
     },
-    'user@westkingdom.org': {
-        'password_hash': 'user123',
+    'karius.hutzelmann@westkingdom.org': {
+        'password_hash': '$2b$12$HzISp2GmiDKAhbelnjy5oONH7qBXKjz0KtrYVW6kQlj3y15m9Xm/O',
         'name': 'User',
         'role': 'user'
     }
