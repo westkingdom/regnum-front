@@ -28,19 +28,8 @@ def main():
     
     # Show login form
     st.markdown("### Please log in to access the WKRegnum Portal")
-    
-    # Demo credentials info
-    with st.expander("Demo Credentials", expanded=True):
-        st.markdown("""
-        **Administrator Account:**
-        - Email: `admin@westkingdom.org`
-        - Password: `admin123`
-        
-        **User Account:**
-        - Email: `user@westkingdom.org`
-        - Password: `user123`
-        """)
-    
+
+   
     with st.form("login_form"):
         st.subheader("Login")
         email = st.text_input(
