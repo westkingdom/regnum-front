@@ -3,6 +3,11 @@ streamlit==1.39.0
 fastapi==0.115.6
 uvicorn==0.32.1
 
+# Authentication and Security
+PyJWT==2.8.0
+cryptography==43.0.1
+streamlit-authenticator==0.3.2
+
 # Google Cloud and Auth
 google-auth==2.35.0
 google-auth-oauthlib==1.2.1

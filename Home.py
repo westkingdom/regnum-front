@@ -1,20 +1,27 @@
 import streamlit as st
 import os
 from utils.logger import app_logger as logger
+from utils.jwt_auth import require_authentication, logout_user, is_authenticated
 
 # --- Page Configuration ---
 st.set_page_config(page_title="WKRegnum - West Kingdom Regnum Portal")
 
+# --- Authentication Required ---
+user = require_authentication()
+
 # --- Main App Logic ---
 st.title("WKRegnum - West Kingdom Regnum Portal")
 
-# Initialize session state for public access
-if 'user_email' not in st.session_state:
-    st.session_state['user_email'] = 'public@westkingdom.org'
-    st.session_state['user_name'] = 'Public User'
-    st.session_state['is_admin'] = True  # Grant admin access to all users
+# Display user info and logout button
+col1, col2 = st.columns([3, 1])
+with col1:
+    st.success(f"Welcome, {user['name']} ({user['email']})")
+with col2:
+    if st.button("Logout"):
+        logout_user()
+        st.rerun()
 
-logger.info("Public access granted to WKRegnum Portal")
+logger.info(f"Authenticated access granted to WKRegnum Portal for user: {user['email']}")
 
 # Display welcome message
 st.markdown("## Welcome to the West Kingdom Regnum Portal")

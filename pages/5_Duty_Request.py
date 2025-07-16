@@ -3,6 +3,7 @@ import re
 from typing import Dict, Any # Import typing
 from utils.email import send_duty_request_email as actual_send_duty_request_email
 from utils.logger import app_logger as logger
+from utils.recaptcha import require_recaptcha
 import os
 
 def send_duty_request_email(form_data: Dict[str, Any], user_email: str) -> bool:
@@ -51,21 +52,23 @@ RECIPIENT_SITE = "regnum-site@westkingdom.org"
 
 def main():
     """Main application logic for Duty Request page."""
-    logger.info("Accessing Duty Request page")
+    logger.info("Accessing Duty Request page - Public Access")
     
     # --- Streamlit Form Page ---
     st.set_page_config(page_title="Duty Request Form")
     st.title("Duty/Job Request Form")
     
-    # Set default user email in session state for compatibility
-    if 'user_email' not in st.session_state:
-        st.session_state['user_email'] = 'authenticated@westkingdom.org'
+    # Show public access notice
+    st.info("📋 This form is publicly accessible. No login required.")
     
     st.markdown("""
     Use this form to request assignment to a new duty or job within the Kingdom structure.
     Your request will be emailed to Communications and the Regnum Site administrators,
     and a copy will be sent to your West Kingdom email address.
     """)
+    
+    # Require reCAPTCHA verification before showing the form
+    require_recaptcha()
 
     # Use st.form to group inputs and submit together
     with st.form(key="duty_request_form", clear_on_submit=True):

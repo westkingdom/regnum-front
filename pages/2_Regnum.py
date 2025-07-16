@@ -7,6 +7,7 @@ from typing import Union, Optional, Tuple, List, Dict, Any # Import necessary ty
 from utils.queries import get_group_members, is_valid_email, add_member_to_group
 from utils.email import send_registration_email
 from utils.logger import app_logger as logger
+from utils.jwt_auth import require_authentication, logout_user
 import os
 import sys
 
@@ -272,11 +273,23 @@ def handle_form_submission(form_data: Dict[str, Any], selected_group_name: str, 
 
 def main():
     """Main application logic for Regnum Data Entry page."""
-    logger.info("Accessing Regnum Data Entry page")
+    # Require authentication
+    user = require_authentication()
+    
+    logger.info(f"Accessing Regnum Data Entry page - authenticated user: {user['email']}")
     
     # --- Main Streamlit App Logic ---
     st.set_page_config(page_title="Regnum Data Entry") # More specific title
     st.title("Regnum Data Entry") # Match page title
+    
+    # Display user info and logout button
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.success(f"Logged in as: {user['name']} ({user['role']})")
+    with col2:
+        if st.button("Logout"):
+            logout_user()
+            st.rerun()
 
     # --- Load group data ---
     group_options, group_name_to_id = load_group_data()

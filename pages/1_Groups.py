@@ -3,6 +3,7 @@ import requests
 from utils.config import api_url
 from utils.queries import get_all_groups, get_group_members, add_member_to_group, remove_member_from_group, is_valid_email
 from utils.logger import app_logger as logger
+from utils.jwt_auth import require_authentication, logout_user
 import pandas as pd
 import json
 import os
@@ -12,19 +13,22 @@ import sys
 # Set page configuration
 st.set_page_config(page_title="Group Management", page_icon="👥", layout="wide")
 
-# Main function - now publicly accessible
+# Main function - requires authentication
 def main():
-    logger.info("Accessing Groups management page - public access")
+    # Require authentication
+    user = require_authentication()
     
-    # Initialize session state for public access
-    if 'user_email' not in st.session_state:
-        st.session_state['user_email'] = 'public@westkingdom.org'
-        st.session_state['user_name'] = 'Public User'
-        st.session_state['is_admin'] = True
+    logger.info(f"Accessing Groups management page - authenticated user: {user['email']}")
     
-    # Display current user info
-    st.sidebar.success(f"Public Access Mode")
-    st.sidebar.info("🔑 Full Access Granted")
+    # Display current user info and logout
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.sidebar.success(f"Logged in as: {user['name']}")
+        st.sidebar.info(f"Role: {user['role']}")
+    with col2:
+        if st.sidebar.button("Logout"):
+            logout_user()
+            st.rerun()
     
     # Streamlit UI
     st.title("Group Management")
