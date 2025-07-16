@@ -3,8 +3,7 @@ import streamlit as st
 from datetime import datetime, timedelta
 import os
 from typing import Optional, Dict, Any
-import hashlib
-import hmac
+import bcrypt
 from utils.logger import app_logger as logger
 
 # JWT Configuration
@@ -14,7 +13,7 @@ JWT_EXPIRATION_HOURS = 24
 
 # Simple user database (in production, use a proper database)
 USERS_DB = {
-    'admin@westkingdom.org': {
+    'webminister@westkingdom.org': {
         'password_hash': 'admin123',  # In production, use proper password hashing
         'name': 'Administrator',
         'role': 'admin'
@@ -27,14 +26,24 @@ USERS_DB = {
 }
 
 def hash_password(password: str) -> str:
-    """Simple password hashing (use bcrypt in production)"""
-    return hashlib.sha256(password.encode()).hexdigest()
+    """Hash a password using bcrypt with a random salt"""
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
 
 def verify_password(password: str, password_hash: str) -> bool:
-    """Verify password against hash"""
-    # For demo purposes, using simple comparison
-    # In production, use proper password verification
-    return password == password_hash
+    """Verify password against bcrypt hash"""
+    try:
+        # Check if it's a bcrypt hash (starts with $2b$)
+        if password_hash.startswith('$2b$'):
+            return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
+        else:
+            # Fallback for demo passwords (simple string comparison)
+            # This allows existing demo credentials to work
+            return password == password_hash
+    except Exception as e:
+        logger.error(f"Error verifying password: {e}")
+        return False
 
 def create_jwt_token(user_email: str, user_data: Dict[str, Any]) -> str:
     """Create JWT token for authenticated user"""

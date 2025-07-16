@@ -6,7 +6,7 @@
 
 **Status**: ✅ **DEPLOYED AND ACTIVE**
 
-- **Service URL**: https://regnum-front-85382560394.us-west1.run.app
+- **Service URL**: <https://regnum-front-85382560394.us-west1.run.app>
 - **Authentication Method**: JWT (JSON Web Tokens)
 - **Token Expiration**: 24 hours
 - **Session Management**: Secure session state with automatic cleanup
@@ -14,11 +14,13 @@
 ### 🛡️ Security Model
 
 #### Protected Pages (Authentication Required)
+
 - **Home Page** (`Home.py`) - Main dashboard
 - **Group Management** (`pages/1_Groups.py`) - Google Groups management
 - **Regnum Data Entry** (`pages/2_Regnum.py`) - Officer data management
 
 #### Public Pages (No Authentication)
+
 - **Login Page** (`pages/0_Login.py`) - Authentication interface
 - **Duty Request Form** (`pages/5_Duty_Request.py`) - Protected by reCAPTCHA
 - **Health Check** (`pages/health.py`) - System monitoring
@@ -26,6 +28,7 @@
 ### 🤖 reCAPTCHA Protection
 
 **Duty Request Form Protection**:
+
 - ✅ Google reCAPTCHA integration
 - ✅ Development mode bypass for testing
 - ✅ Production-ready verification system
@@ -34,11 +37,13 @@
 ### 👥 Demo User Accounts
 
 **Administrator Account**:
+
 - Email: `admin@westkingdom.org`
 - Password: `admin123`
 - Role: `admin`
 
 **Standard User Account**:
+
 - Email: `user@westkingdom.org`
 - Password: `user123`
 - Role: `user`
@@ -46,12 +51,14 @@
 ### 🚀 Deployment Details
 
 **Environment Variables Configured**:
+
 - `JWT_SECRET`: JWT token signing key
 - `RECAPTCHA_SITE_KEY`: reCAPTCHA public key
 - `RECAPTCHA_SECRET_KEY`: reCAPTCHA private key
 - `STREAMLIT_ENV`: Production environment flag
 
 **Infrastructure**:
+
 - ✅ Google Cloud Run deployment
 - ✅ Artifact Registry image storage
 - ✅ Automatic scaling and health checks
@@ -60,11 +67,13 @@
 ### 🔧 Development Setup
 
 **Local Development**:
+
 ```bash
 ./run_local_dev.sh
 ```
 
 **Features in Development Mode**:
+
 - JWT authentication enabled
 - reCAPTCHA verification disabled
 - Demo credentials available
@@ -91,6 +100,7 @@
 ### 📊 Monitoring & Logging
 
 **Authentication Events Logged**:
+
 - User login attempts (success/failure)
 - JWT token creation and validation
 - Session termination events
@@ -99,6 +109,7 @@
 ### 🎯 Next Steps for Production
 
 **Recommended Enhancements**:
+
 1. **Replace Demo Credentials**: Implement real user database
 2. **Secure Password Hashing**: Use bcrypt for password storage
 3. **Real reCAPTCHA Keys**: Configure production reCAPTCHA keys
@@ -118,6 +129,6 @@
 - [x] Service responding and accessible
 - [x] Authentication flow tested and verified
 
-## 🎉 Implementation Complete!
+## 🎉 Implementation Complete
 
 The WKRegnum portal is now secured with JWT authentication while maintaining public access to the Duty Request form with reCAPTCHA protection. The system is deployed and ready for use.
