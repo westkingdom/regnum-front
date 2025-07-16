@@ -7,6 +7,7 @@ uvicorn==0.32.1
 PyJWT==2.8.0
 cryptography==43.0.1
 streamlit-authenticator==0.3.2
+bcrypt==4.1.2
 
 # Google Cloud and Auth
 google-auth==2.35.0

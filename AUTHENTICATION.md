@@ -36,9 +36,23 @@ The application now uses JWT (JSON Web Tokens) for authentication with the follo
 For production deployment, you should:
 
 1. **Replace demo credentials** with real user accounts
-2. **Use proper password hashing** (bcrypt recommended)
+2. **Use proper password hashing** (bcrypt is now implemented)
 3. **Integrate with a real user database** (replace the in-memory USERS_DB)
 4. **Set secure JWT secret** via environment variable
+
+### Password Hashing Utility
+
+Use the included password hashing utility to generate secure bcrypt hashes:
+
+```bash
+# Interactive mode (recommended for security)
+./hash_password.sh
+
+# Command line mode
+./hash_password.sh hash your_password_here
+```
+
+See [PASSWORD_HASHING.md](PASSWORD_HASHING.md) for detailed instructions.
 
 ## reCAPTCHA Protection
 
