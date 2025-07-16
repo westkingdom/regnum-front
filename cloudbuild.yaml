@@ -30,7 +30,7 @@ steps:
         '--memory',
         '1Gi',
         '--set-env-vars',
-        'REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,BASE_URL=${_BASE_URL},STREAMLIT_ENV=production'
+        'REGNUM_API_URL=https://regnum-api-njxuammdla-uw.a.run.app,BASE_URL=${_BASE_URL},STREAMLIT_ENV=production,JWT_SECRET=your-jwt-secret-key-change-in-production,RECAPTCHA_SITE_KEY=your-recaptcha-site-key,RECAPTCHA_SECRET_KEY=your-recaptcha-secret-key'
       ]
 
 # Store the image name in Artifact Registry
