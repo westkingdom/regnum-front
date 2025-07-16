@@ -12,12 +12,9 @@ export BASE_URL="http://localhost:8501"
 # Set environment for development
 export STREAMLIT_ENV="development"
 
-# Email configuration for local development
-# Configure these with your email service credentials
-export SMTP_SERVER="smtp.gmail.com"
-export SMTP_PORT="587"
-export SMTP_SENDER_EMAIL="your-email@gmail.com"
-export SMTP_SENDER_PASSWORD="your-app-password"
+# Gmail API configuration for local development
+# Email sending now uses Gmail API with service account impersonation
+# No SMTP credentials needed - uses service account key file
 
 # JWT Authentication configuration
 export JWT_SECRET="dev-jwt-secret-key-change-in-production"
@@ -32,12 +29,14 @@ echo "Running WKRegnum Portal in LOCAL DEVELOPMENT MODE"
 echo "==================================================="
 echo "Configuration:"
 echo "  - Authentication: JWT ENABLED"
+echo "  - Email System: Gmail API (Service Account)"
 echo "  - API URL: $REGNUM_API_URL"
 echo "  - Base URL: $BASE_URL"
 echo "  - reCAPTCHA: Development Mode (Disabled)"
 echo ""
 echo "🔐 Authentication is now REQUIRED for most pages."
 echo "📋 Duty Request form remains publicly accessible."
+echo "📧 Email notifications use Gmail API with service account."
 echo ""
 echo "Demo Login Credentials:"
 echo "  Admin: admin@westkingdom.org / admin123"

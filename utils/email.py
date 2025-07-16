@@ -3,13 +3,13 @@ import os
 import os.path
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import smtplib
 
 # Use service account credentials
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import streamlit as st  # Import streamlit for error display if needed
+from utils.logger import app_logger as logger
 
 # Scope remains the same
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
@@ -29,12 +29,9 @@ IMPERSONATED_USER_EMAIL = "westkingdom@westkingdom.org"  # <<< --- CONFIGURE THI
 SECRET_SA_KEY_PATH = '/secrets/sa/service_account.json'  # Updated path
 LOCAL_SA_KEY_PATH = 'regnum-service-account-key.json'  # Local fallback remains the same
 
-# Assuming you have email credentials stored securely (e.g., environment variables)
-SMTP_SERVER = os.environ.get("SMTP_SERVER")
-SMTP_PORT = int(os.environ.get("SMTP_PORT", 587)) # Default to 587 for TLS
-SMTP_USERNAME = os.environ.get("SMTP_SENDER_EMAIL")
-SMTP_PASSWORD = os.environ.get("SMTP_SENDER_PASSWORD")
-SENDER_EMAIL = os.environ.get("SMTP_SENDER_EMAIL") # Or a specific 'From' address
+# Gmail API Configuration
+# All emails are now sent via Gmail API using service account impersonation
+# No SMTP credentials needed
 
 RECIPIENT_COMMUNICATIONS = "communications@westkingdom.org"
 RECIPIENT_SITE = "regnum-site@westkingdom.org"
@@ -156,14 +153,13 @@ def send_registration_email(form_data: dict, group_name: str):
 
 def send_duty_request_email(form_data: dict, user_email: str) -> bool:
     """
-    Sends the duty request email to the specified recipients.
-    Replace this with your actual email sending implementation (e.g., Gmail API).
+    Sends the duty request email using Gmail API to the specified recipients.
     """
-    # Check if we're in development mode and SMTP is not configured
-    if os.environ.get("STREAMLIT_ENV") == "development" and not all([SMTP_SERVER, SMTP_USERNAME, SMTP_PASSWORD]):
+    # Check if we're in development mode
+    if os.environ.get("STREAMLIT_ENV") == "development":
         try:
-            st.warning("⚠️ Development Mode: Email sending is disabled. SMTP credentials not configured.")
-            st.info("📧 In production, this would send emails to:")
+            st.warning("⚠️ Development Mode: Email sending simulation enabled.")
+            st.info("📧 In production, this would send emails via Gmail API to:")
             st.write(f"- User: {user_email}")
             st.write(f"- Communications: {RECIPIENT_COMMUNICATIONS}")
             st.write(f"- Site Admin: {RECIPIENT_SITE}")
@@ -174,38 +170,73 @@ def send_duty_request_email(form_data: dict, user_email: str) -> bool:
             print("Development mode: Email sending skipped")
             return True
     
-    if not all([SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SENDER_EMAIL]):
-         # In production, this is a real error
-         try:
-             st.error("Email configuration is incomplete. Please contact the administrator.")
-         except Exception:
-             pass
-         return False
+    # Get Gmail service
+    service = get_gmail_service()
+    if not service:
+        try:
+            st.error("Failed to initialize Gmail service. Please contact the administrator.")
+        except Exception:
+            pass
+        return False
 
-    subject = "New Duty/Job Request Submitted"
+    subject = "[Regnum Submission] New Duty/Job Request Submitted"
     recipients = [user_email, RECIPIENT_COMMUNICATIONS, RECIPIENT_SITE]
 
     # Format the body
-    body_lines = [f"A new duty request has been submitted via the Regnum site:\n"]
+    body_lines = [
+        "A new duty/job request has been submitted via the WKRegnum portal:",
+        "",
+        "--- Request Details ---"
+    ]
+    
     for key, value in form_data.items():
-        body_lines.append(f"- {key.replace('_', ' ').title()}: {value}")
+        body_lines.append(f"{key}: {value}")
+    
+    body_lines.extend([
+        "",
+        "--- Notification Recipients ---",
+        f"User: {user_email}",
+        f"Communications: {RECIPIENT_COMMUNICATIONS}",
+        f"Site Admin: {RECIPIENT_SITE}",
+        "",
+        "This is an automated notification from the WKRegnum system."
+    ])
+    
     body = "\n".join(body_lines)
 
-    msg = MIMEText(body)
-    msg['Subject'] = subject
-    msg['From'] = SENDER_EMAIL
-    msg['To'] = ", ".join(recipients) # Comma-separated string for header
-
-    try:
-        # Example using smtplib with TLS (common setup)
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.ehlo() # Say hello
-            server.starttls() # Enable security
-            server.ehlo() # Say hello again after TLS
-            server.login(SMTP_USERNAME, SMTP_PASSWORD)
-            server.sendmail(SENDER_EMAIL, recipients, msg.as_string())
-            return True
-    except smtplib.SMTPAuthenticationError:
-        return False
-    except Exception:
+    # Send email to each recipient individually for better delivery tracking
+    success_count = 0
+    total_recipients = len(recipients)
+    
+    for recipient in recipients:
+        try:
+            # Create message for this recipient
+            message = create_message(IMPERSONATED_USER_EMAIL, recipient, "", subject, body)
+            
+            if message:
+                sent_message = send_message(service, IMPERSONATED_USER_EMAIL, message)
+                if sent_message:
+                    success_count += 1
+                    logger.info(f"Duty request email sent successfully to: {recipient}")
+                else:
+                    logger.error(f"Failed to send duty request email to: {recipient}")
+            else:
+                logger.error(f"Failed to create message for recipient: {recipient}")
+                
+        except Exception as e:
+            logger.error(f"Error sending duty request email to {recipient}: {str(e)}")
+    
+    # Return True if at least one email was sent successfully
+    if success_count > 0:
+        if success_count == total_recipients:
+            logger.info("All duty request emails sent successfully")
+        else:
+            logger.warning(f"Partial success: {success_count}/{total_recipients} emails sent")
+        return True
+    else:
+        logger.error("Failed to send any duty request emails")
+        try:
+            st.error("Failed to send notification emails. Please contact the administrator.")
+        except Exception:
+            pass
         return False
