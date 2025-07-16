@@ -39,10 +39,12 @@ Recipients (users, communications, site admin)
 The application uses a service account with domain-wide delegation to send emails:
 
 **Service Account Key Locations**:
+
 - **Production**: `/secrets/sa/service_account.json` (mounted as secret)
 - **Development**: `regnum-service-account-key.json` (local file)
 
 **Impersonated User**:
+
 - **Email**: `westkingdom@westkingdom.org`
 - **Purpose**: All emails are sent "from" this address
 - **Requirement**: Must exist in Google Workspace
@@ -56,6 +58,7 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 ### Environment Variables
 
 **No SMTP variables needed** - the following have been removed:
+
 - ~~`SMTP_SERVER`~~
 - ~~`SMTP_PORT`~~
 - ~~`SMTP_USERNAME`~~
@@ -63,6 +66,7 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 - ~~`SENDER_EMAIL`~~
 
 **Current environment variables**:
+
 - `STREAMLIT_ENV`: Controls development vs production behavior
 - `JWT_SECRET`: For authentication
 - `RECAPTCHA_SITE_KEY`: For form protection
@@ -75,15 +79,18 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 **Function**: `send_duty_request_email(form_data, user_email)`
 
 **Recipients**:
+
 - User who submitted the form
 - `communications@westkingdom.org`
 - `regnum-site@westkingdom.org`
 
 **Behavior**:
+
 - **Development Mode**: Shows simulation message, no actual emails sent
 - **Production Mode**: Sends emails via Gmail API to all recipients
 
 **Email Format**:
+
 ```
 Subject: [Regnum Submission] New Duty/Job Request Submitted
 From: westkingdom@westkingdom.org
@@ -110,10 +117,12 @@ This is an automated notification from the WKRegnum system.
 **Function**: `send_registration_email(form_data, group_name)`
 
 **Recipients**:
+
 - `webminister@westkingdom.org` (primary)
 - `communications@westkingdom.org` (CC)
 
 **Email Format**:
+
 ```
 Subject: [Regnum Submission] New Member Registration for [group]: [sca_name]
 From: westkingdom@westkingdom.org
@@ -133,17 +142,20 @@ Mundane Name: [name]
 ### Development Mode
 
 **Behavior**:
+
 - No actual emails sent
 - Shows simulation messages in Streamlit UI
 - Displays intended recipients
 - Returns success for testing
 
 **Activation**:
+
 ```bash
 export STREAMLIT_ENV="development"
 ```
 
 **UI Messages**:
+
 ```
 ⚠️ Development Mode: Email sending simulation enabled.
 📧 In production, this would send emails via Gmail API to:
@@ -156,12 +168,14 @@ export STREAMLIT_ENV="development"
 ### Production Mode
 
 **Behavior**:
+
 - Sends actual emails via Gmail API
 - Uses service account authentication
 - Logs all email operations
 - Returns actual success/failure status
 
 **Requirements**:
+
 - Valid service account key file
 - Proper domain-wide delegation setup
 - Gmail API enabled in Google Cloud Project
@@ -171,16 +185,19 @@ export STREAMLIT_ENV="development"
 ### Service Account Issues
 
 **Missing Key File**:
+
 ```
 Service Account key file not found at expected path: [path]
 ```
 
 **Authentication Errors**:
+
 ```
 Error loading Service Account credentials: [error]
 ```
 
 **API Errors**:
+
 ```
 Failed to initialize Gmail service. Please contact the administrator.
 ```
@@ -188,11 +205,13 @@ Failed to initialize Gmail service. Please contact the administrator.
 ### Email Sending Issues
 
 **Individual Recipient Failures**:
+
 - Logs specific recipient failures
 - Continues sending to other recipients
 - Returns success if at least one email sent
 
 **Complete Failure**:
+
 ```
 Failed to send any duty request emails
 Failed to send notification emails. Please contact the administrator.
@@ -203,17 +222,20 @@ Failed to send notification emails. Please contact the administrator.
 ### Email Operations
 
 **Successful Sends**:
+
 ```
 Duty request email sent successfully to: [recipient]
 All duty request emails sent successfully
 ```
 
 **Partial Success**:
+
 ```
 Partial success: [count]/[total] emails sent
 ```
 
 **Failures**:
+
 ```
 Failed to send duty request email to: [recipient]
 Error sending duty request email to [recipient]: [error]
@@ -264,6 +286,7 @@ Failed to send any duty request emails
 ### Debugging Steps
 
 1. **Check Service Account Setup**:
+
    ```bash
    # Verify key file exists and is readable
    ls -la regnum-service-account-key.json
@@ -273,6 +296,7 @@ Failed to send any duty request emails
    ```
 
 2. **Test Gmail API Access**:
+
    ```python
    from utils.email import get_gmail_service
    service = get_gmail_service()
@@ -280,6 +304,7 @@ Failed to send any duty request emails
    ```
 
 3. **Check Logs**:
+
    ```bash
    # Local development
    tail -f logs/application.log
@@ -293,18 +318,21 @@ Failed to send any duty request emails
 ### Changes Made
 
 **Removed Components**:
+
 - SMTP server configuration
 - SMTP authentication credentials
 - `smtplib` usage in duty request emails
 - SMTP environment variables
 
 **Added Components**:
+
 - Gmail API service initialization
 - Service account authentication
 - Individual recipient email sending
 - Enhanced error handling and logging
 
 **Maintained Components**:
+
 - Email message formatting
 - Recipient lists
 - Development mode simulation
@@ -381,6 +409,7 @@ gcloud logs read --service=regnum-front --filter="textPayload:email" --limit=20
 ### Contact Information
 
 For technical issues with the Gmail API integration:
-- **Technical Issues**: webminister@westkingdom.org
+
+- **Technical Issues**: <webminister@westkingdom.org>
 - **API Issues**: Check Google Cloud Console logs
 - **Authentication Issues**: Verify service account configuration
