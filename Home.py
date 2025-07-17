@@ -25,7 +25,7 @@ logger.info(f"Authenticated access granted to WKRegnum Portal for user: {user['e
 
 # Display welcome message
 st.markdown("## Welcome to the West Kingdom Regnum Portal")
-st.success("Welcome to the West Kingdom Regnum Portal! This application is now publicly accessible.")
+st.success("Welcome to the West Kingdom Regnum Portal!")
 
 # Main application content
 st.markdown("---")
@@ -66,7 +66,6 @@ This application provides access to the West Kingdom's officer roster and report
 **Key Features:**
 - View current officers and deputies
 - Search for officers by title or branch
-- Access office email templates
 - Generate reports
 - Manage group memberships
 - Submit duty requests
