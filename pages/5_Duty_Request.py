@@ -59,8 +59,6 @@ def main():
     st.set_page_config(page_title="Duty Request Form")
     st.title("Duty/Job Request Form")
     
-    # Show public access notice
-    st.info("📋 This form is publicly accessible. No login required.")
     
     st.markdown("""
     Use this form to request assignment to a new duty or job within the Kingdom of the West.
@@ -79,8 +77,8 @@ def main():
             max_chars=100,
             help="Your name as known in the SCA. Required. Max 100 characters."
         )
-        mundane_name = st.text_input(
-            "Mundane Name*", 
+        modern_name = st.text_input(
+            "Modern Name*", 
             max_chars=100,
             help="Your legal name. Required. Max 100 characters."
         )
@@ -102,31 +100,31 @@ def main():
 
         st.subheader("Address Information")
         address = st.text_input(
-            "Mundane Street Address*", 
+            "Modern Street Address*", 
             max_chars=200,
             help="Required. Max 200 characters."
         )
         city = st.text_input(
-            "Mundane City*", 
+            "Modern City*", 
             max_chars=100,
             help="Required. Max 100 characters."
         )
         state = st.text_input(
-            "Mundane State*", 
+            "Modern State*", 
             max_chars=50,
             help="e.g., CA, NV, California, Nevada. Required."
         )
         zip_code = st.text_input(
-            "Mundane Zip Code*", 
+            "Modern Postal Code*", 
             max_chars=10,
             help="Required. Numbers only or with hyphens (e.g., 12345 or 12345-6789)."
         )
 
         st.subheader("Duty Location")
         principality = st.text_input(
-            "Principality where new duties apply*", 
+            "Principality where new duties apply (if applicable) ", 
             max_chars=500,
-            help="Required. Max 500 characters."
+            help="Optional. Max 500 characters."
         )
         barony = st.text_input(
             "Barony where new duties apply (if applicable)",
@@ -162,22 +160,20 @@ def main():
             # Check required fields are not empty
             if not sca_name.strip(): 
                 errors.append("Society Name is required.")
-            if not mundane_name.strip(): 
-                errors.append("Mundane Name is required.")
+            if not modern_name.strip(): 
+                errors.append("Modern Name is required.")
             if not wk_email.strip():
                 errors.append("West Kingdom Google Email Address is required.")
             elif not is_valid_wk_email(wk_email):
                 errors.append("Please provide a valid email ending with @westkingdom.org.")
             if not address.strip(): 
-                errors.append("Mundane Street Address is required.")
+                errors.append("Modern Street Address is required.")
             if not city.strip(): 
-                errors.append("Mundane City is required.")
+                errors.append("Modern City is required.")
             if not state.strip(): 
-                errors.append("Mundane State is required.")
+                errors.append("Modern State is required.")
             if not zip_code.strip():
-                errors.append("Mundane Zip Code is required.")
-            if not principality.strip(): 
-                errors.append("Principality is required.")
+                errors.append("Modern Postal Code is required.")
             if not requested_job.strip(): 
                 errors.append("Specific Job/Duty is required.")
             if not member_num.strip():
@@ -193,7 +189,7 @@ def main():
                     # Prepare raw form data for sanitization
                     raw_form_data = {
                         'sca_name': sca_name,
-                        'mundane_name': mundane_name,
+                        'modern_name': modern_name,
                         'wk_email': wk_email,
                         'contact_phone': contact_phone,
                         'address': address,
