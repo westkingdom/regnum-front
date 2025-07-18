@@ -23,6 +23,9 @@ export JWT_SECRET="dev-jwt-secret-key-change-in-production"
 export RECAPTCHA_SITE_KEY="your-recaptcha-site-key"
 export RECAPTCHA_SECRET_KEY="your-recaptcha-secret-key"
 
+# Identity-Aware Proxy configuration
+export IAP_CLIENT_ID="your-iap-client-id.apps.googleusercontent.com"
+
 # Display configuration message
 echo "==================================================="
 echo "Running WKRegnum Portal in LOCAL DEVELOPMENT MODE"
