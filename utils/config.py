@@ -1,7 +1,7 @@
 import os
 
-# API endpoint URLs
-api_url = os.environ.get('REGNUM_API_URL', 'https://regnum-api-njxuammdla-uw.a.run.app')
+# API endpoint URLs - IAP-protected backend service
+api_url = os.environ.get('REGNUM_API_URL', 'https://regnum-api-lb-backend-service')
 
 # Base URL for the application
 base_url = os.environ.get('BASE_URL', 'https://wkregnum-njxuammdla-uw.a.run.app')
