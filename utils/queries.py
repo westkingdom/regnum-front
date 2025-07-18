@@ -1,10 +1,24 @@
 import requests
 from .config import api_url
+from .api import RegnumAPI
 import pandas as pd
 import re
 import streamlit as st
 from typing import Tuple, List, Dict, Optional, Any
 from utils.logger import app_logger as logger
+import os
+
+# Initialize IAP-enabled API client
+_api_client = None
+
+def get_api_client() -> RegnumAPI:
+    """Get or create the IAP-enabled API client"""
+    global _api_client
+    if _api_client is None:
+        iap_client_id = os.environ.get('IAP_CLIENT_ID')
+        _api_client = RegnumAPI(base_url=api_url, client_id=iap_client_id)
+        logger.info(f"Initialized IAP-enabled API client for {api_url}")
+    return _api_client
 
 def get_all_groups() -> Tuple[List[str], Dict[str, str]]:
     """
@@ -43,7 +57,7 @@ def get_all_groups() -> Tuple[List[str], Dict[str, str]]:
 
 def get_group_by_id(group_id: str) -> Optional[Dict[str, Any]]:
     """
-    Fetches details of a specific group by its ID from the API.
+    Fetches details of a specific group by its ID from the API using IAP authentication.
 
     Args:
         group_id: The unique identifier of the group.
@@ -53,16 +67,20 @@ def get_group_by_id(group_id: str) -> Optional[Dict[str, Any]]:
         otherwise None.
     """
     try:
-        response = requests.get(f"{api_url}/groups/{group_id}/")
+        api_client = get_api_client()
+        # Use direct session call with token refresh for this endpoint
+        api_client._refresh_iap_token_if_needed()
+        response = api_client.session.get(f"{api_client.base_url}/groups/{group_id}/")
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
         st.error(f"API Error fetching group {group_id}: {e}")
+        logger.error(f"IAP API Error fetching group {group_id}: {e}")
         return None
 
 def get_group_members(group_id: str) -> Optional[Dict[str, Any]]:
     """
-    Fetches the members list for a specific group from the API.
+    Fetches the members list for a specific group from the API using IAP authentication.
 
     Args:
         group_id: The unique identifier of the group.
@@ -72,16 +90,16 @@ def get_group_members(group_id: str) -> Optional[Dict[str, Any]]:
         if successful (status code 200), otherwise None.
     """
     try:
-        response = requests.get(f"{api_url}/groups/{group_id}/members/")
-        response.raise_for_status()
-        return response.json()
-    except requests.exceptions.RequestException as e:
+        api_client = get_api_client()
+        return api_client.get_group_members(group_id)
+    except Exception as e:
         st.error(f"API Error fetching members for group {group_id}: {e}")
+        logger.error(f"IAP API Error fetching members for group {group_id}: {e}")
         return None
 
 def create_group(group_id: str, group_name: str) -> bool:
     """
-    Attempts to create a new group via the API.
+    Attempts to create a new group via the API using IAP authentication.
 
     Args:
         group_id: The desired ID for the new group (often an email address).
@@ -91,18 +109,18 @@ def create_group(group_id: str, group_name: str) -> bool:
         True if the group creation was successful (API returned status code 200),
         False otherwise.
     """
-    params = {"group_id": group_id, "group_name": group_name}
     try:
-        response = requests.post(f"{api_url}/groups/", params=params)
-        response.raise_for_status()
+        api_client = get_api_client()
+        result = api_client.create_group(group_id, group_name)
         return True
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         st.error(f"API Error creating group '{group_name}' ({group_id}): {e}")
+        logger.error(f"IAP API Error creating group '{group_name}' ({group_id}): {e}")
         return False
 
 def add_member_to_group(group_id: str, member_email: str) -> bool:
     """
-    Attempts to add a member to a specific group via the API.
+    Attempts to add a member to a specific group via the API using IAP authentication.
 
     Args:
         group_id: The ID of the group to add the member to.
@@ -112,18 +130,18 @@ def add_member_to_group(group_id: str, member_email: str) -> bool:
         True if adding the member was successful (API returned status code 200),
         False otherwise. Handles potential API errors.
     """
-    params = {"member_email": member_email}
     try:
-        response = requests.post(f"{api_url}/groups/{group_id}/add-member/", params=params)
-        response.raise_for_status()
+        api_client = get_api_client()
+        result = api_client.add_member_to_group(group_id, member_email)
         return True
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         st.error(f"API Error adding member {member_email} to group {group_id}: {e}")
+        logger.error(f"IAP API Error adding member {member_email} to group {group_id}: {e}")
         return False
 
 def remove_member_from_group(group_id: str, member_email: str) -> bool:
     """
-    Attempts to remove a member from a specific group via the API.
+    Attempts to remove a member from a specific group via the API using IAP authentication.
 
     Args:
         group_id: The ID of the group to remove the member from.
@@ -134,11 +152,12 @@ def remove_member_from_group(group_id: str, member_email: str) -> bool:
         False otherwise. Handles potential API errors.
     """
     try:
-        response = requests.delete(f"{api_url}/groups/{group_id}/members/{member_email}")
-        response.raise_for_status()
+        api_client = get_api_client()
+        result = api_client.remove_member_from_group(group_id, member_email)
         return True
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         st.error(f"API Error removing member {member_email} from group {group_id}: {e}")
+        logger.error(f"IAP API Error removing member {member_email} from group {group_id}: {e}")
         return False
 
 def is_valid_email(email: str) -> bool:

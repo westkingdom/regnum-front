@@ -50,7 +50,6 @@ Thumbs.db
 *secret*.json
 google_credentials*.json
 westkingdom*.json
-regnum-service-account-key.json
 .streamlit/secrets.toml
 
 # Environment files

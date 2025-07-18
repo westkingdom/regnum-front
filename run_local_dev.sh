@@ -2,8 +2,8 @@
 # Run the WKRegnum application for local development
 # This is for local development only - no authentication required
 
-# Set API URL - uncomment the local API line if you have a local API server
-export REGNUM_API_URL="https://regnum-api-njxuammdla-uw.a.run.app"
+# Set API URL - Direct Cloud Run service (no IAP)
+export REGNUM_API_URL="https://regnum-api-85382560394.us-west1.run.app"
 # export REGNUM_API_URL="http://localhost:8000"  # Use this for local API server
 
 # Set the base URL for local development
@@ -23,8 +23,7 @@ export JWT_SECRET="dev-jwt-secret-key-change-in-production"
 export RECAPTCHA_SITE_KEY="your-recaptcha-site-key"
 export RECAPTCHA_SECRET_KEY="your-recaptcha-secret-key"
 
-# Identity-Aware Proxy configuration
-export IAP_CLIENT_ID="your-iap-client-id.apps.googleusercontent.com"
+# No authentication needed - IAP has been disabled for regnum-api
 
 # Display configuration message
 echo "==================================================="
@@ -40,6 +39,10 @@ echo ""
 echo "🔐 Authentication is now REQUIRED for most pages."
 echo "📋 Duty Request form remains publicly accessible."
 echo "📧 Email notifications use Gmail API with service account."
+echo ""
+echo "✅ API ACCESS:"
+echo "   Backend API is now accessible without authentication"
+echo "   IAP has been disabled for regnum-api service"
 echo ""
 echo "Demo Login Credentials:"
 echo "  Admin: admin@westkingdom.org / admin123"
