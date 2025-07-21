@@ -20,8 +20,13 @@ USERS_DB = {
     },
     'karius.hutzelmann@westkingdom.org': {
         'password_hash': '$2b$12$HzISp2GmiDKAhbelnjy5oONH7qBXKjz0KtrYVW6kQlj3y15m9Xm/O',
-        'name': 'User',
-        'role': 'user'
+        'name': 'Karius Hutzelmann',
+        'role': 'admin'
+    },
+    'regnum_site@westkingdom.org': {
+        'password_hash': '$2b$12$qbZZ62YQrEiNUv2uZWtb1O14K9ajsAkkgbsnhrHeyQrdJecsJTwUO',
+        'name': 'Regnum Site',
+        'role': 'admin'
     }
 }
 
