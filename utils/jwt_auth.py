@@ -20,8 +20,13 @@ USERS_DB = {
     },
     'karius.hutzelmann@westkingdom.org': {
         'password_hash': '***REMOVED***',
-        'name': 'User',
-        'role': 'user'
+        'name': 'Karius Hutzelmann',
+        'role': 'admin'
+    },
+    'regnum_site@westkingdom.org': {
+        'password_hash': '***REMOVED***',
+        'name': 'Regnum Site',
+        'role': 'admin'
     }
 }
 
