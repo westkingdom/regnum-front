@@ -6,18 +6,16 @@ import re
 import streamlit as st
 from typing import Tuple, List, Dict, Optional, Any
 from utils.logger import app_logger as logger
-import os
 
-# Initialize IAP-enabled API client
+# Initialize API client
 _api_client = None
 
 def get_api_client() -> RegnumAPI:
-    """Get or create the IAP-enabled API client"""
+    """Get or create the API client"""
     global _api_client
     if _api_client is None:
-        iap_client_id = os.environ.get('IAP_CLIENT_ID')
-        _api_client = RegnumAPI(base_url=api_url, client_id=iap_client_id)
-        logger.info(f"Initialized IAP-enabled API client for {api_url}")
+        _api_client = RegnumAPI(base_url=api_url)
+        logger.info(f"Initialized API client for {api_url}")
     return _api_client
 
 def get_all_groups() -> Tuple[List[str], Dict[str, str]]:
