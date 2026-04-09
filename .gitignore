@@ -66,4 +66,4 @@ logs/
 # Temporary files
 *.tmp
 *.temp
-files-to-delete.txt
+files-to-delete.txt.venv/
