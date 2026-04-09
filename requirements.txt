@@ -1,27 +1,27 @@
 # Core Streamlit and web framework
-streamlit==1.39.0
-fastapi==0.115.6
-uvicorn==0.32.1
+streamlit==1.56.0
+fastapi==0.135.3
+uvicorn==0.44.0
 
 # Authentication and Security
-PyJWT==2.8.0
-cryptography==43.0.1
-streamlit-authenticator==0.3.2
-bcrypt==4.1.2
+PyJWT==2.12.1
+cryptography==46.0.7
+streamlit-authenticator==0.4.2
+bcrypt==5.0.0
 
 # Google Cloud and Auth
-google-auth==2.35.0
-google-auth-oauthlib==1.2.1
-google-api-python-client==2.154.0
-google-cloud-logging==3.11.3
+google-auth==2.49.1
+google-auth-oauthlib==1.3.1
+google-api-python-client==2.194.0
+google-cloud-logging==3.15.0
 
 # Data processing
-pandas==2.2.3
-numpy==2.1.2
+pandas==3.0.2
+numpy==2.4.4
 
 # HTTP and networking
-requests==2.32.3
-aiohttp==3.10.10
+requests==2.33.1
+aiohttp==3.13.5
 
 # Other dependencies
 toml==0.10.2
