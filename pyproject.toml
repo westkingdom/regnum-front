@@ -21,3 +21,8 @@ dependencies = [
     "toml==0.10.2",
     "uvicorn==0.44.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+]

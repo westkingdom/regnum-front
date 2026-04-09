@@ -1,11 +1,11 @@
 import streamlit as st
-import re
-from typing import Dict, Any # Import typing
+import os
+from typing import Dict, Any
 from utils.email import send_duty_request_email as actual_send_duty_request_email
+from utils.queries import is_valid_email as is_valid_wk_email
 from utils.logger import app_logger as logger
 from utils.recaptcha import require_recaptcha
 from utils.data_sanitizer import sanitize_duty_request_form, sanitize_email
-import os
 
 def send_duty_request_email(form_data: Dict[str, Any], user_email: str) -> bool:
     """
@@ -26,25 +26,6 @@ def send_duty_request_email(form_data: Dict[str, Any], user_email: str) -> bool:
     except Exception as e:
         st.error(f"An error occurred while trying to send the email: {e}")
         return False
-
-
-# --- Email Validation ---
-def is_valid_wk_email(email: str) -> bool:
-    """
-    Validates if a string is a syntactically valid email address ending with '@westkingdom.org'.
-
-    Args:
-        email: The email string to validate.
-
-    Returns:
-        True if the email format is valid and the domain is '@westkingdom.org' (case-insensitive),
-        False otherwise. Returns False if input is not a string.
-    """
-    if not isinstance(email, str):
-        return False
-    # Basic regex for email format and specific domain (case-insensitive)
-    pattern = r'^[a-zA-Z0-9._%+-]+@westkingdom\.org$'
-    return bool(re.match(pattern, email, re.IGNORECASE))
 
 
 # Define recipient addresses (used in messages, actual recipients handled by email function)

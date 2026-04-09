@@ -4,47 +4,33 @@ import os.path
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# Use service account credentials
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-import streamlit as st  # Import streamlit for error display if needed
+import streamlit as st
 from utils.logger import app_logger as logger
+from utils.config import (
+    ADMIN_EMAIL, COMMUNICATIONS_EMAIL, IMPERSONATED_USER_EMAIL,
+    RECIPIENT_COMMUNICATIONS, RECIPIENT_SITE,
+    SECRET_SA_KEY_PATH, LOCAL_SA_KEY_PATH,
+)
 
-# Scope remains the same
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
-# --- Configuration ---
-# Primary recipient
-ADMIN_EMAIL = "webminister@westkingdom.org"
-# CC recipient
-COMMUNICATIONS_EMAIL = "communications@westkingdom.org"
-
-# !!! IMPORTANT: Set the email address of the Google Workspace user the Service Account will impersonate !!!
-# This user must exist in your Workspace. Emails will be sent *from* this address.
-# Consider making this an environment variable set during deployment for flexibility.
-IMPERSONATED_USER_EMAIL = "westkingdom@westkingdom.org"  # <<< --- CONFIGURE THIS
-
-# Define paths for the service account key
-SECRET_SA_KEY_PATH = '/secrets/sa/service_account.json'  # Updated path
-LOCAL_SA_KEY_PATH = 'regnum-service-account-key.json'  # Local fallback remains the same
-
-# Gmail API Configuration
-# All emails are now sent via Gmail API using service account impersonation
-# No SMTP credentials needed
-
-RECIPIENT_COMMUNICATIONS = "communications@westkingdom.org"
-RECIPIENT_SITE = "regnum-site@westkingdom.org"
-
 def get_gmail_service():
-    creds = None
-    sa_key_path = SECRET_SA_KEY_PATH if os.path.exists(SECRET_SA_KEY_PATH) else LOCAL_SA_KEY_PATH
+    env = os.environ.get('STREAMLIT_ENV', 'production')
 
-    if not os.path.exists(sa_key_path):
+    if os.path.exists(SECRET_SA_KEY_PATH):
+        sa_key_path = SECRET_SA_KEY_PATH
+    elif env == 'development' and LOCAL_SA_KEY_PATH and os.path.exists(LOCAL_SA_KEY_PATH):
+        logger.warning(f"Using local SA key file for development: {LOCAL_SA_KEY_PATH}")
+        sa_key_path = LOCAL_SA_KEY_PATH
+    else:
+        logger.error("Service account key not found. In production, mount via Secret Manager.")
         try:
-            st.error(f"Service Account key file not found at expected path: {sa_key_path}")
+            st.error("Service account key not found. Email notifications are unavailable.")
         except Exception:
-            pass  # Ignore if not in Streamlit context
+            pass
         return None
 
     try:
