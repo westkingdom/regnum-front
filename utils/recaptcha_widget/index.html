@@ -24,7 +24,7 @@
     <div id="status"></div>
 
     <!-- reCAPTCHA API: explicit render mode -->
-    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaApiReady&render=explicit" async defer></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?onload=onRecaptchaApiReady&render=explicit" async defer></script>
 
     <script>
         // ---------------------------------------------------------------------------
@@ -80,7 +80,7 @@
                 return;
             }
 
-            grecaptcha.render("recaptcha-container", {
+            grecaptcha.enterprise.render("recaptcha-container", {
                 "sitekey":          siteKey,
                 "callback":         onSuccess,
                 "expired-callback": onExpired,
@@ -97,7 +97,7 @@
 
         function onExpired() {
             document.getElementById("status").innerText = "Verification expired. Please try again.";
-            grecaptcha.reset();
+            grecaptcha.enterprise.reset();
             setComponentValue("");
         }
 
