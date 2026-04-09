@@ -58,5 +58,5 @@ echo "  User:  user@westkingdom.org  / user123"
 echo "  (credentials are set via USERS_DB_JSON in this script)"
 echo "==================================================="
 
-# Run the application using pipenv to ensure the virtualenv is active
-pipenv run streamlit run Home.py 
+# Run the application using uv
+uv run streamlit run Home.py 
