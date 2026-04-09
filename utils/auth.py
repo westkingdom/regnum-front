@@ -33,31 +33,27 @@ def is_group_member(email, group_id):
 
 def require_group_membership(group_id: str = None):
     """
-    Decorator function - now grants public access to all users.
-    
+    Decorator that enforces JWT authentication before allowing access to a page.
+
     Usage:
         @require_group_membership()
         def my_app_page():
-            st.title("Public Page")
-            # Rest of your page
-    
+            st.title("Protected Page")
+
     Args:
-        group_id: The email address of the required Google Group (unused)
-        
-    Returns:
-        Function that grants access to all users
+        group_id: Reserved for future group-based authorization (currently unused).
     """
     def decorator(func):
         def wrapper(*args, **kwargs):
-            logger.info("Public access granted - group membership check bypassed")
-            
-            # Ensure session state is initialized for public access
-            if 'user_email' not in st.session_state:
-                st.session_state['user_email'] = 'public@westkingdom.org'
-                st.session_state['user_name'] = 'Public User'
-                st.session_state['is_admin'] = True
-            
-            # Grant access to all users
+            from utils.jwt_auth import get_current_user, require_authentication
+            user = get_current_user()
+            if not user:
+                require_authentication()
+                return  # require_authentication calls st.stop() internally
+
+            st.session_state['user_email'] = user['email']
+            st.session_state['user_name'] = user['name']
+            st.session_state['is_admin'] = (user.get('role') == 'admin')
             return func(*args, **kwargs)
         return wrapper
-    return decorator 
+    return decorator
