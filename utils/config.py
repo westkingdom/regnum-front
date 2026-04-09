@@ -15,9 +15,10 @@ if not JWT_SECRET:
 # --- Users database (JSON string, sourced from Secret Manager in production) ---
 USERS_DB_JSON = os.environ.get('USERS_DB_JSON', '')
 
-# --- reCAPTCHA ---
-RECAPTCHA_SITE_KEY   = os.environ.get('RECAPTCHA_SITE_KEY', '')
-RECAPTCHA_SECRET_KEY = os.environ.get('RECAPTCHA_SECRET_KEY', '')
+# --- reCAPTCHA Enterprise ---
+# Site key is passed to the frontend widget.
+# Verification uses the Enterprise Assessment API with ADC (no secret key needed).
+RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY', '')
 
 # --- Email addresses ---
 ADMIN_EMAIL              = os.environ.get('ADMIN_EMAIL', 'webminister@westkingdom.org')
