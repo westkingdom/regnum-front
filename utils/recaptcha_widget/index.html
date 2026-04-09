@@ -23,39 +23,63 @@
     <div id="recaptcha-container"></div>
     <div id="status"></div>
 
-    <!-- Streamlit component library — enables setComponentValue / RENDER_EVENT -->
-    <script src="./streamlit-component-lib.js"></script>
-
-    <!-- reCAPTCHA API: explicit render mode, calls onRecaptchaApiReady when loaded -->
+    <!-- reCAPTCHA API: explicit render mode -->
     <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaApiReady&render=explicit" async defer></script>
 
     <script>
+        // ---------------------------------------------------------------------------
+        // Minimal Streamlit component protocol (no external library dependency).
+        // Implements the postMessage protocol that streamlit-component-lib uses.
+        // ---------------------------------------------------------------------------
         var componentArgs = null;
         var apiReady = false;
         var widgetRendered = false;
 
-        // Called by reCAPTCHA API when the script finishes loading
+        function sendToStreamlit(type, payload) {
+            var msg = Object.assign({ isStreamlitMessage: true, type: type }, payload);
+            window.parent.postMessage(msg, "*");
+        }
+
+        function setComponentReady() {
+            sendToStreamlit("streamlit:componentReady", { apiVersion: 1 });
+        }
+
+        function setComponentValue(value) {
+            sendToStreamlit("streamlit:setComponentValue", { value: value, dataType: "json" });
+        }
+
+        function setFrameHeight(height) {
+            sendToStreamlit("streamlit:setFrameHeight", { height: height });
+        }
+
+        // Listen for render events from the parent Streamlit app
+        window.addEventListener("message", function (event) {
+            if (event.data && event.data.type === "streamlit:render") {
+                componentArgs = event.data.args || {};
+                tryRender();
+            }
+        });
+
+        // ---------------------------------------------------------------------------
+        // reCAPTCHA logic
+        // ---------------------------------------------------------------------------
         function onRecaptchaApiReady() {
             apiReady = true;
             tryRender();
         }
 
-        // Attempt to render once both the API and component args are available
         function tryRender() {
             if (!apiReady || !componentArgs || widgetRendered) return;
             widgetRendered = true;
 
             var siteKey = componentArgs.site_key;
-            var action  = componentArgs.action || "submit";
 
             if (!siteKey) {
                 document.getElementById("status").innerText = "reCAPTCHA site key not configured.";
-                Streamlit.setFrameHeight(30);
+                setFrameHeight(30);
                 return;
             }
 
-            // Render the v2 checkbox widget on the container div.
-            // Note: "action" is v3-only and must NOT be passed to v2 render().
             grecaptcha.render("recaptcha-container", {
                 "sitekey":          siteKey,
                 "callback":         onSuccess,
@@ -63,38 +87,28 @@
                 "error-callback":   onError
             });
 
-            // Height of the reCAPTCHA v2 checkbox widget
-            Streamlit.setFrameHeight(78);
+            setFrameHeight(78);
         }
 
-        // Token issued — send back to Python
         function onSuccess(token) {
             document.getElementById("status").innerText = "";
-            Streamlit.setComponentValue(token);
+            setComponentValue(token);
         }
 
-        // Token expired (2-minute lifetime) — reset so user must re-verify
         function onExpired() {
             document.getElementById("status").innerText = "Verification expired. Please try again.";
             grecaptcha.reset();
-            Streamlit.setComponentValue("");
+            setComponentValue("");
         }
 
         function onError() {
             document.getElementById("status").innerText = "reCAPTCHA error. Check your connection.";
-            Streamlit.setComponentValue("");
+            setComponentValue("");
         }
 
-        // Streamlit fires RENDER_EVENT whenever Python re-renders the component,
-        // passing the keyword args (site_key, action) from declare_component().
-        Streamlit.events.addEventListener(Streamlit.RENDER_EVENT, function (event) {
-            componentArgs = event.detail.args;
-            tryRender();
-        });
-
-        // Signal to Streamlit that the component is ready to receive events
-        Streamlit.setComponentReady();
-        Streamlit.setFrameHeight(78);
+        // Signal ready and set initial height
+        setComponentReady();
+        setFrameHeight(78);
     </script>
 </body>
 </html>
