@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.jwt_auth import require_authentication, logout_user, is_authenticated
+from utils.logger import app_logger as logger
 
 # --- Page Configuration ---
 st.set_page_config(page_title="WKRegnum - West Kingdom Regnum Portal")

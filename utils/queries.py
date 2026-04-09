@@ -66,14 +66,12 @@ def get_group_by_id(group_id: str) -> Optional[Dict[str, Any]]:
     """
     try:
         api_client = get_api_client()
-        # Use direct session call with token refresh for this endpoint
-        api_client._refresh_iap_token_if_needed()
         response = api_client.session.get(f"{api_client.base_url}/groups/{group_id}/")
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
-        st.error(f"API Error fetching group {group_id}: {e}")
-        logger.error(f"IAP API Error fetching group {group_id}: {e}")
+        st.error("Failed to fetch group data. Please try again or contact support.")
+        logger.error(f"API Error fetching group {group_id}: {e}")
         return None
 
 def get_group_members(group_id: str) -> Optional[Dict[str, Any]]:
@@ -91,8 +89,8 @@ def get_group_members(group_id: str) -> Optional[Dict[str, Any]]:
         api_client = get_api_client()
         return api_client.get_group_members(group_id)
     except Exception as e:
-        st.error(f"API Error fetching members for group {group_id}: {e}")
-        logger.error(f"IAP API Error fetching members for group {group_id}: {e}")
+        st.error("Failed to fetch group members. Please try again or contact support.")
+        logger.error(f"API Error fetching members for group {group_id}: {e}")
         return None
 
 def create_group(group_id: str, group_name: str) -> bool:
@@ -112,8 +110,8 @@ def create_group(group_id: str, group_name: str) -> bool:
         result = api_client.create_group(group_id, group_name)
         return True
     except Exception as e:
-        st.error(f"API Error creating group '{group_name}' ({group_id}): {e}")
-        logger.error(f"IAP API Error creating group '{group_name}' ({group_id}): {e}")
+        st.error("Failed to create group. Please try again or contact support.")
+        logger.error(f"API Error creating group '{group_name}' ({group_id}): {e}")
         return False
 
 def add_member_to_group(group_id: str, member_email: str) -> bool:
@@ -133,8 +131,8 @@ def add_member_to_group(group_id: str, member_email: str) -> bool:
         result = api_client.add_member_to_group(group_id, member_email)
         return True
     except Exception as e:
-        st.error(f"API Error adding member {member_email} to group {group_id}: {e}")
-        logger.error(f"IAP API Error adding member {member_email} to group {group_id}: {e}")
+        st.error("Failed to add member. Please try again or contact support.")
+        logger.error(f"API Error adding member to group {group_id}: {e}")
         return False
 
 def remove_member_from_group(group_id: str, member_email: str) -> bool:
@@ -154,8 +152,8 @@ def remove_member_from_group(group_id: str, member_email: str) -> bool:
         result = api_client.remove_member_from_group(group_id, member_email)
         return True
     except Exception as e:
-        st.error(f"API Error removing member {member_email} from group {group_id}: {e}")
-        logger.error(f"IAP API Error removing member {member_email} from group {group_id}: {e}")
+        st.error("Failed to remove member. Please try again or contact support.")
+        logger.error(f"API Error removing member from group {group_id}: {e}")
         return False
 
 def is_valid_email(email: str) -> bool:

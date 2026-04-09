@@ -215,7 +215,8 @@ def main():
                 member_email = st.text_input(
                     "Member Email",
                     placeholder="user@westkingdom.org",
-                    help="Email must end with @westkingdom.org" # Updated help text
+                    help="Email must end with @westkingdom.org",
+                    max_chars=254
                 )
 
                 submit_button = st.form_submit_button("Add Member")
