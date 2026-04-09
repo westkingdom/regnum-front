@@ -152,19 +152,19 @@ def display_add_member_form(selected_group_name: str) -> Tuple[bool, Optional[Di
         st.subheader(f"Add New Member to {selected_group_name}")
 
         # Input fields for member details
-        sca_name = st.text_input("SCA Name*", placeholder="Stephan of Pembroke", help="Required")
-        mundane_name = st.text_input("Mundane Name", placeholder="Jim Bob MacGillicuty")
+        sca_name = st.text_input("SCA Name*", placeholder="Stephan of Pembroke", help="Required", max_chars=100)
+        mundane_name = st.text_input("Mundane Name", placeholder="Jim Bob MacGillicuty", max_chars=100)
         sca_membership_number = st.number_input("SCA Membership Number", value=None, min_value=0, step=1, placeholder="1123581")
 
         st.write("#### Address Information")
-        street_address = st.text_input("Street Address", placeholder="1 Infinite Loop")
-        city = st.text_input("City", placeholder="Cupertino")
-        state = st.text_input("State", placeholder="CA")
-        zip_code = st.text_input("Zip Code", placeholder="95014")
-        country = st.text_input("Country", placeholder="USA")
+        street_address = st.text_input("Street Address", placeholder="1 Infinite Loop", max_chars=200)
+        city = st.text_input("City", placeholder="Cupertino", max_chars=100)
+        state = st.text_input("State", placeholder="CA", max_chars=50)
+        zip_code = st.text_input("Zip Code", placeholder="95014", max_chars=20)
+        country = st.text_input("Country", placeholder="USA", max_chars=100)
 
-        westkingdom_email = st.text_input("Westkingdom Email Address*", placeholder="user@westkingdom.org", help="Required, must end in @westkingdom.org")
-        contact_phone_number = st.text_input("Contact Phone Number (e.g., 123-456-7890)", placeholder="510-867-5309")
+        westkingdom_email = st.text_input("Westkingdom Email Address*", placeholder="user@westkingdom.org", help="Required, must end in @westkingdom.org", max_chars=254)
+        contact_phone_number = st.text_input("Contact Phone Number (e.g., 123-456-7890)", placeholder="510-867-5309", max_chars=30)
 
         effective_date = st.date_input("Effective Date", value=None, format="YYYY-MM-DD") # Consider default to today? value=date.today()
         end_date = st.date_input("End Date (Optional)", value=None, format="YYYY-MM-DD") # Optional end date
