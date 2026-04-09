@@ -1,4 +1,5 @@
 import jwt
+import json
 import streamlit as st
 from datetime import datetime, timedelta
 import os
@@ -7,28 +8,31 @@ import bcrypt
 from utils.logger import app_logger as logger
 
 # JWT Configuration
-JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key-change-in-production')
+JWT_SECRET = os.environ.get('JWT_SECRET')
+if not JWT_SECRET:
+    raise RuntimeError(
+        "JWT_SECRET environment variable is required. "
+        "Set it to a cryptographically random 64-byte hex string."
+    )
 JWT_ALGORITHM = 'HS256'
 JWT_EXPIRATION_HOURS = 24
 
-# Simple user database (in production, use a proper database)
-USERS_DB = {
-    'webminister@westkingdom.org': {
-        'password_hash': '$2b$12$ArcdDcOI23TK.uxqMah4u.eX08mGGM4aGZg5jPX0BoFcwOzYz.A/e',  # In production, use proper password hashing
-        'name': 'Administrator',
-        'role': 'admin'
-    },
-    'karius.hutzelmann@westkingdom.org': {
-        'password_hash': '$2b$12$HzISp2GmiDKAhbelnjy5oONH7qBXKjz0KtrYVW6kQlj3y15m9Xm/O',
-        'name': 'Karius Hutzelmann',
-        'role': 'admin'
-    },
-    'regnum_site@westkingdom.org': {
-        'password_hash': '$2b$12$qbZZ62YQrEiNUv2uZWtb1O14K9ajsAkkgbsnhrHeyQrdJecsJTwUO',
-        'name': 'Regnum Site',
-        'role': 'admin'
-    }
-}
+def _load_users_db() -> dict:
+    """Load user database from USERS_DB_JSON environment variable.
+    In production this env var is sourced from Secret Manager.
+    In development it is set in run_local_dev.sh.
+    """
+    raw = os.environ.get('USERS_DB_JSON', '')
+    if not raw:
+        logger.error("USERS_DB_JSON environment variable is not set. No users can authenticate.")
+        return {}
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError as e:
+        logger.error(f"Failed to parse USERS_DB_JSON: {e}")
+        return {}
+
+USERS_DB = _load_users_db()
 
 def hash_password(password: str) -> str:
     """Hash a password using bcrypt with a random salt"""
@@ -43,9 +47,8 @@ def verify_password(password: str, password_hash: str) -> bool:
         if password_hash.startswith('$2b$'):
             return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
         else:
-            # Fallback for demo passwords (simple string comparison)
-            # This allows existing demo credentials to work
-            return password == password_hash
+            logger.error("Rejected non-bcrypt password hash — all hashes must use bcrypt ($2b$)")
+            return False
     except Exception as e:
         logger.error(f"Error verifying password: {e}")
         return False

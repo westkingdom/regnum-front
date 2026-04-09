@@ -17,13 +17,21 @@ export STREAMLIT_ENV="development"
 # No SMTP credentials needed - uses service account key file
 
 # JWT Authentication configuration
-export JWT_SECRET="dev-jwt-secret-key-change-in-production"
+export JWT_SECRET="ebffa0c3f6e666a54af63c73a4570612f19d9c9ebe5bb91050b93f189690dc0e41dce6bf5cd0fb09183d0affef7c86094bc53b22a224477b38a1f535a5ac7948"
+
+# User database - loaded from env var (do not hardcode credentials in source)
+# In production this is sourced from Secret Manager
+export USERS_DB_JSON='{"admin@westkingdom.org":{"password_hash":"$2b$12$2wKshX/CrwBD.DqBOUqMVec54r7ddWVLAdYoxAtsJJCQLuvjHk0Z6","name":"Admin (Dev)","role":"admin"},"user@westkingdom.org":{"password_hash":"$2b$12$qdLfsA3ukfaz4EK7W9oSdOfm2LcLa1GNJtGM81kMd4jVDjUc6wJUK","name":"User (Dev)","role":"user"}}'
+
+# Group check bypass (development only - never set in production)
+export BYPASS_GROUP_CHECK="true"
+
+# Local service account key path (development only)
+export LOCAL_SA_KEY_PATH="regnum-service-account-key.json"
 
 # reCAPTCHA configuration (for Duty Request form)
 export RECAPTCHA_SITE_KEY="your-recaptcha-site-key"
 export RECAPTCHA_SECRET_KEY="your-recaptcha-secret-key"
-
-# No authentication needed - IAP has been disabled for regnum-api
 
 # Display configuration message
 echo "==================================================="
@@ -44,10 +52,11 @@ echo "✅ API ACCESS:"
 echo "   Backend API is now accessible without authentication"
 echo "   IAP has been disabled for regnum-api service"
 echo ""
-echo "Demo Login Credentials:"
+echo "Dev Login Credentials:"
 echo "  Admin: admin@westkingdom.org / admin123"
-echo "  User:  user@westkingdom.org / user123"
+echo "  User:  user@westkingdom.org  / user123"
+echo "  (credentials are set via USERS_DB_JSON in this script)"
 echo "==================================================="
 
-# Run the application
-streamlit run Home.py 
+# Run the application using pipenv to ensure the virtualenv is active
+pipenv run streamlit run Home.py 

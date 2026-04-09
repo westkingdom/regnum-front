@@ -118,7 +118,7 @@ def send_registration_email(form_data: dict, group_name: str):
         f"A new member registration has been submitted for the group: {group_name}",
         "--- Member Details ---",
         f"SCA Name: {form_data.get('sca_name', 'N/A')}",
-        f"Mundane Name: {form_data.get('mundane_name', 'N/A')}",
+        f"Mundane Name: {form_data.get('modern_name', 'N/A')}",
         f"SCA Membership Number: {form_data.get('sca_membership_number', 'N/A')}",
         f"Westkingdom Email: {form_data.get('westkingdom_email', 'N/A')}",
         f"Contact Phone: {form_data.get('contact_phone_number', 'N/A')}",
