@@ -1,6 +1,4 @@
 import streamlit as st
-import os
-from utils.logger import app_logger as logger
 from utils.jwt_auth import require_authentication, logout_user, is_authenticated
 
 # --- Page Configuration ---
@@ -70,12 +68,3 @@ This application provides access to the West Kingdom's officer roster and report
 - Manage group memberships
 - Submit duty requests
 """)
-
-# Health check endpoint for Cloud Run
-def health_check():
-    """Return a 200 status for Cloud Run health checks"""
-    return {"status": "ok"}
-
-# This is only called by Cloud Run health checks
-if os.environ.get('K_SERVICE') and os.environ.get('HEALTH_CHECK') == 'true':
-    health_check()

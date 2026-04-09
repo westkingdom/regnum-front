@@ -1,14 +1,14 @@
 import requests
 from typing import Dict, Optional
-import os
 from google.auth.transport.requests import Request
 from google.auth import default
 from google.oauth2 import service_account
 import google.auth
+from utils.config import api_url as _default_api_url
 
 class RegnumAPI:
     def __init__(self, base_url: Optional[str] = None):
-        self.base_url = base_url or os.getenv('REGNUM_API_URL') or 'https://regnum-api-85382560394.us-west1.run.app/'
+        self.base_url = base_url or _default_api_url
         if not self.base_url.endswith('/'):
             self.base_url += '/'
         self.session = requests.Session()

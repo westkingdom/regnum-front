@@ -2,32 +2,21 @@ import jwt
 import json
 import streamlit as st
 from datetime import datetime, timedelta
-import os
 from typing import Optional, Dict, Any
 import bcrypt
 from utils.logger import app_logger as logger
+from utils.config import JWT_SECRET, USERS_DB_JSON
 
-# JWT Configuration
-JWT_SECRET = os.environ.get('JWT_SECRET')
-if not JWT_SECRET:
-    raise RuntimeError(
-        "JWT_SECRET environment variable is required. "
-        "Set it to a cryptographically random 64-byte hex string."
-    )
 JWT_ALGORITHM = 'HS256'
 JWT_EXPIRATION_HOURS = 24
 
 def _load_users_db() -> dict:
-    """Load user database from USERS_DB_JSON environment variable.
-    In production this env var is sourced from Secret Manager.
-    In development it is set in run_local_dev.sh.
-    """
-    raw = os.environ.get('USERS_DB_JSON', '')
-    if not raw:
-        logger.error("USERS_DB_JSON environment variable is not set. No users can authenticate.")
+    """Load user database from USERS_DB_JSON (sourced from Secret Manager in production)."""
+    if not USERS_DB_JSON:
+        logger.error("USERS_DB_JSON is not set. No users can authenticate.")
         return {}
     try:
-        return json.loads(raw)
+        return json.loads(USERS_DB_JSON)
     except json.JSONDecodeError as e:
         logger.error(f"Failed to parse USERS_DB_JSON: {e}")
         return {}

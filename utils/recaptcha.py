@@ -3,10 +3,7 @@ import requests
 import streamlit as st
 import streamlit.components.v1 as components
 from utils.logger import app_logger as logger
-
-# reCAPTCHA configuration
-RECAPTCHA_SITE_KEY   = os.environ.get('RECAPTCHA_SITE_KEY', '')
-RECAPTCHA_SECRET_KEY = os.environ.get('RECAPTCHA_SECRET_KEY', '')
+from utils.config import RECAPTCHA_SITE_KEY, RECAPTCHA_SECRET_KEY
 RECAPTCHA_MIN_SCORE  = 0.5  # used only if switching to v3 score-based verification
 
 _COMPONENT_DIR = os.path.join(os.path.dirname(__file__), "recaptcha_widget")

@@ -38,7 +38,13 @@ sys.modules['streamlit'] = mock_st
 # Import the script as a module to test its contents
 # Note: This will execute the script's top-level code, including data loading attempts
 # We'll use patching within tests to control dependencies like pd.read_json
-import pages.a8_Regnum as regnum_page # Assuming the file is named a8_Regnum.py
+import importlib.util
+_spec = importlib.util.spec_from_file_location(
+    "pages._2_Regnum",
+    os.path.join(project_root, 'pages', '2_Regnum.py')
+)
+regnum_page = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(regnum_page)
 
 # --- Test Data ---
 SAMPLE_GROUP_DATA = pd.DataFrame({

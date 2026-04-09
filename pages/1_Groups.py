@@ -5,10 +5,7 @@ from utils.queries import get_all_groups, get_group_members, add_member_to_group
 from utils.logger import app_logger as logger
 from utils.jwt_auth import require_authentication, logout_user
 import pandas as pd
-import json
-import os
 import re
-import sys
 
 # Set page configuration
 st.set_page_config(page_title="Group Management", page_icon="👥", layout="wide")
@@ -238,7 +235,7 @@ def main():
                         if add_member_to_group(selected_id, member_email):
                             logger.info(f"Successfully added {member_email} to {selected_group_name_manage}")
                             st.success(f"Successfully added {member_email} to {selected_group_name_manage}")
-                            st.experimental_rerun()  # Refresh to show updated member list
+                            st.rerun()  # Refresh to show updated member list
                         else:
                             logger.error(f"Failed to add member {member_email} to group {selected_group_name_manage}")
                             st.error(f"Failed to add member {member_email}. The user may already be in the group, or an API error occurred.")
@@ -268,7 +265,7 @@ def main():
                             if remove_member_from_group(selected_id, member_to_remove):
                                 logger.info(f"Successfully removed {member_to_remove} from group {selected_group_name_manage}")
                                 st.success(f"Successfully removed {member_to_remove}")
-                                st.experimental_rerun()
+                                st.rerun()
                             else:
                                 logger.error(f"Failed to remove member {member_to_remove} from group {selected_group_name_manage}")
                                 st.error(f"Failed to remove member {member_to_remove}. Please try again or check API logs.")

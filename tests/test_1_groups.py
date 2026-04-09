@@ -35,7 +35,7 @@ MOCK_ST_DATAFRAME = 'streamlit.dataframe'
 MOCK_ST_JSON = 'streamlit.json'
 MOCK_ST_FORM = 'streamlit.form' # Use context manager mock for 'with'
 MOCK_ST_FORM_SUBMIT_BUTTON = 'streamlit.form_submit_button'
-MOCK_ST_RERUN = 'streamlit.experimental_rerun'
+MOCK_ST_RERUN = 'streamlit.rerun'
 
 # Define mock data
 MOCK_GROUPS_RESPONSE = (
@@ -56,9 +56,13 @@ MOCK_MEMBERS_BETA_RESPONSE = {"members": []} # Group Beta has no members
 # --- Helper to simulate running the Streamlit script ---
 def run_script():
     """Imports and runs the Streamlit page script."""
-    # Need to ensure the script is treated as __main__ if it has such checks
-    # For simple pages, just importing might be enough to trigger execution
-    import pages.pkg_1_groups # Use pkg_ prefix if needed by streamlit loader
+    import importlib.util, os
+    spec = importlib.util.spec_from_file_location(
+        "pages._1_Groups",
+        os.path.join(os.path.dirname(__file__), '..', 'pages', '1_Groups.py')
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
 
 # --- Test Fixtures ---
 @pytest.fixture(autouse=True)

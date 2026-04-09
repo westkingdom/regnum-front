@@ -8,8 +8,6 @@ from utils.queries import get_group_members, is_valid_email, add_member_to_group
 from utils.email import send_registration_email
 from utils.logger import app_logger as logger
 from utils.jwt_auth import require_authentication, logout_user
-import os
-import sys
 
 # --- Data Loading Function ---
 # Note: Type hint was tuple[list, dict], updated to standard Tuple[List, Dict]
