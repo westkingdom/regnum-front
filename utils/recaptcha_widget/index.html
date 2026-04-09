@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        body {
+            margin: 0;
+            padding: 4px 0;
+            background: transparent;
+            font-family: sans-serif;
+        }
+        #recaptcha-container {
+            display: inline-block;
+        }
+        #status {
+            font-size: 13px;
+            color: #666;
+            padding: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="recaptcha-container"></div>
+    <div id="status"></div>
+
+    <!-- Streamlit component library — enables setComponentValue / RENDER_EVENT -->
+    <script src="https://unpkg.com/streamlit-component-lib@2.0.0/dist/index.js"></script>
+
+    <!-- reCAPTCHA API: explicit render mode, calls onRecaptchaApiReady when loaded -->
+    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaApiReady&render=explicit" async defer></script>
+
+    <script>
+        var componentArgs = null;
+        var apiReady = false;
+        var widgetRendered = false;
+
+        // Called by reCAPTCHA API when the script finishes loading
+        function onRecaptchaApiReady() {
+            apiReady = true;
+            tryRender();
+        }
+
+        // Attempt to render once both the API and component args are available
+        function tryRender() {
+            if (!apiReady || !componentArgs || widgetRendered) return;
+            widgetRendered = true;
+
+            var siteKey = componentArgs.site_key;
+            var action  = componentArgs.action || "submit";
+
+            if (!siteKey) {
+                document.getElementById("status").innerText = "reCAPTCHA site key not configured.";
+                Streamlit.setFrameHeight(30);
+                return;
+            }
+
+            // Render the widget on the container div.
+            // The div gains the g-recaptcha class equivalent via grecaptcha.render().
+            grecaptcha.render("recaptcha-container", {
+                "sitekey":          siteKey,
+                "action":           action,
+                "callback":         onSuccess,
+                "expired-callback": onExpired,
+                "error-callback":   onError
+            });
+
+            // Height of the reCAPTCHA v2 checkbox widget
+            Streamlit.setFrameHeight(78);
+        }
+
+        // Token issued — send back to Python
+        function onSuccess(token) {
+            document.getElementById("status").innerText = "";
+            Streamlit.setComponentValue(token);
+        }
+
+        // Token expired (2-minute lifetime) — reset so user must re-verify
+        function onExpired() {
+            document.getElementById("status").innerText = "Verification expired. Please try again.";
+            grecaptcha.reset();
+            Streamlit.setComponentValue("");
+        }
+
+        function onError() {
+            document.getElementById("status").innerText = "reCAPTCHA error. Check your connection.";
+            Streamlit.setComponentValue("");
+        }
+
+        // Streamlit fires RENDER_EVENT whenever Python re-renders the component,
+        // passing the keyword args (site_key, action) from declare_component().
+        Streamlit.events.addEventListener(Streamlit.RENDER_EVENT, function (event) {
+            componentArgs = event.detail.args;
+            tryRender();
+        });
+
+        // Signal to Streamlit that the component is ready to receive events
+        Streamlit.setComponentReady();
+        Streamlit.setFrameHeight(78);
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.jwt_auth import login_user, logout_user, is_authenticated, get_current_user
+from utils.recaptcha import show_recaptcha_widget, verify_recaptcha
 from utils.logger import app_logger as logger
 
 # Set page configuration
@@ -33,35 +34,41 @@ def main():
     with st.form("login_form"):
         st.subheader("Login")
         email = st.text_input(
-            "Email Address", 
+            "Email Address",
             placeholder="user@westkingdom.org",
             help="Enter your West Kingdom email address"
         )
         password = st.text_input(
-            "Password", 
+            "Password",
             type="password",
             help="Enter your password"
         )
-        
+
         col1, col2 = st.columns(2)
         with col1:
             submit = st.form_submit_button("Login", use_container_width=True)
         with col2:
             if st.form_submit_button("Public Duty Request", use_container_width=True):
                 st.switch_page("pages/5_Duty_Request.py")
-        
-        if submit:
-            if not email or not password:
-                st.error("Please enter both email and password")
-            else:
-                with st.spinner("Authenticating..."):
-                    if login_user(email, password):
-                        st.success("Login successful! Redirecting...")
-                        logger.info(f"User logged in successfully: {email}")
-                        st.rerun()
-                    else:
-                        st.error("Invalid email or password. Please try again.")
-                        logger.warning(f"Failed login attempt for: {email}")
+
+    # reCAPTCHA rendered outside the form (st.components cannot live inside st.form)
+    recaptcha_token = show_recaptcha_widget(action="login")
+
+    if submit:
+        if not email or not password:
+            st.error("Please enter both email and password")
+        elif not verify_recaptcha(recaptcha_token):
+            st.error("Please complete the reCAPTCHA verification.")
+        else:
+            with st.spinner("Authenticating..."):
+                if login_user(email, password):
+                    st.session_state['recaptcha_verified_login'] = False  # reset for next visit
+                    st.success("Login successful! Redirecting...")
+                    logger.info(f"User logged in successfully: {email}")
+                    st.rerun()
+                else:
+                    st.error("Invalid email or password. Please try again.")
+                    logger.warning(f"Failed login attempt for: {email}")
     
     st.markdown("---")
     st.markdown("### Public Access")
