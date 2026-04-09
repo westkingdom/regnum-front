@@ -54,11 +54,10 @@
                 return;
             }
 
-            // Render the widget on the container div.
-            // The div gains the g-recaptcha class equivalent via grecaptcha.render().
+            // Render the v2 checkbox widget on the container div.
+            // Note: "action" is v3-only and must NOT be passed to v2 render().
             grecaptcha.render("recaptcha-container", {
                 "sitekey":          siteKey,
-                "action":           action,
                 "callback":         onSuccess,
                 "expired-callback": onExpired,
                 "error-callback":   onError
