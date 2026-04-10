@@ -104,7 +104,7 @@ def send_registration_email(form_data: dict, group_name: str):
         f"A new member registration has been submitted for the group: {group_name}",
         "--- Member Details ---",
         f"SCA Name: {form_data.get('sca_name', 'N/A')}",
-        f"Mundane Name: {form_data.get('modern_name', 'N/A')}",
+        f"Modern Name: {form_data.get('modern_name', 'N/A')}",
         f"SCA Membership Number: {form_data.get('sca_membership_number', 'N/A')}",
         f"Westkingdom Email: {form_data.get('westkingdom_email', 'N/A')}",
         f"Contact Phone: {form_data.get('contact_phone_number', 'N/A')}",
@@ -168,25 +168,40 @@ def send_duty_request_email(form_data: dict, user_email: str) -> bool:
     subject = "[Regnum Submission] New Duty/Job Request Submitted"
     recipients = [user_email, RECIPIENT_COMMUNICATIONS, RECIPIENT_SITE]
 
-    # Format the body
+    def field(label, key):
+        return f"{label}: {form_data.get(key) or 'N/A'}"
+
     body_lines = [
-        "A new duty/job request has been submitted via the WKRegnum portal:",
+        "A new duty/job request has been submitted via the WKRegnum portal.",
         "",
-        "--- Request Details ---"
-    ]
-    
-    for key, value in form_data.items():
-        body_lines.append(f"{key}: {value}")
-    
-    body_lines.extend([
+        "--- Your Information ---",
+        field("Society Name",                   "sca_name"),
+        field("Modern Name",                    "modern_name"),
+        field("West Kingdom Email",             "wk_email"),
+        field("Contact Phone",                  "contact_phone"),
+        field("SCA Member Number",              "member_num"),
+        "",
+        "--- Address ---",
+        field("Street Address",                 "address"),
+        field("City",                           "city"),
+        field("State",                          "state"),
+        field("Postal Code",                    "zip_code"),
+        "",
+        "--- Duty Location ---",
+        field("Principality",                   "principality"),
+        field("Barony",                         "barony"),
+        field("Group",                          "group"),
+        "",
+        "--- Requested Duty ---",
+        field("Job / Duty Requested",           "requested_job"),
         "",
         "--- Notification Recipients ---",
         f"User: {user_email}",
         f"Communications: {RECIPIENT_COMMUNICATIONS}",
         f"Site Admin: {RECIPIENT_SITE}",
         "",
-        "This is an automated notification from the WKRegnum system."
-    ])
+        "This is an automated notification from the WKRegnum system.",
+    ]
     
     body = "\n".join(body_lines)
 
