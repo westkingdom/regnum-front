@@ -23,13 +23,12 @@
     <div id="recaptcha-container"></div>
     <div id="status"></div>
 
-    <!-- reCAPTCHA API: explicit render mode -->
+    <!-- reCAPTCHA Enterprise API: explicit render mode -->
     <script src="https://www.google.com/recaptcha/enterprise.js?onload=onRecaptchaApiReady&render=explicit" async defer></script>
 
     <script>
         // ---------------------------------------------------------------------------
         // Minimal Streamlit component protocol (no external library dependency).
-        // Implements the postMessage protocol that streamlit-component-lib uses.
         // ---------------------------------------------------------------------------
         var componentArgs = null;
         var apiReady = false;
@@ -61,6 +60,32 @@
         });
 
         // ---------------------------------------------------------------------------
+        // Resize iframe when the reCAPTCHA challenge popup opens/closes.
+        // The challenge is rendered as a new iframe injected into the document body.
+        // We watch for it with a MutationObserver and resize our frame accordingly.
+        // ---------------------------------------------------------------------------
+        var CHECKBOX_HEIGHT = 78;
+        var CHALLENGE_HEIGHT = 510;  // tall enough for image-grid challenge
+
+        function watchForChallenge() {
+            var observer = new MutationObserver(function () {
+                // reCAPTCHA injects a second iframe (the challenge popup) into the body
+                var frames = document.querySelectorAll('iframe');
+                var challengeVisible = false;
+                frames.forEach(function (f) {
+                    // Challenge iframe titles include "recaptcha challenge"
+                    var title = (f.title || '').toLowerCase();
+                    if (title.indexOf('challenge') !== -1 && f.offsetParent !== null) {
+                        challengeVisible = true;
+                    }
+                });
+                setFrameHeight(challengeVisible ? CHALLENGE_HEIGHT : CHECKBOX_HEIGHT);
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+        }
+
+        // ---------------------------------------------------------------------------
         // reCAPTCHA logic
         // ---------------------------------------------------------------------------
         function onRecaptchaApiReady() {
@@ -87,12 +112,14 @@
                 "error-callback":   onError
             });
 
-            setFrameHeight(78);
+            watchForChallenge();
+            setFrameHeight(CHECKBOX_HEIGHT);
         }
 
         function onSuccess(token) {
             document.getElementById("status").innerText = "";
             setComponentValue(token);
+            setFrameHeight(CHECKBOX_HEIGHT);
         }
 
         function onExpired() {
@@ -108,7 +135,7 @@
 
         // Signal ready and set initial height
         setComponentReady();
-        setFrameHeight(78);
+        setFrameHeight(CHECKBOX_HEIGHT);
     </script>
 </body>
 </html>
