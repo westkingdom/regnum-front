@@ -536,8 +536,8 @@ def sanitize_duty_request_form(form_data: Dict[str, Any]) -> Dict[str, str]:
         if 'sca_name' in form_data:
             sanitized_data['Society Name'] = sanitize_name(form_data['sca_name'], "Society Name")
         
-        if 'mundane_name' in form_data:
-            sanitized_data['Mundane Name'] = sanitize_name(form_data['mundane_name'], "Mundane Name")
+        if 'modern_name' in form_data:
+            sanitized_data['Modern Name'] = sanitize_name(form_data['modern_name'], "Modern Name")
         
         if 'wk_email' in form_data:
             sanitized_data['West Kingdom Google Email'] = sanitize_email(form_data['wk_email'])
