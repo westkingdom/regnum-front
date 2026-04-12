@@ -518,82 +518,53 @@ def sanitize_short_text(text: str, field_name: str = "Text") -> str:
 def sanitize_duty_request_form(form_data: Dict[str, Any]) -> Dict[str, str]:
     """
     Sanitize all fields in a duty request form.
-    
-    Args:
-        form_data: Dictionary containing form field values
-        
-    Returns:
-        Dictionary with sanitized values
-        
+    Original keys are preserved so callers can look up values by the same
+    names used when building the form.
+
     Raises:
-        ValueError: If any field fails validation
+        ValueError: If any required field fails validation.
     """
     sanitized_data = {}
     errors = []
-    
-    try:
-        # Required fields
-        if 'sca_name' in form_data:
-            sanitized_data['Society Name'] = sanitize_name(form_data['sca_name'], "Society Name")
-        
-        if 'modern_name' in form_data:
-            sanitized_data['Modern Name'] = sanitize_name(form_data['modern_name'], "Modern Name")
-        
-        if 'wk_email' in form_data:
-            sanitized_data['West Kingdom Google Email'] = sanitize_email(form_data['wk_email'])
-        
-        if 'address' in form_data:
-            sanitized_data['Mundane Address'] = sanitize_address(form_data['address'], "Street Address")
-        
-        if 'city' in form_data:
-            sanitized_data['Mundane City'] = sanitize_city(form_data['city'])
-        
-        if 'state' in form_data:
-            sanitized_data['Mundane State'] = sanitize_state(form_data['state'])
-        
-        if 'zip_code' in form_data:
-            sanitized_data['Mundane Zip Code'] = sanitize_zip_code(form_data['zip_code'])
-        
-        if 'principality' in form_data:
-            sanitized_data['Principality'] = sanitize_short_text(form_data['principality'], "Principality")
-        
-        if 'requested_job' in form_data:
-            sanitized_data['Requested Job'] = sanitize_text_area(form_data['requested_job'], "Requested Job")
-        
-        # Optional fields
-        if 'contact_phone' in form_data and form_data['contact_phone']:
-            sanitized_data['Contact Phone Number'] = sanitize_phone(form_data['contact_phone'])
+
+    field_sanitizers = [
+        ('sca_name',     lambda v: sanitize_name(v, "Society Name")),
+        ('modern_name',  lambda v: sanitize_name(v, "Modern Name")),
+        ('wk_email',     sanitize_email),
+        ('address',      lambda v: sanitize_address(v, "Street Address")),
+        ('city',         sanitize_city),
+        ('state',        sanitize_state),
+        ('zip_code',     sanitize_zip_code),
+        ('principality', lambda v: sanitize_short_text(v, "Principality") if v else ''),
+        ('barony',       lambda v: sanitize_short_text(v, "Barony") if v else ''),
+        ('group',        lambda v: sanitize_short_text(v, "Group") if v else ''),
+        ('requested_job',lambda v: sanitize_text_area(v, "Requested Job")),
+        ('contact_phone',lambda v: sanitize_phone(v) if v else ''),
+    ]
+
+    for key, sanitizer in field_sanitizers:
+        raw = form_data.get(key, '')
+        try:
+            sanitized_data[key] = sanitizer(raw)
+        except ValueError as e:
+            errors.append(str(e))
+        except Exception as e:
+            logger.error(f"Unexpected error sanitizing '{key}': {e}")
+            errors.append(f"An error occurred while processing {key}")
+
+    # Member number: digits only
+    member_num = str(form_data.get('member_num', '')).strip()
+    if member_num:
+        if not member_num.isdigit():
+            errors.append("SCA Member Number must contain digits only")
         else:
-            sanitized_data['Contact Phone Number'] = "N/A"
-        
-        if 'barony' in form_data and form_data['barony']:
-            sanitized_data['Barony'] = sanitize_short_text(form_data['barony'], "Barony")
-        else:
-            sanitized_data['Barony'] = "N/A"
-        
-        if 'group' in form_data and form_data['group']:
-            sanitized_data['Group'] = sanitize_short_text(form_data['group'], "Group")
-        else:
-            sanitized_data['Group'] = "N/A"
-        
-        if 'member_num' in form_data and form_data['member_num']:
-            # Member number should be numeric
-            member_num = str(form_data['member_num']).strip()
-            if not member_num.isdigit():
-                raise ValueError("SCA Member Number must be numeric")
-            sanitized_data['SCA Member Number'] = html_encode(member_num)
-        else:
-            sanitized_data['SCA Member Number'] = "N/A"
-        
-    except ValueError as e:
-        errors.append(str(e))
-    except Exception as e:
-        logger.error(f"Unexpected error during sanitization: {e}")
-        errors.append("An error occurred while processing your data")
-    
+            sanitized_data['member_num'] = html_encode(member_num)
+    else:
+        sanitized_data['member_num'] = ''
+
     if errors:
         raise ValueError("; ".join(errors))
-    
+
     return sanitized_data
 
 def log_sanitization_attempt(field_name: str, original_value: str, sanitized_value: str):
