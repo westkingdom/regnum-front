@@ -567,6 +567,80 @@ def sanitize_duty_request_form(form_data: Dict[str, Any]) -> Dict[str, str]:
 
     return sanitized_data
 
+def sanitize_requested_wk_address(address: str) -> str:
+    """
+    Sanitize a requested @westkingdom.org address.
+    Accepts either the local part (e.g. 'first.last') or the full address.
+    Returns the sanitized local part only.
+
+    Raises:
+        ValueError: If the value is empty or contains invalid characters.
+    """
+    if not isinstance(address, str):
+        address = str(address)
+
+    address = address.strip().lower()
+    address = normalize_unicode(address)
+
+    # Strip domain suffix if provided
+    if address.endswith('@westkingdom.org'):
+        address = address[: -len('@westkingdom.org')]
+
+    if not address:
+        raise ValueError("Requested @westkingdom.org address cannot be empty")
+
+    # Check for dangerous patterns
+    for pattern in COMPILED_PATTERNS:
+        if pattern.search(address):
+            logger.warning(f"Dangerous pattern in requested WK address: {repr(address)}")
+            raise ValueError("Requested address contains invalid content")
+
+    address = remove_dangerous_patterns(address)
+
+    if len(address) > 64:
+        raise ValueError("Requested address local part is too long (max 64 characters)")
+
+    # Only allow characters valid in an email local part
+    if not re.match(r'^[a-z0-9.\-_+]+$', address):
+        logger.warning(f"Invalid characters in requested WK address: {repr(address)}")
+        raise ValueError("Requested address contains invalid characters (only letters, digits, dots, hyphens, and underscores are allowed)")
+
+    return html_encode(address)
+
+
+def sanitize_wk_email_request_form(form_data: Dict[str, Any]) -> Dict[str, str]:
+    """
+    Sanitize all fields in a WK email account request form.
+
+    Raises:
+        ValueError: If any field fails validation.
+    """
+    sanitized_data = {}
+    errors = []
+
+    field_sanitizers = [
+        ('mundane_name',       lambda v: sanitize_name(v, "Modern Name")),
+        ('society_name',       lambda v: sanitize_name(v, "Society Name")),
+        ('current_email',      sanitize_email),
+        ('requested_address',  sanitize_requested_wk_address),
+    ]
+
+    for key, sanitizer in field_sanitizers:
+        raw = form_data.get(key, '')
+        try:
+            sanitized_data[key] = sanitizer(raw)
+        except ValueError as e:
+            errors.append(str(e))
+        except Exception as e:
+            logger.error(f"Unexpected error sanitizing '{key}': {e}")
+            errors.append(f"An error occurred while processing {key}")
+
+    if errors:
+        raise ValueError("; ".join(errors))
+
+    return sanitized_data
+
+
 def log_sanitization_attempt(field_name: str, original_value: str, sanitized_value: str):
     """
     Log sanitization attempts for security monitoring.

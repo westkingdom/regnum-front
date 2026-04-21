@@ -137,6 +137,74 @@ def send_registration_email(form_data: dict, group_name: str):
         return False
 
 
+def send_wk_email_account_request_email(form_data: dict) -> bool:
+    """
+    Sends a WK email account request notification to communications@westkingdom.org
+    with a copy to regnum-site@westkingdom.org.
+    """
+    if os.environ.get("STREAMLIT_ENV") == "development":
+        try:
+            st.warning("⚠️ Development Mode: Email sending simulation enabled.")
+            st.info("📧 In production, this would send emails via Gmail API to:")
+            st.write(f"- To: {RECIPIENT_COMMUNICATIONS}")
+            st.write(f"- CC: {RECIPIENT_SITE}")
+            st.success("✅ Form submission completed successfully (development mode)")
+        except Exception:
+            print("Development mode: Email sending skipped")
+        return True
+
+    service = get_gmail_service()
+    if not service:
+        try:
+            st.error("Failed to initialize Gmail service. Please contact the administrator.")
+        except Exception:
+            pass
+        return False
+
+    requested = form_data.get('requested_address') or 'N/A'
+    subject = f"[New-Account-Requests] New WK Email Account Request: {requested}@westkingdom.org"
+
+    def field(label, key):
+        return f"{label}: {form_data.get(key) or 'N/A'}"
+
+    body_lines = [
+        "A new West Kingdom email account request has been submitted via the WKRegnum portal.",
+        "",
+        "--- Requester Information ---",
+        field("Modern Name",                     "mundane_name"),
+        field("Society Name",                    "society_name"),
+        field("Current Email Address",           "current_email"),
+        field("Requested @westkingdom.org Address", "requested_address"),
+        "",
+        "This is an automated notification from the WKRegnum system.",
+    ]
+
+    body = "\n".join(body_lines)
+    message = create_message(
+        IMPERSONATED_USER_EMAIL,
+        RECIPIENT_COMMUNICATIONS,
+        RECIPIENT_SITE,
+        subject,
+        body,
+    )
+
+    if not message:
+        logger.error("Failed to create WK email account request message")
+        return False
+
+    sent = send_message(service, IMPERSONATED_USER_EMAIL, message)
+    if sent:
+        logger.info("WK email account request email sent successfully")
+        return True
+
+    logger.error("Failed to send WK email account request email")
+    try:
+        st.error("Failed to send notification email. Please contact the administrator.")
+    except Exception:
+        pass
+    return False
+
+
 def send_duty_request_email(form_data: dict, user_email: str) -> bool:
     """
     Sends the duty request email using Gmail API to the specified recipients.
