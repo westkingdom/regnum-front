@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.jwt_auth import require_authentication, logout_user
+from utils.google_oauth import require_authentication, logout_user
 from utils.logger import app_logger as logger
 
 
@@ -71,7 +71,7 @@ pg = st.navigation(
     {
         "Portal": [
             st.Page(home_content, title="Home", default=True),
-            st.Page("pages/0_Login.py", title="Login"),
+            st.Page("pages/0_Login.py", title="Login", url_path="login"),
             st.Page("pages/1_Groups.py", title="Groups"),
             st.Page("pages/2_Regnum.py", title="Regnum"),
         ],
