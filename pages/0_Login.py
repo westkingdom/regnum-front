@@ -35,7 +35,7 @@ def _handle_oauth_callback(code: str, state: str) -> None:
     login_user(user_info)
     logger.info(f"User signed in via Google OAuth: {email}")
     st.query_params.clear()
-    st.switch_page("Home.py")
+    st.switch_page("pages/home.py")
 
 
 def main():
@@ -63,7 +63,7 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
             if st.button("Go to Home Page"):
-                st.switch_page("Home.py")
+                st.switch_page("pages/home.py")
         with col2:
             if st.button("Sign Out"):
                 logout_user()
