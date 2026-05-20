@@ -69,9 +69,12 @@ def generate_oauth_state() -> str:
 
 
 def verify_oauth_state(state: str) -> bool:
-    """Return True only if the state token has a valid signature and is not expired."""
+    """Return True only if the state token has a valid signature, is not expired, and has a nonce."""
     try:
-        pyjwt.decode(state, JWT_SECRET, algorithms=["HS256"])
+        payload = pyjwt.decode(state, JWT_SECRET, algorithms=["HS256"])
+        if not payload.get("nonce"):
+            logger.warning("OAuth state token missing nonce")
+            return False
         return True
     except pyjwt.ExpiredSignatureError:
         logger.warning("OAuth state token expired")
@@ -84,6 +87,8 @@ def verify_oauth_state(state: str) -> bool:
 def get_authorization_url() -> str:
     """Return the Google OAuth authorization URL with a fresh state token."""
     flow = _get_flow()
+    # State is a self-verifying signed JWT — no server-side storage needed.
+    # Google echoes it back in the redirect; we verify signature + expiry in exchange_code_for_user_info.
     auth_url, _ = flow.authorization_url(
         access_type="offline",
         include_granted_scopes="true",
@@ -139,6 +144,8 @@ def check_group_membership(user_email: str) -> bool:
         ).with_subject(IMPERSONATED_USER_EMAIL)
 
         service = build("admin", "directory_v1", credentials=credentials)
+        # hasMember only checks direct membership (not nested groups).
+        # If the group uses sub-groups, members of sub-groups will be denied.
         result = service.members().hasMember(
             groupKey=REQUIRED_GOOGLE_GROUP,
             memberKey=user_email,
@@ -154,9 +161,12 @@ def check_group_membership(user_email: str) -> bool:
 
 def login_user(user_info: Dict[str, Any]) -> None:
     """Store authenticated user in Streamlit session state."""
+    email = user_info.get("email")
+    if not email:
+        raise ValueError("Google user info missing required 'email' field")
     st.session_state["is_authenticated"] = True
-    st.session_state["user_email"] = user_info["email"]
-    st.session_state["user_name"] = user_info.get("name", user_info["email"])
+    st.session_state["user_email"] = email
+    st.session_state["user_name"] = user_info.get("name", email)
     st.session_state["user_picture"] = user_info.get("picture", "")
 
 

@@ -58,3 +58,11 @@ def test_verify_oauth_state_rejects_empty_string():
 
 def test_verify_oauth_state_rejects_garbage():
     assert verify_oauth_state('not.a.jwt') is False
+
+def test_verify_oauth_state_rejects_missing_nonce():
+    payload = {
+        'iat': int(time.time()),
+        'exp': int(time.time()) + 300,
+    }
+    no_nonce = pyjwt.encode(payload, os.environ['JWT_SECRET'], algorithm='HS256')
+    assert verify_oauth_state(no_nonce) is False
