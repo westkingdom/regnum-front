@@ -49,6 +49,3 @@ LOCAL_SA_KEY_PATH  = os.environ.get('LOCAL_SA_KEY_PATH', '')
 REGNUM_ADMIN_GROUP = os.environ.get('REGNUM_ADMIN_GROUP', '00kgcv8k1r9idky')
 _bypass_raw        = os.environ.get('BYPASS_GROUP_CHECK', 'false').lower()
 BYPASS_GROUP_CHECK = _bypass_raw == 'true'
-
-# Deprecated: was used by jwt_auth.py (being removed). Will be deleted in cleanup task.
-USERS_DB_JSON = ''
