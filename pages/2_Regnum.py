@@ -7,7 +7,7 @@ from typing import Union, Optional, Tuple, List, Dict, Any # Import necessary ty
 from utils.queries import get_group_members, is_valid_email, add_member_to_group
 from utils.email import send_registration_email
 from utils.logger import app_logger as logger
-from utils.jwt_auth import require_authentication, logout_user
+from utils.google_oauth import require_authentication, logout_user
 
 # --- Data Loading Function ---
 # Note: Type hint was tuple[list, dict], updated to standard Tuple[List, Dict]
@@ -283,7 +283,7 @@ def main():
     # Display user info and logout button
     col1, col2 = st.columns([3, 1])
     with col1:
-        st.success(f"Logged in as: {user['name']} ({user['role']})")
+        st.success(f"Logged in as: {user['name']} ({user['email']})")
     with col2:
         if st.button("Logout"):
             logout_user()

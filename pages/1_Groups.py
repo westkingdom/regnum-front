@@ -3,7 +3,7 @@ import requests
 from utils.config import api_url
 from utils.queries import get_all_groups, get_group_members, add_member_to_group, remove_member_from_group, is_valid_email
 from utils.logger import app_logger as logger
-from utils.jwt_auth import require_authentication, logout_user
+from utils.google_oauth import require_authentication, logout_user
 import pandas as pd
 import re
 
@@ -21,7 +21,6 @@ def main():
     col1, col2 = st.columns([3, 1])
     with col1:
         st.sidebar.success(f"Logged in as: {user['name']}")
-        st.sidebar.info(f"Role: {user['role']}")
     with col2:
         if st.sidebar.button("Logout"):
             logout_user()
