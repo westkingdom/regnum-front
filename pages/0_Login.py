@@ -43,7 +43,11 @@ def main():
 
     # Google cancelled or denied the OAuth request
     if "error" in params:
-        st.error(f"Sign-in was cancelled or denied: {params['error']}")
+        _KNOWN_OAUTH_ERRORS = {"access_denied", "interaction_required", "consent_required"}
+        raw_error = params.get("error", "unknown")
+        safe_error = raw_error if raw_error in _KNOWN_OAUTH_ERRORS else "unknown_error"
+        logger.warning(f"OAuth error redirect received: {raw_error}")
+        st.error(f"Sign-in was cancelled or denied: {safe_error}")
         st.query_params.clear()
         return
 
