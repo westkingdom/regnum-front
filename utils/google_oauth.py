@@ -1,4 +1,6 @@
 """Google OAuth 2.0 authentication for WKRegnum."""
+import base64
+import hashlib
 import os
 import secrets
 import time
@@ -70,30 +72,57 @@ def generate_oauth_state() -> str:
 
 def verify_oauth_state(state: str) -> bool:
     """Return True only if the state token has a valid signature, is not expired, and has a nonce."""
+    import sys as _sys
     try:
         payload = pyjwt.decode(state, JWT_SECRET, algorithms=["HS256"])
         if not payload.get("nonce"):
-            logger.warning("OAuth state token missing nonce")
+            msg = "OAuth state token missing nonce"
+            logger.warning(msg)
+            print(f"[regnum] WARNING: {msg}", file=_sys.stderr, flush=True)
             return False
         return True
     except pyjwt.ExpiredSignatureError:
-        logger.warning("OAuth state token expired")
+        msg = "OAuth state token expired"
+        logger.warning(msg)
+        print(f"[regnum] WARNING: {msg}", file=_sys.stderr, flush=True)
         return False
-    except pyjwt.InvalidTokenError:
-        logger.warning("Invalid OAuth state token")
+    except pyjwt.InvalidTokenError as exc:
+        msg = f"Invalid OAuth state token: {type(exc).__name__}: {exc}"
+        logger.warning(msg)
+        print(f"[regnum] WARNING: {msg}", file=_sys.stderr, flush=True)
         return False
 
 
 def get_authorization_url() -> str:
-    """Return the Google OAuth authorization URL with a fresh state token."""
+    """Return the Google OAuth authorization URL with PKCE and a fresh state token.
+
+    The PKCE code verifier is embedded in the signed state JWT so it can be
+    recovered on the callback without any server-side session storage.
+    """
+    verifier = secrets.token_urlsafe(32)
+    challenge = base64.urlsafe_b64encode(
+        hashlib.sha256(verifier.encode()).digest()
+    ).rstrip(b"=").decode()
+
+    now = int(time.time())
+    state = pyjwt.encode(
+        {
+            "nonce": secrets.token_urlsafe(16),
+            "iat": now,
+            "exp": now + 300,
+            "cv": verifier,
+        },
+        JWT_SECRET,
+        algorithm="HS256",
+    )
+
     flow = _get_flow()
-    # State is a self-verifying signed JWT — no server-side storage needed.
-    # Google echoes it back in the redirect; we verify signature + expiry in exchange_code_for_user_info.
     auth_url, _ = flow.authorization_url(
         access_type="offline",
-        include_granted_scopes="true",
         prompt="select_account",
-        state=generate_oauth_state(),
+        state=state,
+        code_challenge=challenge,
+        code_challenge_method="S256",
     )
     return auth_url
 
@@ -107,13 +136,30 @@ def exchange_code_for_user_info(code: str, state: str) -> Optional[Dict[str, Any
     if not verify_oauth_state(state):
         logger.warning("OAuth state verification failed — possible CSRF attempt")
         return None
+
+    # Recover the PKCE code verifier that was embedded in the state JWT.
+    try:
+        payload = pyjwt.decode(state, JWT_SECRET, algorithms=["HS256"])
+        code_verifier = payload.get("cv")
+    except pyjwt.InvalidTokenError:
+        code_verifier = None
+
     try:
         flow = _get_flow()
-        flow.fetch_token(code=code)
+        # Null the session scope so requests_oauthlib won't raise if Google
+        # returns a broader scope than requested (e.g. from prior user grants).
+        flow.oauth2session.scope = None
+        fetch_kwargs: Dict[str, Any] = {"code": code}
+        if code_verifier:
+            fetch_kwargs["code_verifier"] = code_verifier
+        flow.fetch_token(**fetch_kwargs)
         service = build("oauth2", "v2", credentials=flow.credentials)
         return service.userinfo().get().execute()
     except Exception as exc:
-        logger.error(f"OAuth code exchange failed: {exc}")
+        import sys as _sys
+        msg = f"OAuth code exchange failed: {type(exc).__name__}: {exc}"
+        logger.error(msg)
+        print(f"[regnum] ERROR: {msg}", file=_sys.stderr, flush=True)
         return None
 
 
