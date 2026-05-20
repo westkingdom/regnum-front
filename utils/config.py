@@ -4,20 +4,34 @@ import os
 api_url  = os.environ.get('REGNUM_API_URL', 'https://regnum-api-lb-backend-service')
 base_url = os.environ.get('BASE_URL', 'http://localhost:8501')
 
-# --- JWT ---
+# --- OAuth state signing (reuses JWT_SECRET) ---
 JWT_SECRET = os.environ.get('JWT_SECRET')
 if not JWT_SECRET:
     raise RuntimeError(
         "JWT_SECRET environment variable is required. "
-        "Set it to a cryptographically random 64-byte hex string."
+        "Set it to a cryptographically random 64-byte hex string: "
+        "python3 -c \"import secrets; print(secrets.token_hex(64))\""
     )
 
-# --- Users database (JSON string, sourced from Secret Manager in production) ---
-USERS_DB_JSON = os.environ.get('USERS_DB_JSON', '')
+# --- Google OAuth 2.0 ---
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+if not GOOGLE_CLIENT_ID:
+    raise RuntimeError(
+        "GOOGLE_CLIENT_ID environment variable is required. "
+        "Create an OAuth 2.0 Web Application credential in GCP Console."
+    )
+
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+if not GOOGLE_CLIENT_SECRET:
+    raise RuntimeError(
+        "GOOGLE_CLIENT_SECRET environment variable is required. "
+        "Copy it from your OAuth 2.0 credential in GCP Console."
+    )
+
+OAUTH_REDIRECT_URI = os.environ.get('OAUTH_REDIRECT_URI', f'{base_url}/login')
+REQUIRED_GOOGLE_GROUP = os.environ.get('REQUIRED_GOOGLE_GROUP', 'regnum-site@westkingdom.org')
 
 # --- reCAPTCHA Enterprise ---
-# Site key is passed to the frontend widget.
-# Verification uses the Enterprise Assessment API with ADC (no secret key needed).
 RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY', '')
 
 # --- Email addresses ---
