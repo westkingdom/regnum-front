@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv(".env.local", override=False)
+
 import streamlit as st
 from utils.google_oauth import require_authentication, logout_user
 from utils.logger import app_logger as logger
