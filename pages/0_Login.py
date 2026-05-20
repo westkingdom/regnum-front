@@ -20,8 +20,7 @@ def _handle_oauth_callback(code: str, state: str) -> None:
     if not user_info:
         st.error("Sign-in failed. The session may have expired — please try again.")
         st.query_params.clear()
-        st.rerun()
-        return
+        st.stop()
 
     email = user_info.get("email", "")
     if not check_group_membership(email):
@@ -41,6 +40,12 @@ def _handle_oauth_callback(code: str, state: str) -> None:
 
 def main():
     params = st.query_params
+
+    # Google cancelled or denied the OAuth request
+    if "error" in params:
+        st.error(f"Sign-in was cancelled or denied: {params['error']}")
+        st.query_params.clear()
+        return
 
     # OAuth callback: Google redirects here with ?code=...&state=...
     if "code" in params and "state" in params:
