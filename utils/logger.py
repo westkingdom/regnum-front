@@ -54,7 +54,8 @@ def setup_logger(name=None):
             handler.setFormatter(JsonFormatter())
         else:
             # Development environment - human-readable format
-            handler = logging.StreamHandler(sys.stdout)
+            # stderr is used so logs appear in the terminal even when Streamlit captures stdout
+            handler = logging.StreamHandler(sys.stderr)
             formatter = logging.Formatter(
                 '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                 datefmt='%Y-%m-%d %H:%M:%S'

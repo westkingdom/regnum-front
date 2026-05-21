@@ -23,11 +23,12 @@ echo "==================================================="
 echo "  API URL:      $REGNUM_API_URL"
 echo "  Base URL:     $BASE_URL"
 echo "  reCAPTCHA:    Disabled (development mode)"
-echo ""
-echo "Dev Login Credentials:"
-echo "  Admin: admin@westkingdom.org / admin123"
-echo "  User:  user@westkingdom.org  / user123"
 echo "==================================================="
+
+# Required by requests-oauthlib when the OAuth redirect URI uses http://localhost.
+# Without this, flow.fetch_token() throws InsecureTransportError locally.
+# Never set this in production.
+export OAUTHLIB_INSECURE_TRANSPORT=1
 
 # Run the application using uv
 uv run streamlit run Home.py
