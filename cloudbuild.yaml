@@ -40,9 +40,9 @@ steps:
         "--memory",
         "1Gi",
         "--set-env-vars",
-        "REGNUM_API_URL=${_API_URL},BASE_URL=${_BASE_URL},STREAMLIT_ENV=production",
+        "REGNUM_API_URL=${_API_URL},BASE_URL=${_BASE_URL},STREAMLIT_ENV=production,OAUTH_REDIRECT_URI=${_BASE_URL}/login,REQUIRED_GOOGLE_GROUP=${_REQUIRED_GOOGLE_GROUP},IMPERSONATED_USER_EMAIL=${_IMPERSONATED_USER_EMAIL}",
         "--update-secrets",
-        "JWT_SECRET=jwt-secret:latest,USERS_DB_JSON=users-db-json:latest,RECAPTCHA_SITE_KEY=recaptcha-site-key:latest,RECAPTCHA_SECRET_KEY=recaptcha-secret-key:latest",
+        "JWT_SECRET=jwt-secret:latest,GOOGLE_CLIENT_ID=google-client-id:latest,GOOGLE_CLIENT_SECRET=google-client-secret:latest,RECAPTCHA_SITE_KEY=recaptcha-site-key:latest,RECAPTCHA_SECRET_KEY=recaptcha-secret-key:latest,/secrets/sa/service_account.json=service-account-key:latest",
       ]
 
 # Store the image name in Artifact Registry
@@ -55,6 +55,8 @@ substitutions:
   _SERVICE_NAME: "regnum-front"
   _BASE_URL: "https://wkregnum-njxuammdla-uw.a.run.app"
   _API_URL: "https://regnum-api-85382560394.us-west1.run.app"
+  _REQUIRED_GOOGLE_GROUP: "regnum-site@westkingdom.org"
+  _IMPERSONATED_USER_EMAIL: "westkingdom@westkingdom.org"
 
 # Timeout for the entire build
 timeout: "1800s" # 30 minutes
