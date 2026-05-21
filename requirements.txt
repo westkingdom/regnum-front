@@ -25,3 +25,4 @@ aiohttp==3.13.5
 
 # Other dependencies
 toml==0.10.2
+python-dotenv==1.2.2
