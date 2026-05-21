@@ -42,7 +42,7 @@ steps:
         "--set-env-vars",
         "REGNUM_API_URL=${_API_URL},BASE_URL=${_BASE_URL},STREAMLIT_ENV=production,OAUTH_REDIRECT_URI=${_BASE_URL}/login,REQUIRED_GOOGLE_GROUP=${_REQUIRED_GOOGLE_GROUP},IMPERSONATED_USER_EMAIL=${_IMPERSONATED_USER_EMAIL}",
         "--update-secrets",
-        "JWT_SECRET=jwt-secret:latest,GOOGLE_CLIENT_ID=google-client-id:latest,GOOGLE_CLIENT_SECRET=google-client-secret:latest,RECAPTCHA_SITE_KEY=recaptcha-site-key:latest,RECAPTCHA_SECRET_KEY=recaptcha-secret-key:latest,/secrets/sa/service_account.json=service-account-key:latest",
+        "JWT_SECRET=jwt-secret:latest,GOOGLE_CLIENT_ID=google-client-id:latest,GOOGLE_CLIENT_SECRET=google-client-secret:latest,RECAPTCHA_SITE_KEY=recaptcha-site-key:latest,RECAPTCHA_SECRET_KEY=recaptcha-secret-key:latest,/secrets/sa/service_account.json=regnum-service-account-key:latest",
       ]
 
 # Store the image name in Artifact Registry
