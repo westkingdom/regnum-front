@@ -190,13 +190,20 @@ def check_group_membership(user_email: str) -> bool:
         ).with_subject(IMPERSONATED_USER_EMAIL)
 
         service = build("admin", "directory_v1", credentials=credentials)
-        # hasMember only checks direct membership (not nested groups).
-        # If the group uses sub-groups, members of sub-groups will be denied.
-        result = service.members().hasMember(
+        # Use includeDerivedMembership=True so that users who are members via
+        # a sub-group (nested group) are also accepted.
+        request = service.members().list(
             groupKey=REQUIRED_GOOGLE_GROUP,
-            memberKey=user_email,
-        ).execute()
-        return result.get("isMember", False)
+            includeDerivedMembership=True,
+        )
+        while request is not None:
+            result = request.execute()
+            for member in result.get("members", []):
+                if member.get("email", "").lower() == user_email.lower():
+                    return True
+            request = service.members().list_next(request, result)
+        logger.warning(f"User {user_email} not found in group {REQUIRED_GOOGLE_GROUP} (including derived membership)")
+        return False
     except HttpError as exc:
         logger.error(f"Directory API error checking membership for {user_email}: {exc}")
         return False
