@@ -1,10 +1,47 @@
+import time
 import requests
 from typing import Dict, Optional
-from google.auth.transport.requests import Request
-from google.auth import default
-from google.oauth2 import service_account
-import google.auth
+
+import google.auth.transport.requests
+from google.oauth2 import id_token as _google_id_token
+
 from utils.config import api_url as _default_api_url
+from utils.logger import app_logger as logger
+
+
+class _IDTokenAuth(requests.auth.AuthBase):
+    """Attach a Cloud Run identity token, refreshing it before it expires.
+
+    The audience must be the receiving service's URL. On Cloud Run the token is
+    minted by the metadata server for the attached service account; under ADC
+    with a service-account key it is minted from that key. Tokens are cached and
+    re-fetched a few minutes before the ~1h expiry so a long-lived client (the
+    cached RegnumAPI singleton) keeps working once the API enforces IAM.
+    """
+
+    _LIFETIME_SECONDS = 3600
+    _REFRESH_MARGIN_SECONDS = 600
+
+    def __init__(self, audience: str):
+        self._audience = audience
+        self._token: Optional[str] = None
+        self._expiry: float = 0.0
+        self._request = google.auth.transport.requests.Request()
+
+    def _ensure_token(self) -> None:
+        if self._token and time.time() < self._expiry:
+            return
+        self._token = _google_id_token.fetch_id_token(self._request, self._audience)
+        self._expiry = time.time() + self._LIFETIME_SECONDS - self._REFRESH_MARGIN_SECONDS
+
+    def __call__(self, request: requests.PreparedRequest) -> requests.PreparedRequest:
+        try:
+            self._ensure_token()
+            request.headers["Authorization"] = f"Bearer {self._token}"
+        except Exception as exc:
+            logger.warning(f"Could not obtain identity token for {self._audience}: {exc}")
+        return request
+
 
 class RegnumAPI:
     def __init__(self, base_url: Optional[str] = None):
@@ -12,51 +49,8 @@ class RegnumAPI:
         if not self.base_url.endswith('/'):
             self.base_url += '/'
         self.session = requests.Session()
-        self._setup_service_auth()
-
-    def _setup_service_auth(self):
-        """Setup service-to-service authentication for Cloud Run"""
-        try:
-            # In production (Cloud Run), this will use the service account attached to the service
-            # In development, this will use Application Default Credentials (ADC)
-            credentials, project = default()
-            
-            # Create an authenticated request object
-            auth_request = Request()
-            
-            # Get the target audience (the regnum-api service URL)
-            audience = self.base_url.rstrip('/')
-            
-            # For service-to-service communication, we need an identity token
-            # This is different from access tokens - identity tokens are used for Cloud Run auth
-            if hasattr(credentials, 'with_claims'):
-                # Service account credentials - create identity token
-                identity_token = credentials.with_claims(audience=audience).token
-                if not identity_token:
-                    credentials.refresh(auth_request)
-                    identity_token = credentials.token
-            else:
-                # For other credential types, try to get an identity token
-                try:
-                    import google.oauth2.id_token
-                    identity_token = google.oauth2.id_token.fetch_id_token(auth_request, audience)
-                except Exception as e:
-                    print(f"Could not get identity token: {e}")
-                    # Fall back to access token (may not work for secured Cloud Run)
-                    credentials.refresh(auth_request)
-                    identity_token = credentials.token
-
-            if identity_token:
-                self.session.headers.update({
-                    'Authorization': f'Bearer {identity_token}'
-                })
-                print(f"✅ Service authentication configured for {audience}")
-            else:
-                print("⚠️  Warning: Could not obtain authentication token")
-                
-        except Exception as e:
-            print(f"⚠️  Warning: Service authentication setup failed: {e}")
-            print("Proceeding without authentication (may fail if service is secured)")
+        # Audience is the receiving service's URL (no trailing slash).
+        self.session.auth = _IDTokenAuth(self.base_url.rstrip('/'))
 
     def get_all_groups(self) -> Dict:
         """Get all groups"""
