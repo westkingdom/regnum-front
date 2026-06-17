@@ -1,7 +1,6 @@
 import streamlit as st
 from utils.email import send_wk_email_account_request_email as _send_email
 from utils.logger import app_logger as logger
-from utils.recaptcha import require_recaptcha
 from utils.data_sanitizer import sanitize_wk_email_request_form, sanitize_email
 
 RECIPIENT_COMMUNICATIONS = "communications@westkingdom.org"
@@ -29,8 +28,6 @@ def main():
     Use this form to request a new **@westkingdom.org** email address.
     Your request will be sent to the Kingdom Communications office.
     """)
-
-    require_recaptcha()
 
     with st.form(key="wk_email_request_form", clear_on_submit=True):
         mundane_name = st.text_input(
