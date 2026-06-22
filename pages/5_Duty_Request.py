@@ -4,7 +4,6 @@ from typing import Dict, Any
 from utils.email import send_duty_request_email as actual_send_duty_request_email
 from utils.queries import is_valid_email as is_valid_wk_email
 from utils.logger import app_logger as logger
-from utils.recaptcha import require_recaptcha
 from utils.data_sanitizer import sanitize_duty_request_form, sanitize_email
 
 def send_duty_request_email(form_data: Dict[str, Any], user_email: str) -> bool:
@@ -47,9 +46,6 @@ def main():
     and a copy will be sent to your West Kingdom email address.
     """)
     
-    # Require reCAPTCHA verification before showing the form
-    require_recaptcha()
-
     # Use st.form to group inputs and submit together
     with st.form(key="duty_request_form", clear_on_submit=True):
         st.subheader("Your Information")
