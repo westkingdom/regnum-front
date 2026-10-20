@@ -20,7 +20,7 @@
 - **Load Balancing**: Kubernetes load balancer configuration
 
 ## Development Environment
-- **Package Management**: pip with requirements.txt (primary), Pipenv as alternative
+- **Package Management**: pip with requirements.txt (Docker image), uv with pyproject.toml/uv.lock (local development)
 - **Environment Variables**: Managed via shell scripts and Cloud Run environment
 - **Logging**: Structured JSON logging in production, human-readable in development
 
