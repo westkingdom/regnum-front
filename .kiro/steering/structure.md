@@ -3,7 +3,7 @@
 ## Root Directory
 - **Home.py** - Main application entry point with authentication and welcome page
 - **requirements.txt** - Primary Python dependencies (pip format)
-- **Pipfile/Pipfile.lock** - Alternative dependency management (Pipenv)
+- **pyproject.toml/uv.lock** - Local development dependencies (uv)
 - **Dockerfile** - Container configuration for deployment
 - **docker-compose.yaml** - Local container orchestration
 - **cloudbuild.yaml** - Google Cloud Build configuration
