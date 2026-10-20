@@ -41,8 +41,9 @@ def get_gmail_service():
             subject=IMPERSONATED_USER_EMAIL  # The user to impersonate
         )
     except Exception as e:
+        logger.error(f"Error loading Service Account credentials: {e}")
         try:
-            st.error(f"Error loading Service Account credentials: {e}")
+            st.error("Email service is misconfigured. Please contact the administrator.")
         except Exception:
             pass
         return None
@@ -60,13 +61,18 @@ def get_gmail_service():
         return None
 
 
+def _header_safe(value) -> str:
+    """Strip CR/LF so user-supplied text can't inject extra email headers."""
+    return " ".join(str(value or "").splitlines()).strip()
+
+
 def create_message(sender, to, cc, subject, message_text):
     """Create a message for an email, including CC."""
     message = MIMEMultipart()
-    message['to'] = to
-    message['cc'] = cc
-    message['from'] = sender
-    message['subject'] = subject
+    message['to'] = _header_safe(to)
+    message['cc'] = _header_safe(cc)
+    message['from'] = _header_safe(sender)
+    message['subject'] = _header_safe(subject)
     msg = MIMEText(message_text)
     message.attach(msg)
     raw_message = base64.urlsafe_b64encode(message.as_bytes()).decode()

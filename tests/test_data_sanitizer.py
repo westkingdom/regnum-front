@@ -265,7 +265,7 @@ class TestDataSanitizer(unittest.TestCase):
         """Test valid complete form sanitization"""
         valid_form_data = {
             'sca_name': 'Lord John of Somewhere',
-            'mundane_name': 'John Smith',
+            'modern_name': 'John Smith',
             'wk_email': 'john@westkingdom.org',
             'contact_phone': '(555) 123-4567',
             'address': '123 Main Street',
@@ -281,19 +281,19 @@ class TestDataSanitizer(unittest.TestCase):
         
         result = sanitize_duty_request_form(valid_form_data)
         
-        # Check that all fields are present and sanitized
-        self.assertIn('Society Name', result)
-        self.assertIn('Mundane Name', result)
-        self.assertIn('West Kingdom Google Email', result)
-        self.assertEqual(result['West Kingdom Google Email'], 'john@westkingdom.org')
-        self.assertEqual(result['Mundane State'], 'CA')
+        # Original form keys are preserved
+        self.assertEqual(result['sca_name'], 'Lord John of Somewhere')
+        self.assertEqual(result['modern_name'], 'John Smith')
+        self.assertEqual(result['wk_email'], 'john@westkingdom.org')
+        self.assertEqual(result['state'], 'CA')
+        self.assertEqual(result['member_num'], '12345')
 
     def test_sanitize_duty_request_form_invalid(self):
         """Test invalid complete form sanitization"""
         # Test with dangerous content
         dangerous_form_data = {
             'sca_name': '<script>alert("xss")</script>',
-            'mundane_name': 'John Smith',
+            'modern_name': 'John Smith',
             'wk_email': 'john@westkingdom.org',
             'address': '123 Main Street',
             'city': 'San Francisco',
@@ -311,7 +311,7 @@ class TestDataSanitizer(unittest.TestCase):
         """Test form sanitization with optional fields empty"""
         minimal_form_data = {
             'sca_name': 'Lord John',
-            'mundane_name': 'John Smith',
+            'modern_name': 'John Smith',
             'wk_email': 'john@westkingdom.org',
             'contact_phone': '',  # Optional
             'address': '123 Main Street',
@@ -327,10 +327,10 @@ class TestDataSanitizer(unittest.TestCase):
         
         result = sanitize_duty_request_form(minimal_form_data)
         
-        # Check that optional fields are set to "N/A"
-        self.assertEqual(result['Contact Phone Number'], 'N/A')
-        self.assertEqual(result['Barony'], 'N/A')
-        self.assertEqual(result['Group'], 'N/A')
+        # Empty optional fields come back empty (the email renders them as N/A)
+        self.assertEqual(result['contact_phone'], '')
+        self.assertEqual(result['barony'], '')
+        self.assertEqual(result['group'], '')
 
 class TestSecurityScenarios(unittest.TestCase):
     """Test specific security attack scenarios"""

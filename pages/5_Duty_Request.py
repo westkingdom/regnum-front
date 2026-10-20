@@ -23,7 +23,8 @@ def send_duty_request_email(form_data: Dict[str, Any], user_email: str) -> bool:
         st.error("Error: The actual email sending function could not be imported. Email not sent.")
         return False
     except Exception as e:
-        st.error(f"An error occurred while trying to send the email: {e}")
+        logger.error(f"Error sending duty request email: {e}")
+        st.error("An error occurred while trying to send the email. Please contact the administrator.")
         return False
 
 

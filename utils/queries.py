@@ -1,4 +1,5 @@
 import requests
+from urllib.parse import quote
 from .config import api_url
 from .api import RegnumAPI
 import pandas as pd
@@ -66,7 +67,7 @@ def get_group_by_id(group_id: str) -> Optional[Dict[str, Any]]:
     """
     try:
         api_client = get_api_client()
-        response = api_client.session.get(f"{api_client.base_url}/groups/{group_id}/")
+        response = api_client.session.get(f"{api_client.base_url}groups/{quote(str(group_id), safe='')}/", timeout=api_client.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
@@ -169,4 +170,5 @@ def is_valid_email(email: str) -> bool:
     if not isinstance(email, str):
         return False
     pattern = r'^[a-zA-Z0-9._%+-]+@westkingdom\.org$'
-    return bool(re.match(pattern, email, re.IGNORECASE))
+    # fullmatch: re.match with '$' would accept a trailing newline.
+    return bool(re.fullmatch(pattern, email, re.IGNORECASE))

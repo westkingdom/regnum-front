@@ -118,7 +118,7 @@ def get_authorization_url() -> str:
 
     flow = _get_flow()
     auth_url, _ = flow.authorization_url(
-        access_type="offline",
+        access_type="online",
         prompt="select_account",
         state=state,
         code_challenge=challenge,

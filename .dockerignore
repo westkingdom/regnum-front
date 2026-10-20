@@ -5,13 +5,32 @@ __pycache__/
 .Python
 env/
 venv/
+.venv/
 .env
+.env.*
+!.env.local.example
 .git/
 .gitignore
 .idea/
 *.iml
 .vscode/
+.claude/
+.kiro/
+.pytest_cache/
 *.log
-token.json # Avoid committing user tokens
+# Avoid committing user tokens
+token.json
 *.DS_Store
-docker-compose.yaml # Usually not needed inside the app container
+# Usually not needed inside the app container
+docker-compose.yaml
+
+# Credentials must never be baked into the image (mounted from Secret Manager at runtime)
+*.key
+*.pem
+*.p12
+*service*account*.json
+*credential*.json
+*secret*.json
+google_credentials*.json
+westkingdom*.json
+.streamlit/secrets.toml

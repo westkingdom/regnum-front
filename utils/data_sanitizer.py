@@ -247,8 +247,8 @@ def sanitize_email(email: str) -> str:
         raise ValueError(f"Email is too long (max {FIELD_LIMITS['email']} characters)")
     
     # Basic email format validation
-    email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    if not re.match(email_pattern, email):
+    email_pattern = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    if not re.fullmatch(email_pattern, email):
         raise ValueError("Invalid email format")
     
     return email
