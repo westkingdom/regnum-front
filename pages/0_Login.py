@@ -23,6 +23,12 @@ def _handle_oauth_callback(code: str, state: str) -> None:
         st.stop()
 
     email = user_info.get("email", "")
+    if not email or not user_info.get("verified_email", False):
+        logger.warning(f"Access denied — Google account email not verified: {email}")
+        st.error("Access denied. Your Google account email address is not verified.")
+        st.query_params.clear()
+        return
+
     if not check_group_membership(email):
         logger.warning(f"Access denied — not in required group: {email}")
         st.error(

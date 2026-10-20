@@ -14,7 +14,8 @@ def _send(form_data: dict) -> bool:
         st.error("Error: The email sending function could not be imported. Email not sent.")
         return False
     except Exception as e:
-        st.error(f"An error occurred while trying to send the email: {e}")
+        logger.error(f"Error sending WK email account request email: {e}")
+        st.error("An error occurred while trying to send the email. Please contact the administrator.")
         return False
 
 

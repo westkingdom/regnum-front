@@ -1,4 +1,6 @@
 import time
+from urllib.parse import quote
+
 import requests
 from typing import Dict, Optional
 
@@ -44,6 +46,8 @@ class _IDTokenAuth(requests.auth.AuthBase):
 
 
 class RegnumAPI:
+    TIMEOUT_SECONDS = 15
+
     def __init__(self, base_url: Optional[str] = None):
         self.base_url = base_url or _default_api_url
         if not self.base_url.endswith('/'):
@@ -54,57 +58,57 @@ class RegnumAPI:
 
     def get_all_groups(self) -> Dict:
         """Get all groups"""
-        response = self.session.get(f"{self.base_url}groups/")
+        response = self.session.get(f"{self.base_url}groups/", timeout=self.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()
 
     def create_group(self, group_id: str, group_name: str) -> Dict:
         """Create a new group"""
         params = {"group_id": group_id, "group_name": group_name}
-        response = self.session.post(f"{self.base_url}groups/", params=params)
+        response = self.session.post(f"{self.base_url}groups/", params=params, timeout=self.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()
 
     def get_principalities(self) -> Dict:
         """Get all principalities"""
-        response = self.session.get(f"{self.base_url}principalities/")
+        response = self.session.get(f"{self.base_url}principalities/", timeout=self.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()
 
     def get_group_types(self) -> Dict:
         """Get all group types (officers)"""
-        response = self.session.get(f"{self.base_url}officers/")
+        response = self.session.get(f"{self.base_url}officers/", timeout=self.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()
 
     def get_groups_in_principality(self, principality: str) -> Dict:
         """Get groups in a specific principality"""
-        response = self.session.get(f"{self.base_url}principalities/{principality}/groups/")
+        response = self.session.get(f"{self.base_url}principalities/{quote(str(principality), safe='')}/groups/", timeout=self.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()
 
     def add_member_to_group(self, group_id: str, member_email: str) -> Dict:
         """Add a member to a group"""
         params = {"member_email": member_email}
-        response = self.session.post(f"{self.base_url}groups/{group_id}/add-member/", params=params)
+        response = self.session.post(f"{self.base_url}groups/{quote(str(group_id), safe='')}/add-member/", params=params, timeout=self.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()
 
     def remove_member_from_group(self, group_id: str, member_email: str) -> Dict:
         """Remove a member from a group"""
-        response = self.session.delete(f"{self.base_url}groups/{group_id}/members/{member_email}")
+        response = self.session.delete(f"{self.base_url}groups/{quote(str(group_id), safe='')}/members/{quote(str(member_email), safe='@')}", timeout=self.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()
 
     def get_group_members(self, group_id: str) -> Dict:
         """Get members of a specific group"""
-        response = self.session.get(f"{self.base_url}groups/{group_id}/members/")
+        response = self.session.get(f"{self.base_url}groups/{quote(str(group_id), safe='')}/members/", timeout=self.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()
 
     def get_user(self, user_email: str) -> Dict:
         """Get user information"""
         params = {"user_email": user_email}
-        response = self.session.get(f"{self.base_url}users/", params=params)
+        response = self.session.get(f"{self.base_url}users/", params=params, timeout=self.TIMEOUT_SECONDS)
         response.raise_for_status()
         return response.json()

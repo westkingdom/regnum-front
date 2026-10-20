@@ -48,4 +48,8 @@ LOCAL_SA_KEY_PATH  = os.environ.get('LOCAL_SA_KEY_PATH', '')
 # --- Group / legacy config ---
 REGNUM_ADMIN_GROUP = os.environ.get('REGNUM_ADMIN_GROUP', '00kgcv8k1r9idky')
 _bypass_raw        = os.environ.get('BYPASS_GROUP_CHECK', 'false').lower()
-BYPASS_GROUP_CHECK = _bypass_raw == 'true'
+# Only honoured in development so a stray env var can't open production to any Google account.
+BYPASS_GROUP_CHECK = (
+    _bypass_raw == 'true'
+    and os.environ.get('STREAMLIT_ENV', 'production') == 'development'
+)
